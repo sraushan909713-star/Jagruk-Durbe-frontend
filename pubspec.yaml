@@ -1,0 +1,43 @@
+name: gram_seva
+description: "Jagruk Durbe — Civic tech app for Durbe village, Gaya, Bihar."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.11.4
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # ── Icons ───────────────────────────────────────────────
+  cupertino_icons: ^1.0.8
+
+  # ── Fonts ───────────────────────────────────────────────
+  google_fonts: ^6.2.1           # Playfair Display + Inter + Noto Sans Devanagari
+
+  # ── HTTP & API ──────────────────────────────────────────
+  http: ^1.2.1                   # For calling our FastAPI backend
+  shared_preferences: ^2.2.3    # For storing JWT token locally
+
+  # ── State management ────────────────────────────────────
+  provider: ^6.1.2              # Simple, proven state management
+
+  # ── Navigation ──────────────────────────────────────────
+  go_router: ^13.2.0            # Clean URL-based routing
+
+  # ── UI utilities ────────────────────────────────────────
+  intl: ^0.19.0                 # Date/number formatting + Hindi locale
+
+  image_picker: ^1.1.2      # camera + gallery photo picker
+
+  url_launcher: ^6.3.0   # ✅ ADD: open URLs in browser
+  webview_flutter: ^4.13.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
