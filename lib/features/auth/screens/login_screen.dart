@@ -21,6 +21,7 @@ import 'register_screen.dart';
 import '../../../core/network/api_service.dart';
 import '../../home/screens/home_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'forgot_password_screen.dart';
 
 
 class LoginScreen extends StatefulWidget {
@@ -215,8 +216,8 @@ void _handleLogin() async {
                     if (val == null || val.isEmpty) {
                       return 'Please enter your password';
                     }
-                    if (val.length < 6) {
-                      return 'Password must be at least 6 characters';
+                    if (val.length < 8) {
+                      return 'Password must be at least 8 characters';
                     }
                     return null;
                   },
@@ -226,8 +227,12 @@ void _handleLogin() async {
                 Align(
                   alignment: Alignment.centerRight,
                   child: TextButton(
-                    onPressed: () {
-                      // TODO: Navigate to forgot password screen
+                    onPressed: () {                                            // ✅ CHANGE
+                      Navigator.of(context).push(                              // ✅ CHANGE
+                        MaterialPageRoute(                                     // ✅ CHANGE
+                          builder: (_) => ForgotPasswordScreen(),              // ✅ CHANGE
+                        ),                                                     // ✅ CHANGE
+                      );                                                       // ✅ CHANGE
                     },
                     child: Text(
                       'Forgot password?',

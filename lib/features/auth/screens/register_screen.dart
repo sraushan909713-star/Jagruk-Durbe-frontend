@@ -324,7 +324,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               fontSize: 15, color: AppColors.textPrimary,
             ),
             decoration: InputDecoration(
-              hintText: 'Create a password (min 6 characters)',
+              hintText: 'Create a password (min 8 characters)',
               suffixIcon: IconButton(
                 icon: Icon(
                   _passwordVisible
@@ -340,8 +340,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
               if (val == null || val.isEmpty) {
                 return 'Please create a password';
               }
-              if (val.length < 6) {
-                return 'Password must be at least 6 characters';
+              if (val.length < 8) {
+                return 'Password must be at least 8 characters';
               }
               return null;
             },

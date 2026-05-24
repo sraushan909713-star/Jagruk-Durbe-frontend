@@ -46,11 +46,14 @@ class ApiService {
   // ── AUTH ENDPOINTS ────────────────────────────────────────
 
   // POST /auth/send-otp
-  static Future<Map<String, dynamic>> sendOtp(String phone) async {
+  static Future<Map<String, dynamic>> sendOtp(
+    String phone, {
+    String purpose = 'registration',          // ✅ CHANGE — defaults to registration so existing calls work untouched
+  }) async {
     final response = await http.post(
       Uri.parse('${AppConstants.baseUrl}/auth/send-otp'),
       headers: _headers(),
-      body: jsonEncode({'phone': phone, 'purpose': 'registration'}),
+      body: jsonEncode({'phone': phone, 'purpose': purpose}),   // ✅ CHANGE — uses the param
     );
     return jsonDecode(response.body);
   }
@@ -84,6 +87,24 @@ class ApiService {
       Uri.parse('${AppConstants.baseUrl}/auth/login'),
       headers: _headers(),
       body: jsonEncode({'phone': phone, 'password': password}),
+    );
+    return {'statusCode': response.statusCode, ...jsonDecode(response.body)};
+  }
+
+  // POST /auth/reset-password
+  static Future<Map<String, dynamic>> resetPassword({
+    required String phone,
+    required String otpCode,
+    required String newPassword,
+  }) async {
+    final response = await http.post(
+      Uri.parse('${AppConstants.baseUrl}/auth/reset-password'),
+      headers: _headers(),
+      body: jsonEncode({
+        'phone': phone,
+        'otp_code': otpCode,
+        'new_password': newPassword,
+      }),
     );
     return {'statusCode': response.statusCode, ...jsonDecode(response.body)};
   }
