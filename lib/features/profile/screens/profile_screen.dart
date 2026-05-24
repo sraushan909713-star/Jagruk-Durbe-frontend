@@ -22,6 +22,7 @@ import '../../../core/network/api_service.dart';
 import '../../../core/network/cloudinary_service.dart';
 import '../../auth/screens/login_screen.dart';
 import '../../profile/screens/admin_panel_screen.dart';
+import '../../about/screens/about_screen.dart';
 
 // ─── Profile Screen ───────────────────────────────────────────────────────────
 class ProfileScreen extends StatefulWidget {
@@ -656,6 +657,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 if (badge == 'none' || badge == 'pending')
                   const SizedBox(height: 10),
 
+                // About — opens the About / Guide page
+                _buildAboutButton(),
+                const SizedBox(height: 10),
+
                 // Logout button — large and prominent
                 _buildLogoutButton(),
 
@@ -1135,6 +1140,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
           );
+  }
+
+  // ─── About Button — opens the About / Guide page ─────────────────────────
+  Widget _buildAboutButton() {
+    return SizedBox(
+      width: double.infinity,
+      child: OutlinedButton.icon(
+        onPressed: () => Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => const AboutScreen()),
+        ),
+        icon: const Icon(Icons.info_outline_rounded, size: 18),
+        label: Text(
+          'About Jagruk Durbe',
+          style: GoogleFonts.inter(fontSize: 14, fontWeight: FontWeight.w600),
+        ),
+        style: OutlinedButton.styleFrom(
+          foregroundColor: AppColors.primary,
+          side: BorderSide(color: AppColors.primary),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+          padding: const EdgeInsets.symmetric(vertical: 14),
+        ),
+      ),
+    );
   }
 
   // ─── Helpers ─────────────────────────────────────────────────────────────────

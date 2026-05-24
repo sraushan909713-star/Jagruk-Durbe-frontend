@@ -13,6 +13,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/network/api_service.dart';
+import '../../../core/theme/banner_themes.dart';
 
 // ─── Admin Panel Screen ───────────────────────────────────────────────────────
 class AdminPanelScreen extends StatefulWidget {
@@ -49,15 +50,26 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
   bool          _loadingBanners = true;
 
   // ─── Banner form controllers ──────────────────────────────────────────────────
-  final _bannerTitleCtrl    = TextEditingController();
-  final _bannerSubtitleCtrl = TextEditingController();
-  final _bannerIconCtrl     = TextEditingController();
-  final _bannerTagCtrl      = TextEditingController();
-  final _bannerUrlCtrl      = TextEditingController();
-  String  _bannerColorTheme  = 'green';
-  String  _bannerRedirectType= 'none';
-  String  _bannerRedirectTarget = 'gram_awaaz';
+  final _bannerTitleCtrl       = TextEditingController();
+  final _bannerSubtitleCtrl    = TextEditingController();
+  final _bannerIconCtrl        = TextEditingController();
+  final _bannerTagCtrl         = TextEditingController();
+  final _bannerDescriptionCtrl = TextEditingController();                       // ✅ ADD
+  final _bannerEventLocationCtrl = TextEditingController();                     // ✅ ADD
+  final _bannerEventDateCtrl   = TextEditingController();                       // ✅ ADD
+  final _bannerEventTimeCtrl   = TextEditingController();                       // ✅ ADD
+  final _bannerEntryFeeCtrl    = TextEditingController();                       // ✅ ADD
+  final _bannerYoutubeCtrl     = TextEditingController();                       // ✅ ADD
+  final _bannerExternalCtrl    = TextEditingController();                       // ✅ ADD
+  String   _bannerColorTheme   = BannerThemes.defaultKey;                       // ✅ CHANGE — theme KEY, not 'green'
   DateTime? _bannerValidUntil;
+  bool      _creatingBanner    = false;                                         // ✅ ADD — prevents double-submit
+
+  // ─── Banner contact picker state (2B) ────────────────────────────────────────
+  final List<Map<String, dynamic>> _bannerSelectedContacts = [];               // ✅ ADD
+  final _bannerContactSearchCtrl = TextEditingController();                     // ✅ ADD
+  bool  _bannerContactPickerOpen = false;                                       // ✅ ADD
+  static const int _bannerContactMax = 4;                                       // ✅ ADD — cap
 
   @override
   void initState() {
@@ -392,74 +404,90 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
     }
   }
 
-  // ─── Create banner ────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
+// EDIT 3 — REPLACE _createBanner()  (currently lines 396-462)
+// Replace the ENTIRE old _createBanner() method with this:
+// ─────────────────────────────────────────────────────────────────────────────
+ 
   Future<void> _createBanner() async {
+    // — Required-field checks ──────────────────────────────────────────────
     if (_bannerTitleCtrl.text.trim().isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Title is required.', style: GoogleFonts.inter()),
-        backgroundColor: Colors.red,
-      ));
+      _bannerSnack('Title is required.', error: true);
       return;
     }
-
-    final colorMap = {
-      'green':  {'start': '#166534', 'end': '#1e8a4a'},
-      'blue':   {'start': '#1e40af', 'end': '#2563eb'},
-      'purple': {'start': '#6d28d9', 'end': '#7c3aed'},
-      'orange': {'start': '#c2440a', 'end': '#ea580c'},
-      'pink':   {'start': '#be185d', 'end': '#db2777'},
-      'dark':   {'start': '#1f2937', 'end': '#374151'},
-    };
-
-    final colors = colorMap[_bannerColorTheme]!;
-
+    if (_bannerDescriptionCtrl.text.trim().isEmpty) {
+      _bannerSnack('Description is required.', error: true);
+      return;
+    }
+ 
+    setState(() => _creatingBanner = true);
+ 
+    // helper: empty text field → null (so backend stores null, not "")
+    String? _orNull(TextEditingController c) =>
+        c.text.trim().isEmpty ? null : c.text.trim();
+ 
     try {
       await ApiService.createBanner({
-        'title':          _bannerTitleCtrl.text.trim(),
-        'subtitle':       _bannerSubtitleCtrl.text.trim().isEmpty
-            ? null : _bannerSubtitleCtrl.text.trim(),
-        'icon':           _bannerIconCtrl.text.trim().isEmpty
-            ? null : _bannerIconCtrl.text.trim(),
-        'tag':            _bannerTagCtrl.text.trim().isEmpty
-            ? null : _bannerTagCtrl.text.trim(),
-        'bg_color_start': colors['start'],
-        'bg_color_end':   colors['end'],
-        'redirect_type':  _bannerRedirectType == 'none' ? null : _bannerRedirectType,
-        'redirect_target': _bannerRedirectType == 'none'
-            ? null
-            : _bannerRedirectType == 'internal'
-                ? _bannerRedirectTarget
-                : _bannerUrlCtrl.text.trim(),
-        'valid_until':    _bannerValidUntil?.toIso8601String(),
+        'title':       _bannerTitleCtrl.text.trim(),
+        'description': _bannerDescriptionCtrl.text.trim(),
+        'color_theme': _bannerColorTheme,                       // ✅ V2 — theme key
+        'subtitle':    _orNull(_bannerSubtitleCtrl),
+        'icon':        _orNull(_bannerIconCtrl),
+        'tag':         _orNull(_bannerTagCtrl),
+        'event_location': _orNull(_bannerEventLocationCtrl),
+        'event_date':     _orNull(_bannerEventDateCtrl),
+        'event_time':     _orNull(_bannerEventTimeCtrl),
+        'entry_fee':      _orNull(_bannerEntryFeeCtrl),
+        'youtube_link':   _orNull(_bannerYoutubeCtrl),
+        'external_link':  _orNull(_bannerExternalCtrl),
         'display_order':  0,
+        'valid_until':    _bannerValidUntil?.toIso8601String(),
         'village_id':     '1',
+        'contact_user_ids': _bannerSelectedContacts
+            .map((u) => u['id'].toString())
+            .toList(),
       });
+ 
+      // — Reset the form ────────────────────────────────────────────────────
       _bannerTitleCtrl.clear();
       _bannerSubtitleCtrl.clear();
       _bannerIconCtrl.clear();
       _bannerTagCtrl.clear();
-      _bannerUrlCtrl.clear();
+      _bannerDescriptionCtrl.clear();
+      _bannerEventLocationCtrl.clear();
+      _bannerEventDateCtrl.clear();
+      _bannerEventTimeCtrl.clear();
+      _bannerEntryFeeCtrl.clear();
+      _bannerYoutubeCtrl.clear();
+      _bannerExternalCtrl.clear();
+      _bannerSelectedContacts.clear();
+      _bannerContactSearchCtrl.clear();
       setState(() {
-        _bannerColorTheme   = 'green';
-        _bannerRedirectType = 'none';
-        _bannerValidUntil   = null;
+        _bannerColorTheme = BannerThemes.defaultKey;
+        _bannerValidUntil = null;
+        _creatingBanner   = false;
+        _bannerContactPickerOpen = false;
       });
+ 
       await _loadBanners();
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Banner added!', style: GoogleFonts.inter()),
-          backgroundColor: AppColors.primary,
-        ));
-      }
+      if (mounted) _bannerSnack('Banner added!', error: false);
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(e.toString(), style: GoogleFonts.inter()),
-          backgroundColor: Colors.red,
-        ));
+        setState(() => _creatingBanner = false);
+        _bannerSnack(e.toString(), error: true);
       }
     }
   }
+ 
+  // — small snackbar helper for the banner section ─────────────────────────
+  void _bannerSnack(String msg, {required bool error}) {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(msg, style: GoogleFonts.inter()),
+      backgroundColor: error ? Colors.red : AppColors.primary,
+    ));
+  }
+ 
 
   // ─── Delete banner ────────────────────────────────────────────────────────────
   Future<void> _deleteBanner(String bannerId, String title) async {
@@ -586,31 +614,16 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
     );
   }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// EDIT 4 — REPLACE _buildBannerSection() AND _bannerField()
+// (currently lines 590-880 — the whole "Banner Section" + "Banner field helper")
+// Replace BOTH methods with everything below:
+// ─────────────────────────────────────────────────────────────────────────────
+ 
   // ─── Banner Section ───────────────────────────────────────────────────────────
   Widget _buildBannerSection() {
-    final colorOptions = [
-      {'value': 'green',  'label': '🟢 Green (Brand)'},
-      {'value': 'blue',   'label': '🔵 Blue (Info)'},
-      {'value': 'purple', 'label': '🟣 Purple (Event)'},
-      {'value': 'orange', 'label': '🟠 Orange (Alert)'},
-      {'value': 'pink',   'label': '🌸 Pink (Festival)'},
-      {'value': 'dark',   'label': '⚫ Dark (Announcement)'},
-    ];
-
-    final internalScreens = [
-      {'value': 'gram_awaaz',      'label': 'Gram Awaaz'},
-      {'value': 'job_alerts',      'label': 'Job Alerts'},
-      {'value': 'schemes',         'label': 'Schemes'},
-      {'value': 'vikas_prastav',   'label': 'Vikas Prastav'},
-      {'value': 'neta_report_card','label': 'Neta Report Card'},
-      {'value': 'guides',          'label': 'Guides'},
-      {'value': 'contacts',        'label': 'Contacts'},
-      {'value': 'mandi_prices',    'label': 'Crop Prices'},
-      {'value': 'rain_alerts',     'label': 'Rain Alerts'},
-    ];
-
     return Column(children: [
-
+ 
       // ── Existing banners list ─────────────────────────────────────────────
       if (_loadingBanners)
         const Center(child: CircularProgressIndicator(color: AppColors.primary))
@@ -619,7 +632,8 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
       else
         Column(
           children: _banners.map((b) {
-            final title = b['title'] ?? '';
+            final title = (b['title'] ?? '').toString();
+            final theme = BannerThemes.byKey(b['color_theme'] as String?);
             return Container(
               margin: const EdgeInsets.only(bottom: 8),
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
@@ -629,24 +643,37 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
                 borderRadius: BorderRadius.circular(14),
               ),
               child: Row(children: [
-                Text(b['icon'] ?? '🖼️',
-                    style: const TextStyle(fontSize: 22)),
+                // little gradient chip showing the banner's theme
+                Container(
+                  width: 34, height: 34,
+                  decoration: BoxDecoration(
+                    gradient: theme.gradient,
+                    borderRadius: BorderRadius.circular(9),
+                  ),
+                  alignment: Alignment.center,
+                  child: Text((b['icon'] ?? '🖼️').toString(),
+                      style: const TextStyle(fontSize: 17)),
+                ),
                 const SizedBox(width: 12),
                 Expanded(child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(title,
+                        maxLines: 1, overflow: TextOverflow.ellipsis,
                         style: GoogleFonts.inter(
                             fontSize: 13, fontWeight: FontWeight.w600,
                             color: const Color(0xFF111827))),
-                    if (b['subtitle'] != null)
-                      Text(b['subtitle'],
+                    if (b['subtitle'] != null &&
+                        b['subtitle'].toString().trim().isNotEmpty)
+                      Text(b['subtitle'].toString(),
+                          maxLines: 1, overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.inter(
                               fontSize: 11, color: const Color(0xFF6B7280))),
                   ],
                 )),
                 GestureDetector(
-                  onTap: () => _deleteBanner(b['id'], title),
+                  onTap: () => _deleteBanner(
+                      (b['id'] ?? '').toString(), title),
                   child: Container(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 10, vertical: 5),
@@ -665,9 +692,9 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
             );
           }).toList(),
         ),
-
+ 
       const SizedBox(height: 14),
-
+ 
       // ── Add banner form ───────────────────────────────────────────────────
       Container(
         padding: const EdgeInsets.all(14),
@@ -677,115 +704,116 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
           borderRadius: BorderRadius.circular(16),
         ),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+ 
           Text('Add Banner',
               style: GoogleFonts.inter(
                   fontSize: 12, fontWeight: FontWeight.w700,
                   color: const Color(0xFF374151))),
           const SizedBox(height: 12),
-
-          // Title
-          _bannerField(_bannerTitleCtrl, 'Title * e.g. Holi Milan Samaroh'),
-          // Subtitle
+ 
+          // ── Basics ──────────────────────────────────────────────────────
+          _bannerField(_bannerTitleCtrl, 'Title *  e.g. Holi Milan Samaroh'),
           _bannerField(_bannerSubtitleCtrl, 'Subtitle (optional)'),
-          // Icon
-          _bannerField(_bannerIconCtrl, 'Icon emoji e.g. 🎉 💼 🌾'),
-          // Tag
-          _bannerField(_bannerTagCtrl, 'Tag e.g. Event, Job Alert, Notice'),
-
-          // Color theme
-          const SizedBox(height: 4),
+          _bannerField(_bannerDescriptionCtrl,
+              'Description *  — full text shown on the banner page',
+              maxLines: 4),
+          _bannerField(_bannerIconCtrl, 'Icon emoji  e.g. 🎉  💼  🌾'),
+          _bannerField(_bannerTagCtrl, 'Tag  e.g. Event, Job Alert, Notice'),
+ 
+          const SizedBox(height: 6),
+ 
+          // ── Colour theme picker — visual swatch grid ────────────────────
           Text('Colour Theme',
-              style: GoogleFonts.inter(fontSize: 11,
+              style: GoogleFonts.inter(
+                  fontSize: 11, fontWeight: FontWeight.w600,
                   color: const Color(0xFF6B7280))),
-          const SizedBox(height: 6),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            decoration: BoxDecoration(
-              color: const Color(0xFFF9FAFB),
-              border: Border.all(color: const Color(0xFFE5E7EB)),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: DropdownButtonHideUnderline(
-              child: DropdownButton<String>(
-                value: _bannerColorTheme,
-                isExpanded: true,
-                style: GoogleFonts.inter(
-                    fontSize: 12, color: const Color(0xFF374151)),
-                items: colorOptions.map((c) => DropdownMenuItem(
-                  value: c['value'],
-                  child: Text(c['label']!),
-                )).toList(),
-                onChanged: (v) => setState(() => _bannerColorTheme = v!),
-              ),
-            ),
-          ),
-
-          const SizedBox(height: 10),
-
-          // Redirect type
-          Text('Tap Action',
-              style: GoogleFonts.inter(fontSize: 11,
-                  color: const Color(0xFF6B7280))),
-          const SizedBox(height: 6),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            decoration: BoxDecoration(
-              color: const Color(0xFFF9FAFB),
-              border: Border.all(color: const Color(0xFFE5E7EB)),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: DropdownButtonHideUnderline(
-              child: DropdownButton<String>(
-                value: _bannerRedirectType,
-                isExpanded: true,
-                style: GoogleFonts.inter(
-                    fontSize: 12, color: const Color(0xFF374151)),
-                items: const [
-                  DropdownMenuItem(value: 'none',     child: Text('No action')),
-                  DropdownMenuItem(value: 'internal', child: Text('Go to a screen')),
-                  DropdownMenuItem(value: 'external', child: Text('Open a website')),
-                ],
-                onChanged: (v) => setState(() => _bannerRedirectType = v!),
-              ),
-            ),
-          ),
-
-          // Internal screen picker
-          if (_bannerRedirectType == 'internal') ...[
-            const SizedBox(height: 8),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              decoration: BoxDecoration(
-                color: const Color(0xFFF9FAFB),
-                border: Border.all(color: const Color(0xFFE5E7EB)),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton<String>(
-                  value: _bannerRedirectTarget,
-                  isExpanded: true,
-                  style: GoogleFonts.inter(
-                      fontSize: 12, color: const Color(0xFF374151)),
-                  items: internalScreens.map((s) => DropdownMenuItem(
-                    value: s['value'],
-                    child: Text(s['label']!),
-                  )).toList(),
-                  onChanged: (v) =>
-                      setState(() => _bannerRedirectTarget = v!),
+          const SizedBox(height: 8),
+          GridView.count(
+            crossAxisCount: 3,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            crossAxisSpacing: 8,
+            mainAxisSpacing: 8,
+            childAspectRatio: 1.55,
+            children: BannerThemes.all.map((t) {
+              final selected = t.key == _bannerColorTheme;
+              return GestureDetector(
+                onTap: () => setState(() => _bannerColorTheme = t.key),
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: t.gradient,
+                    borderRadius: BorderRadius.circular(11),
+                    border: Border.all(
+                      color: selected
+                          ? AppColors.primary
+                          : Colors.transparent,
+                      width: 3,
+                    ),
+                  ),
+                  padding: const EdgeInsets.all(7),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // check mark when selected
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: selected
+                            ? const Icon(Icons.check_circle,
+                                color: Colors.white, size: 16)
+                            : const SizedBox(height: 16),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(t.label,
+                              maxLines: 1, overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.inter(
+                                  fontSize: 10.5,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.white)),
+                          Text(t.hint,
+                              maxLines: 1, overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.inter(
+                                  fontSize: 8,
+                                  color: Colors.white.withOpacity(0.85))),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ),
-          ],
-
-          // External URL
-          if (_bannerRedirectType == 'external') ...[
-            const SizedBox(height: 8),
-            _bannerField(_bannerUrlCtrl, 'https://...'),
-          ],
-
-          const SizedBox(height: 10),
-
-          // Expiry date
+              );
+            }).toList(),
+          ),
+ 
+          const SizedBox(height: 14),
+ 
+          // ── Event details (optional) ────────────────────────────────────
+          _bannerSubheading('Event details (optional)'),
+          const SizedBox(height: 8),
+          _bannerField(_bannerEventLocationCtrl,
+              'Event location  e.g. Panchayat Bhawan'),
+          _bannerField(_bannerEventDateCtrl,
+              'Event date  e.g. 25 March 2026'),
+          _bannerField(_bannerEventTimeCtrl,
+              'Event time  e.g. 10:00 AM'),
+          _bannerField(_bannerEntryFeeCtrl,
+              'Entry fee  e.g. Free  /  ₹20'),
+ 
+          const SizedBox(height: 8),
+ 
+          // ── Links (optional) ────────────────────────────────────────────
+          _bannerSubheading('Links (optional)'),
+          const SizedBox(height: 8),
+          _bannerField(_bannerYoutubeCtrl, 'YouTube link  https://...'),
+          _bannerField(_bannerExternalCtrl, 'External link  https://...'),
+ 
+          const SizedBox(height: 8),
+          _bannerSubheading('Contacts (optional — up to $_bannerContactMax)'),
+          const SizedBox(height: 8),
+          _contactPicker(),
+ 
+          // ── Expiry date ─────────────────────────────────────────────────
           GestureDetector(
             onTap: () async {
               final d = await showDatePicker(
@@ -815,36 +843,51 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
                 const Icon(Icons.calendar_today_rounded,
                     size: 14, color: AppColors.primary),
                 const SizedBox(width: 8),
-                Text(
-                  _bannerValidUntil != null
-                      ? 'Expires: ${_bannerValidUntil!.day}/${_bannerValidUntil!.month}/${_bannerValidUntil!.year}'
-                      : 'Expiry date (optional — never expires if blank)',
-                  style: GoogleFonts.inter(
-                      fontSize: 11,
-                      color: _bannerValidUntil != null
-                          ? const Color(0xFF374151)
-                          : const Color(0xFF9CA3AF)),
+                Expanded(
+                  child: Text(
+                    _bannerValidUntil != null
+                        ? 'Expires: ${_bannerValidUntil!.day}/${_bannerValidUntil!.month}/${_bannerValidUntil!.year}'
+                        : 'Expiry date (optional — never expires if blank)',
+                    style: GoogleFonts.inter(
+                        fontSize: 11,
+                        color: _bannerValidUntil != null
+                            ? const Color(0xFF374151)
+                            : const Color(0xFF9CA3AF)),
+                  ),
                 ),
+                if (_bannerValidUntil != null)
+                  GestureDetector(
+                    onTap: () => setState(() => _bannerValidUntil = null),
+                    child: const Icon(Icons.close,
+                        size: 15, color: Color(0xFF9CA3AF)),
+                  ),
               ]),
             ),
           ),
-
+ 
           const SizedBox(height: 12),
-
+ 
+          // ── Submit ──────────────────────────────────────────────────────
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: _createBanner,
+              onPressed: _creatingBanner ? null : _createBanner,
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primary,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
                 padding: const EdgeInsets.symmetric(vertical: 11),
               ),
-              child: Text('Add Banner',
-                  style: GoogleFonts.inter(
-                      fontSize: 12, fontWeight: FontWeight.w600,
-                      color: Colors.white)),
+              child: _creatingBanner
+                  ? const SizedBox(
+                      width: 18, height: 18,
+                      child: CircularProgressIndicator(
+                          color: Colors.white, strokeWidth: 2),
+                    )
+                  : Text('Add Banner',
+                      style: GoogleFonts.inter(
+                          fontSize: 12, fontWeight: FontWeight.w600,
+                          color: Colors.white)),
             ),
           ),
         ]),
@@ -852,11 +895,229 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
     ]);
   }
 
+  // ─── Banner contact picker ────────────────────────────────────────────────────
+  Widget _contactPicker() {
+    // Build the filtered list of selectable users.
+    final query = _bannerContactSearchCtrl.text.trim().toLowerCase();
+    final selectedIds =
+        _bannerSelectedContacts.map((u) => u['id'].toString()).toSet();
+ 
+    final filtered = _members.where((u) {
+      final id = (u['id'] ?? '').toString();
+      if (selectedIds.contains(id)) return false;            // hide already-picked
+      if (query.isEmpty) return true;                        // show all if no search
+      final name = (u['full_name'] ?? '').toString().toLowerCase();
+      return name.contains(query);
+    }).toList();
+ 
+    final bool atLimit =
+        _bannerSelectedContacts.length >= _bannerContactMax;
+ 
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+ 
+        // — Selected contacts as removable chips ──────────────────────────────
+        if (_bannerSelectedContacts.isNotEmpty) ...[
+          Wrap(
+            spacing: 6,
+            runSpacing: 6,
+            children: _bannerSelectedContacts.map((u) {
+              final name = (u['full_name'] ?? 'Unknown').toString();
+              return Container(
+                padding: const EdgeInsets.only(
+                    left: 10, right: 6, top: 5, bottom: 5),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFDCFCE7),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: const Color(0xFFBBF7D0)),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(name,
+                        style: GoogleFonts.inter(
+                            fontSize: 11, fontWeight: FontWeight.w600,
+                            color: AppColors.primary)),
+                    const SizedBox(width: 4),
+                    GestureDetector(
+                      onTap: () => setState(
+                          () => _bannerSelectedContacts.remove(u)),
+                      child: const Icon(Icons.close,
+                          size: 14, color: AppColors.primary),
+                    ),
+                  ],
+                ),
+              );
+            }).toList(),
+          ),
+          const SizedBox(height: 8),
+        ],
+ 
+        // — "Add contact" toggle row ──────────────────────────────────────────
+        GestureDetector(
+          onTap: atLimit && !_bannerContactPickerOpen
+              ? null
+              : () => setState(() =>
+                  _bannerContactPickerOpen = !_bannerContactPickerOpen),
+          child: Container(
+            padding: const EdgeInsets.symmetric(
+                horizontal: 12, vertical: 11),
+            decoration: BoxDecoration(
+              color: const Color(0xFFF9FAFB),
+              border: Border.all(color: const Color(0xFFE5E7EB)),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Row(children: [
+              Icon(
+                _bannerContactPickerOpen
+                    ? Icons.expand_less_rounded
+                    : Icons.person_add_alt_1_rounded,
+                size: 16,
+                color: atLimit ? const Color(0xFF9CA3AF) : AppColors.primary,
+              ),
+              const SizedBox(width: 8),
+              Text(
+                atLimit
+                    ? 'Maximum $_bannerContactMax contacts added'
+                    : (_bannerContactPickerOpen
+                        ? 'Close'
+                        : 'Tap to add a contact'),
+                style: GoogleFonts.inter(
+                    fontSize: 11,
+                    color: atLimit
+                        ? const Color(0xFF9CA3AF)
+                        : const Color(0xFF374151)),
+              ),
+            ]),
+          ),
+        ),
+ 
+        // — Expanded search + user list ───────────────────────────────────────
+        if (_bannerContactPickerOpen && !atLimit) ...[
+          const SizedBox(height: 8),
+          // search box
+          TextField(
+            controller: _bannerContactSearchCtrl,
+            style: GoogleFonts.inter(fontSize: 12),
+            onChanged: (_) => setState(() {}),
+            decoration: InputDecoration(
+              hintText: 'Search villagers by name',
+              hintStyle: GoogleFonts.inter(
+                  fontSize: 12, color: const Color(0xFF9CA3AF)),
+              prefixIcon: const Icon(Icons.search, size: 18),
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(color: Color(0xFFE5E7EB))),
+              enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(color: Color(0xFFE5E7EB))),
+              focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(color: AppColors.primary)),
+              filled: true,
+              fillColor: Colors.white,
+            ),
+          ),
+          const SizedBox(height: 6),
+          // results
+          Container(
+            constraints: const BoxConstraints(maxHeight: 220),
+            decoration: BoxDecoration(
+              border: Border.all(color: const Color(0xFFE5E7EB)),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: filtered.isEmpty
+                ? Padding(
+                    padding: const EdgeInsets.all(14),
+                    child: Text('No villagers found.',
+                        style: GoogleFonts.inter(
+                            fontSize: 11, color: const Color(0xFF9CA3AF))),
+                  )
+                : ListView.builder(
+                    shrinkWrap: true,
+                    padding: EdgeInsets.zero,
+                    itemCount: filtered.length,
+                    itemBuilder: (_, i) => _pickerUserRow(filtered[i]),
+                  ),
+          ),
+        ],
+      ],
+    );
+  }
+ 
+  // ─── One selectable villager row in the picker ────────────────────────────────
+  Widget _pickerUserRow(Map<String, dynamic> user) {
+    final name     = (user['full_name'] ?? 'Unknown').toString();
+    final role     = (user['role'] ?? 'user').toString();
+    final photoUrl = user['profile_photo_url'] as String?;
+ 
+    return InkWell(
+      onTap: () {
+        setState(() {
+          _bannerSelectedContacts.add(user);
+          _bannerContactSearchCtrl.clear();
+          // auto-close once the cap is reached
+          if (_bannerSelectedContacts.length >= _bannerContactMax) {
+            _bannerContactPickerOpen = false;
+          }
+        });
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+        child: Row(children: [
+          CircleAvatar(
+            radius: 15,
+            backgroundColor: const Color(0xFFBBF7D0),
+            backgroundImage: (photoUrl != null && photoUrl.isNotEmpty)
+                ? NetworkImage(photoUrl)
+                : null,
+            child: (photoUrl == null || photoUrl.isEmpty)
+                ? Text(name[0].toUpperCase(),
+                    style: GoogleFonts.playfairDisplay(
+                        fontSize: 12, fontWeight: FontWeight.w700,
+                        color: AppColors.primary))
+                : null,
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(name,
+                    style: GoogleFonts.inter(
+                        fontSize: 12, fontWeight: FontWeight.w600,
+                        color: const Color(0xFF111827))),
+                Text(_roleLabel(role),
+                    style: GoogleFonts.inter(
+                        fontSize: 10, color: const Color(0xFF6B7280))),
+              ],
+            ),
+          ),
+          const Icon(Icons.add_circle_outline,
+              size: 18, color: AppColors.primary),
+        ]),
+      ),
+    );
+  }
+ 
+  // ─── Banner subheading helper ─────────────────────────────────────────────────
+  Widget _bannerSubheading(String text) => Text(
+    text,
+    style: GoogleFonts.inter(
+        fontSize: 11, fontWeight: FontWeight.w700,
+        color: const Color(0xFF9CA3AF)),
+  );
+ 
   // ─── Banner field helper ──────────────────────────────────────────────────────
-  Widget _bannerField(TextEditingController ctrl, String hint) => Padding(
+  Widget _bannerField(TextEditingController ctrl, String hint,
+      {int maxLines = 1}) => Padding(
     padding: const EdgeInsets.only(bottom: 8),
     child: TextField(
       controller: ctrl,
+      maxLines: maxLines,
       style: GoogleFonts.inter(fontSize: 12),
       decoration: InputDecoration(
         hintText: hint,
@@ -872,13 +1133,13 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
             borderSide: const BorderSide(color: Color(0xFFE5E7EB))),
         focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: AppColors.primary)),
+            borderSide: const BorderSide(color: AppColors.primary)),
         filled: true,
         fillColor: const Color(0xFFF9FAFB),
       ),
     ),
   );
-
+ 
   // ─── Section Header ──────────────────────────────────────────────────────────
   Widget _sectionHeader({
     required String icon,
