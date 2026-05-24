@@ -35,6 +35,9 @@ import '../../guides/screens/guides_screen.dart';
 import '../../weather/screens/rain_alerts_screen.dart';
 import '../../schemes/screens/schemes_screen.dart';
 import '../../schemes/screens/my_scheme_screen.dart';
+import '../../../core/theme/banner_themes.dart';                              // ✅ ADD
+import '../../banners/screens/banner_detail_screen.dart';                     // ✅ ADD
+import '../../about/screens/about_screen.dart';                               // ✅ ADD
 
 class HomeTab extends StatefulWidget {
   const HomeTab({super.key});
@@ -149,36 +152,13 @@ class _HomeTabState extends State<HomeTab> {
   }
 
   // ─── Handle banner tap ────────────────────────────────────────
-  void _handleBannerTap(Map<String, dynamic> banner) {
-    final type   = banner['redirect_type'] as String?;
-    final target = banner['redirect_target'] as String?;
-    if (type == null || target == null) return;
-
-    if (type == 'external') {
-      _launchUrl(target);
-    } else if (type == 'internal') {
-      final screen = _screenForTarget(target);
-      if (screen != null) {
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => screen));
-      }
-    }
-  }
-
-  Widget? _screenForTarget(String target) {
-    switch (target) {
-      case 'job_alerts':       return const JobAlertsScreen();
-      case 'gram_awaaz':       return const GramAwaazScreen();
-      case 'neta_report_card': return const NetaReportCardScreen();
-      case 'rain_alerts':      return const RainAlertsScreen();
-      case 'vikas_prastav':    return const VikasPrastavScreen();
-      case 'guides':           return const GuidesScreen();
-      case 'contacts':         return const ContactsScreen();
-      case 'mandi_prices':     return const MandiPricesScreen();
-      case 'schemes':          return const SchemesScreen();
-      default:                 return null;
-    }
-  }
+  void _handleBannerTap(Map<String, dynamic> banner) {                        // ✅ CHANGE
+    Navigator.of(context).push(                                               // ✅ CHANGE
+      MaterialPageRoute(                                                      // ✅ CHANGE
+        builder: (_) => BannerDetailScreen(banner: banner),                   // ✅ CHANGE
+      ),                                                                      // ✅ CHANGE
+    );                                                                        // ✅ CHANGE
+  }                                                                           // ✅ CHANGE
 
   Future<void> _launchUrl(String url) async {
     try {
@@ -255,15 +235,25 @@ class _HomeTabState extends State<HomeTab> {
                 fontSize: 13, color: AppColors.textSecondary)),
           ],
         ),
-        Container(
-          width: 48, height: 48,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: AppColors.primaryMid,
-            border: Border.all(color: AppColors.primaryBorder, width: 1.5),
+        // ✅ CHANGE (D5) — leaf logo is now tappable, opens the About page.
+        // Removed the "?" icon — two circles in the header read as duplicate
+        // logos. Profile carries the discoverable About entry; the leaf-tap
+        // is a quiet bonus for the curious.
+        GestureDetector(
+          onTap: () => Navigator.of(context).push(
+            MaterialPageRoute(builder: (_) => const AboutScreen()),
           ),
-          child: const Center(
-            child: Text('🌿', style: TextStyle(fontSize: 22))),
+          child: Container(
+            width: 48, height: 48,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: AppColors.primaryMid,
+              border: Border.all(
+                  color: AppColors.primaryBorder, width: 1.5),
+            ),
+            child: const Center(
+              child: Text('🌿', style: TextStyle(fontSize: 22))),
+          ),
         ),
       ],
     );
@@ -413,17 +403,11 @@ class _HomeTabState extends State<HomeTab> {
   Widget _buildBannerSlide(Map<String, dynamic> banner) {
     final hasImage     = banner['image_url'] != null &&
                          (banner['image_url'] as String).isNotEmpty;
-    final colorStart   = banner['bg_color_start'] as String? ?? '#166534';
-    final colorEnd     = banner['bg_color_end']   as String? ?? '#1E3A5F';
+    final theme        = BannerThemes.byKey(banner['color_theme'] as String?); // ✅ CHANGE
     final title        = banner['title']    as String? ?? '';
     final subtitle     = banner['subtitle'] as String?;
     final icon         = banner['icon']     as String?;
     final tag          = banner['tag']      as String?;
-
-    Color parseHex(String hex) {
-      final h = hex.replaceAll('#', '');
-      return Color(int.parse('FF$h', radix: 16));
-    }
 
     return GestureDetector(
       onTap: () => _handleBannerTap(banner),
@@ -432,11 +416,7 @@ class _HomeTabState extends State<HomeTab> {
         clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
-          gradient: hasImage ? null : LinearGradient(
-            colors: [parseHex(colorStart), parseHex(colorEnd)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
+          gradient: hasImage ? null : theme.gradient,                          // ✅ CHANGE
         ),
         child: Stack(
           fit: StackFit.expand,
@@ -449,11 +429,7 @@ class _HomeTabState extends State<HomeTab> {
                 fit: BoxFit.cover,
                 errorBuilder: (_, __, ___) => Container(
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [parseHex(colorStart), parseHex(colorEnd)],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
+                    gradient: hasImage ? null : theme.gradient,                          // ✅ CHANGE
                   ),
                 ),
               ),
