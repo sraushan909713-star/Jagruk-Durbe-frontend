@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 170" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+  <!-- Welcome Card 1 — Sunrise over Durbe
+       A warm dawn scene: sun rising with rays, soft hills, a tree on the left,
+       two village houses (one with thatched/sloped roof), a small temple with
+       a flag and pennant, and birds rising in the sky.
+       Palette: warm cream + soft gold + terracotta + soft green. Same family as
+       the 8 feature illustrations. -->
+
+  <!-- Soft warm sky band (top half) -->
+  <rect x="0" y="0" width="280" height="110" fill="#FCE9D4"/>
+
+  <!-- Sun + glow halos -->
+  <circle cx="118" cy="78" r="42" fill="#F5B940" opacity="0.10"/>
+  <circle cx="118" cy="78" r="32" fill="#F5B940" opacity="0.22"/>
+  <circle cx="118" cy="78" r="22" fill="#F5B940"/>
+
+  <!-- Sun rays -->
+  <g stroke="#F5B940" stroke-width="1.8" stroke-linecap="round" fill="none">
+    <line x1="118" y1="32" x2="118" y2="42"/>
+    <line x1="72"  y1="78" x2="82"  y2="78"/>
+    <line x1="154" y1="78" x2="164" y2="78"/>
+    <line x1="86"  y1="46" x2="93"  y2="53"/>
+    <line x1="150" y1="46" x2="143" y2="53"/>
+    <line x1="86"  y1="110" x2="93"  y2="103"/>
+    <line x1="150" y1="110" x2="143" y2="103"/>
+  </g>
+
+  <!-- Birds in upper sky -->
+  <g stroke="#C2440A" stroke-width="1.2" fill="none" stroke-linecap="round">
+    <path d="M 198,42 q 2.5,-2.5 5,0 q 2.5,-2.5 5,0"/>
+    <path d="M 222,32 q 2,-2 4,0 q 2,-2 4,0"/>
+    <path d="M 240,50 q 2,-2 4,0 q 2,-2 4,0"/>
+  </g>
+
+  <!-- Distant hills (back layer, lighter) -->
+  <path d="M 0,118 Q 40,108 90,112 T 200,108 T 280,112 L 280,128 L 0,128 Z"
+        fill="#C5DDB2" opacity="0.85"/>
+
+  <!-- Main ground (front layer) -->
+  <path d="M 0,122 Q 60,116 120,120 T 240,123 T 280,126 L 280,170 L 0,170 Z"
+        fill="#9BC18A"/>
+
+  <!-- Tree on the left -->
+  <g>
+    <rect x="42" y="106" width="4" height="20" fill="#7A5230"/>
+    <circle cx="44" cy="100" r="13" fill="#4A6B3F"/>
+    <circle cx="35" cy="98" r="9" fill="#5A7B4A"/>
+    <circle cx="53" cy="98" r="9" fill="#5A7B4A"/>
+    <circle cx="44" cy="90" r="8" fill="#658A55"/>
+  </g>
+
+  <!-- House 1 (smaller, peaked) -->
+  <g>
+    <polygon points="158,118 178,98 198,118" fill="#C2440A"/>
+    <rect x="163" y="118" width="30" height="24" fill="#E6C9A8"/>
+    <rect x="172" y="128" width="6" height="10" fill="#7A5230"/>
+    <rect x="183" y="125" width="5" height="5" fill="#4A6B3F"/>
+  </g>
+
+  <!-- House 2 (larger, peaked, with chimney) -->
+  <g>
+    <polygon points="200,118 220,94 240,118" fill="#A23808"/>
+    <rect x="226" y="98" width="5" height="12" fill="#7A5230"/>
+    <rect x="205" y="118" width="32" height="26" fill="#E6C9A8"/>
+    <rect x="210" y="128" width="5" height="5" fill="#4A6B3F"/>
+    <rect x="226" y="128" width="5" height="5" fill="#4A6B3F"/>
+    <rect x="218" y="135" width="7" height="11" fill="#7A5230"/>
+  </g>
+
+  <!-- Temple spire with flag -->
+  <g>
+    <polygon points="244,118 252,90 260,118" fill="#C2440A"/>
+    <line x1="252" y1="84" x2="252" y2="92" stroke="#7A5230" stroke-width="1.2"/>
+    <circle cx="252" cy="82" r="2.5" fill="#F5B940"/>
+    <polygon points="252,84 252,92 260,88" fill="#F5B940"/>
+    <rect x="246" y="118" width="12" height="20" fill="#E6C9A8"/>
+    <rect x="250" y="124" width="4" height="8" fill="#7A5230"/>
+  </g>
+
+  <!-- A few wildflowers in the foreground grass -->
+  <g>
+    <circle cx="20" cy="142" r="1.8" fill="#F5B940"/>
+    <line x1="20" y1="144" x2="20" y2="150" stroke="#4A6B3F" stroke-width="0.8"/>
+    <circle cx="80" cy="148" r="1.8" fill="#C2440A"/>
+    <line x1="80" y1="150" x2="80" y2="156" stroke="#4A6B3F" stroke-width="0.8"/>
+    <circle cx="110" cy="152" r="1.8" fill="#F5B940"/>
+    <line x1="110" y1="154" x2="110" y2="160" stroke="#4A6B3F" stroke-width="0.8"/>
+    <circle cx="265" cy="148" r="1.8" fill="#D9384E"/>
+    <line x1="265" y1="150" x2="265" y2="156" stroke="#4A6B3F" stroke-width="0.8"/>
+  </g>
+</svg>

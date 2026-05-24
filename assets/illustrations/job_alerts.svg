@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 170" width="100%" preserveAspectRatio="xMidYMid meet" role="img" aria-label="A villager reads job notices on a wooden notice board showing Bihar Police recruitment, with a deadline calendar beside.">
+
+  <!-- Ground shadow -->
+  <ellipse cx="140" cy="156" rx="112" ry="9" fill="#7A3F22" opacity="0.10"/>
+
+  <!-- Sun top-right (8 rays) -->
+  <circle cx="244" cy="30" r="12" fill="#F5C36B"/>
+  <line x1="244" y1="14" x2="244" y2="9" stroke="#E6A53D" stroke-width="1.7" stroke-linecap="round"/>
+  <line x1="254" y1="19" x2="259" y2="14" stroke="#E6A53D" stroke-width="1.7" stroke-linecap="round"/>
+  <line x1="259" y1="30" x2="265" y2="30" stroke="#E6A53D" stroke-width="1.7" stroke-linecap="round"/>
+  <line x1="254" y1="41" x2="259" y2="46" stroke="#E6A53D" stroke-width="1.7" stroke-linecap="round"/>
+  <line x1="244" y1="46" x2="244" y2="52" stroke="#E6A53D" stroke-width="1.7" stroke-linecap="round"/>
+  <line x1="234" y1="41" x2="229" y2="46" stroke="#E6A53D" stroke-width="1.7" stroke-linecap="round"/>
+  <line x1="229" y1="30" x2="223" y2="30" stroke="#E6A53D" stroke-width="1.7" stroke-linecap="round"/>
+  <line x1="234" y1="19" x2="229" y2="14" stroke="#E6A53D" stroke-width="1.7" stroke-linecap="round"/>
+
+  <!-- Notice board (centre) -->
+  <!-- Two wooden posts -->
+  <rect x="98" y="48" width="5" height="92" fill="#5C3920"/>
+  <rect x="177" y="48" width="5" height="92" fill="#5C3920"/>
+  <!-- Board background (cork-coloured) -->
+  <rect x="92" y="38" width="96" height="78" rx="3" fill="#E6C696" stroke="#7A3F22" stroke-width="1.8"/>
+  <!-- Board top frame -->
+  <rect x="92" y="38" width="96" height="9" fill="#7A3F22"/>
+
+  <!-- Job paper 1 (top, the Bihar Police one - the prominent one) -->
+  <rect x="100" y="52" width="48" height="28" rx="1.5" fill="#FFFFFF" stroke="#7A3F22" stroke-width="1.2"/>
+  <text x="124" y="62" font-family="Noto Sans Devanagari, sans-serif" font-size="6" font-weight="bold" text-anchor="middle" fill="#1E3A8A">बिहार पुलिस</text>
+  <text x="124" y="70" font-family="Noto Sans Devanagari, sans-serif" font-size="6" font-weight="bold" text-anchor="middle" fill="#1E3A8A">बहाली</text>
+  <line x1="103" y1="74" x2="145" y2="74" stroke="#9C4E2E" stroke-width="0.9" stroke-linecap="round"/>
+  <line x1="103" y1="77" x2="138" y2="77" stroke="#9C4E2E" stroke-width="0.9" stroke-linecap="round"/>
+  <!-- Red pin -->
+  <circle cx="124" cy="54" r="2.2" fill="#C2440A" stroke="#7A3F22" stroke-width="0.5"/>
+
+  <!-- Job paper 2 (top right, smaller, generic) -->
+  <rect x="152" y="52" width="32" height="22" rx="1.5" fill="#FFFFFF" stroke="#7A3F22" stroke-width="1.2"/>
+  <line x1="155" y1="58" x2="180" y2="58" stroke="#9C4E2E" stroke-width="0.9" stroke-linecap="round"/>
+  <line x1="155" y1="62" x2="180" y2="62" stroke="#9C4E2E" stroke-width="0.9" stroke-linecap="round"/>
+  <line x1="155" y1="66" x2="174" y2="66" stroke="#9C4E2E" stroke-width="0.9" stroke-linecap="round"/>
+  <line x1="155" y1="70" x2="178" y2="70" stroke="#9C4E2E" stroke-width="0.9" stroke-linecap="round"/>
+  <circle cx="168" cy="54" r="2.2" fill="#1A8870" stroke="#7A3F22" stroke-width="0.5"/>
+
+  <!-- Job paper 3 (bottom row, slightly tilted) -->
+  <g transform="rotate(-3 122 96)">
+    <rect x="100" y="84" width="44" height="24" rx="1.5" fill="#FCEFD2" stroke="#7A3F22" stroke-width="1.2"/>
+    <line x1="103" y1="90" x2="141" y2="90" stroke="#9C4E2E" stroke-width="0.9" stroke-linecap="round"/>
+    <line x1="103" y1="94" x2="141" y2="94" stroke="#9C4E2E" stroke-width="0.9" stroke-linecap="round"/>
+    <line x1="103" y1="98" x2="135" y2="98" stroke="#9C4E2E" stroke-width="0.9" stroke-linecap="round"/>
+    <line x1="103" y1="102" x2="138" y2="102" stroke="#9C4E2E" stroke-width="0.9" stroke-linecap="round"/>
+    <circle cx="122" cy="86" r="2.2" fill="#C2440A" stroke="#7A3F22" stroke-width="0.5"/>
+  </g>
+
+  <!-- Job paper 4 (bottom right) -->
+  <rect x="150" y="84" width="34" height="24" rx="1.5" fill="#FFFFFF" stroke="#7A3F22" stroke-width="1.2"/>
+  <line x1="153" y1="90" x2="181" y2="90" stroke="#9C4E2E" stroke-width="0.9" stroke-linecap="round"/>
+  <line x1="153" y1="94" x2="181" y2="94" stroke="#9C4E2E" stroke-width="0.9" stroke-linecap="round"/>
+  <line x1="153" y1="98" x2="176" y2="98" stroke="#9C4E2E" stroke-width="0.9" stroke-linecap="round"/>
+  <line x1="153" y1="102" x2="178" y2="102" stroke="#9C4E2E" stroke-width="0.9" stroke-linecap="round"/>
+  <circle cx="167" cy="86" r="2.2" fill="#1E3A8A" stroke="#7A3F22" stroke-width="0.5"/>
+
+  <!-- Villager (left, reading the board) -->
+  <circle cx="50" cy="84" r="10" fill="#7A3F22"/>
+  <path d="M40 84 Q50 74 60 84" fill="#5C7A3F" stroke="#7A3F22" stroke-width="1.2"/>
+  <line x1="50" y1="94" x2="50" y2="124" stroke="#7A3F22" stroke-width="3.2" stroke-linecap="round"/>
+  <!-- Arm raised toward board (pointing) -->
+  <path d="M50 102 L88 96" stroke="#7A3F22" stroke-width="2.8" stroke-linecap="round"/>
+  <!-- Other arm down -->
+  <path d="M50 104 L42 122" stroke="#7A3F22" stroke-width="2.8" stroke-linecap="round"/>
+  <line x1="50" y1="124" x2="44" y2="146" stroke="#7A3F22" stroke-width="3.2" stroke-linecap="round"/>
+  <line x1="50" y1="124" x2="56" y2="146" stroke="#7A3F22" stroke-width="3.2" stroke-linecap="round"/>
+
+  <!-- Calendar (right, showing urgency) -->
+  <g transform="rotate(6 224 102)">
+    <!-- Calendar body -->
+    <rect x="208" y="78" width="38" height="48" rx="2" fill="#FFFFFF" stroke="#7A3F22" stroke-width="1.4"/>
+    <!-- Red top strip -->
+    <rect x="208" y="78" width="38" height="11" fill="#C2440A"/>
+    <!-- Hanging rings -->
+    <circle cx="216" cy="79" r="1.6" fill="#5C3920"/>
+    <circle cx="238" cy="79" r="1.6" fill="#5C3920"/>
+    <!-- Days grid -->
+    <line x1="208" y1="98" x2="246" y2="98" stroke="#E5E7EB" stroke-width="0.6"/>
+    <line x1="208" y1="106" x2="246" y2="106" stroke="#E5E7EB" stroke-width="0.6"/>
+    <line x1="208" y1="114" x2="246" y2="114" stroke="#E5E7EB" stroke-width="0.6"/>
+    <line x1="218" y1="91" x2="218" y2="126" stroke="#E5E7EB" stroke-width="0.6"/>
+    <line x1="227" y1="91" x2="227" y2="126" stroke="#E5E7EB" stroke-width="0.6"/>
+    <line x1="237" y1="91" x2="237" y2="126" stroke="#E5E7EB" stroke-width="0.6"/>
+    <!-- Circled urgent date -->
+    <circle cx="222" cy="110" r="4.5" fill="none" stroke="#C2440A" stroke-width="1.5"/>
+  </g>
+
+</svg>

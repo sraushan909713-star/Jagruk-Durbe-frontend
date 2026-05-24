@@ -34,6 +34,10 @@ dependencies:
   url_launcher: ^6.3.0   # ✅ ADD: open URLs in browser
   webview_flutter: ^4.13.1
 
+  flutter_svg: ^2.0.10         # ✅ ADD — SVG illustrations for About page
+
+  youtube_player_flutter: ^9.0.4   # ✅ ADD — in-app YouTube playback for banner detail page
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -41,3 +45,5 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/illustrations/

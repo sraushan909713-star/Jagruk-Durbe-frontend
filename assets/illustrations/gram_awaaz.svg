@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 170" width="100%" preserveAspectRatio="xMidYMid meet" role="img" aria-label="A villager raises a phone to photograph a cracked road labeled टूटा हुआ रोड; above, the captured photo appears as a framed record with a location pin.">
+
+  <!-- Ground shadow -->
+  <ellipse cx="140" cy="158" rx="116" ry="9" fill="#5A4632" opacity="0.10"/>
+
+  <!-- ── Broken road (lower right) ─────────────────────────────────────── -->
+  <path d="M150 150 L270 150 L270 132 Q220 124 175 132 Q160 135 150 138 Z" fill="#9C9488" stroke="#5C5346" stroke-width="1.6"/>
+  <!-- Vertical road texture lines (kept toward the edges so the larger text reads cleanly) -->
+  <path d="M155 134 L152 150 M268 132 L268 150" stroke="#5C5346" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Pothole on the far right (clear of the text) -->
+  <ellipse cx="258" cy="146" rx="6" ry="2.6" fill="#6E665A"/>
+  <!-- Hindi label on the road — LARGER -->
+  <text x="208" y="146" font-family="Noto Sans Devanagari, sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="#2E2820">टूटा हुआ रोड</text>
+
+  <!-- ── Framed photo record (top right) ───────────────────────────────── -->
+  <rect x="150" y="36" width="78" height="62" rx="4" fill="#FFFFFF" stroke="#7A3F22" stroke-width="1.8"/>
+  <!-- Photo inside frame: scene of the broken road -->
+  <rect x="156" y="42" width="66" height="38" rx="2" fill="#E8DCC4"/>
+  <!-- Hills inside photo -->
+  <path d="M156 80 L156 64 Q175 56 192 64 Q205 70 222 62 L222 80 Z" fill="#B9B0A2"/>
+  <!-- Crack lines inside photo -->
+  <path d="M170 67 L165 80 M188 64 L186 80 M205 66 L208 80" stroke="#7A6E5E" stroke-width="1.2" stroke-linecap="round"/>
+  <!-- Location pin on the photo -->
+  <path d="M189 86 a3 3 0 0 1 3 3 q0 3 -3 6 q-3 -3 -3 -6 a3 3 0 0 1 3 -3 z" fill="#C2440A"/>
+  <circle cx="189" cy="89" r="1.4" fill="#FFFFFF"/>
+
+  <!-- Dotted "becoming a record" connector from phone up to photo frame -->
+  <line x1="105" y1="83" x2="170" y2="40" stroke="#1A8870" stroke-width="2" stroke-linecap="round" stroke-dasharray="1 4"/>
+
+  <!-- ── Villager with phone (left) ─────────────────────────────────────── -->
+  <circle cx="74" cy="74" r="11" fill="#7A3F22"/>
+  <path d="M63 74 Q74 63 85 74" fill="#9C4E2E" stroke="#7A3F22" stroke-width="1.2"/>
+  <line x1="74" y1="85" x2="74" y2="116" stroke="#7A3F22" stroke-width="3.4" stroke-linecap="round"/>
+  <!-- Arms raised holding phone toward road -->
+  <path d="M74 93 L90 90" stroke="#7A3F22" stroke-width="3" stroke-linecap="round"/>
+  <path d="M74 95 L62 102" stroke="#7A3F22" stroke-width="3" stroke-linecap="round"/>
+  <!-- Phone (tilted, capturing) -->
+  <g transform="rotate(28 94 93)">
+    <rect x="88" y="83" width="13" height="20" rx="2.5" fill="#2C2C2A" stroke="#7A3F22" stroke-width="1.4"/>
+    <rect x="90.5" y="86" width="8" height="11" fill="#9FE1CB"/>
+    <circle cx="103" cy="84" r="2.4" fill="#F5C36B"/>
+  </g>
+  <!-- Legs -->
+  <line x1="74" y1="116" x2="67" y2="138" stroke="#7A3F22" stroke-width="3.4" stroke-linecap="round"/>
+  <line x1="74" y1="116" x2="82" y2="138" stroke="#7A3F22" stroke-width="3.4" stroke-linecap="round"/>
+
+  <!-- ── Sun (top right) ────────────────────────────────────────────────── -->
+  <circle cx="238" cy="32" r="11" fill="#F5C36B"/>
+  <line x1="238" y1="18" x2="238" y2="13" stroke="#E6A53D" stroke-width="1.7" stroke-linecap="round"/>
+  <line x1="247" y1="23" x2="251" y2="19" stroke="#E6A53D" stroke-width="1.7" stroke-linecap="round"/>
+  <line x1="252" y1="32" x2="257" y2="32" stroke="#E6A53D" stroke-width="1.7" stroke-linecap="round"/>
+  <line x1="247" y1="41" x2="251" y2="45" stroke="#E6A53D" stroke-width="1.7" stroke-linecap="round"/>
+  <line x1="238" y1="46" x2="238" y2="51" stroke="#E6A53D" stroke-width="1.7" stroke-linecap="round"/>
+  <line x1="229" y1="41" x2="225" y2="45" stroke="#E6A53D" stroke-width="1.7" stroke-linecap="round"/>
+  <line x1="224" y1="32" x2="219" y2="32" stroke="#E6A53D" stroke-width="1.7" stroke-linecap="round"/>
+  <line x1="229" y1="23" x2="225" y2="19" stroke="#E6A53D" stroke-width="1.7" stroke-linecap="round"/>
+
+</svg>

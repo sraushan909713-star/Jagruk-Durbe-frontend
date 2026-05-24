@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 170" width="100%" preserveAspectRatio="xMidYMid meet" role="img" aria-label="A villager holds up a phone showing संपर्क सूची contact list with rows for Doctor, Plumber, Electrician and Emergency; small profession icon bubbles for doctor, plumber, and electrician float around.">
+
+  <!-- Ground shadow -->
+  <ellipse cx="140" cy="158" rx="116" ry="9" fill="#5A4632" opacity="0.10"/>
+
+  <!-- ── Sun (top right) ────────────────────────────────────────────────── -->
+  <circle cx="248" cy="28" r="10" fill="#F5C36B"/>
+  <line x1="248" y1="14" x2="248" y2="10" stroke="#E6A53D" stroke-width="1.6" stroke-linecap="round"/>
+  <line x1="257" y1="19" x2="261" y2="15" stroke="#E6A53D" stroke-width="1.6" stroke-linecap="round"/>
+  <line x1="262" y1="28" x2="267" y2="28" stroke="#E6A53D" stroke-width="1.6" stroke-linecap="round"/>
+  <line x1="257" y1="37" x2="261" y2="41" stroke="#E6A53D" stroke-width="1.6" stroke-linecap="round"/>
+  <line x1="248" y1="42" x2="248" y2="46" stroke="#E6A53D" stroke-width="1.6" stroke-linecap="round"/>
+  <line x1="239" y1="37" x2="235" y2="41" stroke="#E6A53D" stroke-width="1.6" stroke-linecap="round"/>
+  <line x1="234" y1="28" x2="229" y2="28" stroke="#E6A53D" stroke-width="1.6" stroke-linecap="round"/>
+  <line x1="239" y1="19" x2="235" y2="15" stroke="#E6A53D" stroke-width="1.6" stroke-linecap="round"/>
+
+  <!-- ── Villager (left, holding phone up) ──────────────────────────────── -->
+  <circle cx="60" cy="58" r="10" fill="#7A3F22"/>
+  <path d="M50 58 Q60 48 70 58" fill="#5C3920" stroke="#7A3F22" stroke-width="1.2"/>
+  <line x1="60" y1="68" x2="60" y2="116" stroke="#7A3F22" stroke-width="3.2" stroke-linecap="round"/>
+  <path d="M60 76 L80 78" stroke="#7A3F22" stroke-width="2.8" stroke-linecap="round"/>
+  <path d="M60 80 L80 82" stroke="#7A3F22" stroke-width="2.8" stroke-linecap="round"/>
+  <line x1="60" y1="116" x2="54" y2="138" stroke="#7A3F22" stroke-width="3.2" stroke-linecap="round"/>
+  <line x1="60" y1="116" x2="66" y2="138" stroke="#7A3F22" stroke-width="3.2" stroke-linecap="round"/>
+
+  <!-- ── Phone (large, held up, screen showing contact list) ────────────── -->
+  <rect x="80" y="56" width="62" height="100" rx="6" fill="#2C2C2A" stroke="#5C3920" stroke-width="1.6"/>
+  <rect x="84" y="62" width="54" height="88" rx="2" fill="#FFFFFF"/>
+
+  <!-- Phone header: संपर्क सूची -->
+  <rect x="84" y="62" width="54" height="13" fill="#C2440A"/>
+  <text x="111" y="72" font-family="Noto Sans Devanagari, sans-serif" font-size="7" font-weight="bold" text-anchor="middle" fill="#FFFFFF">संपर्क सूची</text>
+
+  <!-- ── Contact row 1: Doctor ──────────────────────────────────────────── -->
+  <rect x="86" y="78" width="50" height="16" rx="1.5" fill="#FAFAF7"/>
+  <!-- icon -->
+  <circle cx="93" cy="86" r="4" fill="#FFE2E2"/>
+  <path d="M93 84 L93 88 M91 86 L95 86" stroke="#C2440A" stroke-width="1.2" stroke-linecap="round"/>
+  <!-- LABEL -->
+  <text x="99.5" y="84.5" font-family="Inter, sans-serif" font-size="4.6" font-weight="bold" fill="#1F2937">Doctor</text>
+  <text x="99.5" y="90" font-family="Inter, sans-serif" font-size="3.4" fill="#9C8A6A">+91 9876543210</text>
+  <!-- call button -->
+  <circle cx="130" cy="86" r="3" fill="#1A8870"/>
+  <path d="M128.5 84.7 L130.2 86.5 L131.5 85.3" stroke="#FFFFFF" stroke-width="0.7" stroke-linecap="round" fill="none"/>
+
+  <!-- ── Contact row 2: Plumber ─────────────────────────────────────────── -->
+  <rect x="86" y="96" width="50" height="16" rx="1.5" fill="#FAFAF7"/>
+  <!-- icon: wrench-ish -->
+  <circle cx="93" cy="104" r="4" fill="#DCE6F5"/>
+  <path d="M91 102 L92.5 103.5 L91 105 M93 104 L96 107" stroke="#1E3A8A" stroke-width="1" stroke-linecap="round" fill="none"/>
+  <!-- LABEL -->
+  <text x="99.5" y="102.5" font-family="Inter, sans-serif" font-size="4.6" font-weight="bold" fill="#1F2937">Plumber</text>
+  <text x="99.5" y="108" font-family="Inter, sans-serif" font-size="3.4" fill="#9C8A6A">+91 9876543211</text>
+  <!-- call button -->
+  <circle cx="130" cy="104" r="3" fill="#1A8870"/>
+  <path d="M128.5 102.7 L130.2 104.5 L131.5 103.3" stroke="#FFFFFF" stroke-width="0.7" stroke-linecap="round" fill="none"/>
+
+  <!-- ── Contact row 3: Electrician ─────────────────────────────────────── -->
+  <rect x="86" y="114" width="50" height="16" rx="1.5" fill="#FAFAF7"/>
+  <!-- icon: bulb -->
+  <circle cx="93" cy="122" r="4" fill="#FCEFD2"/>
+  <ellipse cx="93" cy="121" rx="1.5" ry="2" fill="#E6A53D"/>
+  <line x1="92" y1="124" x2="94" y2="124" stroke="#7A3F22" stroke-width="0.7"/>
+  <!-- LABEL -->
+  <text x="99.5" y="120.5" font-family="Inter, sans-serif" font-size="4.6" font-weight="bold" fill="#1F2937">Electrician</text>
+  <text x="99.5" y="126" font-family="Inter, sans-serif" font-size="3.4" fill="#9C8A6A">+91 9876543212</text>
+  <!-- call button -->
+  <circle cx="130" cy="122" r="3" fill="#1A8870"/>
+  <path d="M128.5 120.7 L130.2 122.5 L131.5 121.3" stroke="#FFFFFF" stroke-width="0.7" stroke-linecap="round" fill="none"/>
+
+  <!-- ── Contact row 4: Emergency ───────────────────────────────────────── -->
+  <rect x="86" y="132" width="50" height="14" rx="1.5" fill="#FFF1F0"/>
+  <!-- icon: red bell-ish -->
+  <circle cx="93" cy="139" r="4" fill="#C2440A"/>
+  <path d="M91 138 L93 140 L95 138 L95 141 L91 141 Z" fill="#FFFFFF"/>
+  <!-- LABEL -->
+  <text x="99.5" y="138" font-family="Inter, sans-serif" font-size="4.6" font-weight="bold" fill="#C2440A">Emergency</text>
+  <text x="99.5" y="143" font-family="Inter, sans-serif" font-size="3.4" fill="#9C8A6A">112</text>
+  <!-- call button (red emergency variant) -->
+  <circle cx="130" cy="139" r="3" fill="#C2440A"/>
+  <path d="M128.5 137.7 L130.2 139.5 L131.5 138.3" stroke="#FFFFFF" stroke-width="0.7" stroke-linecap="round" fill="none"/>
+
+  <!-- ── Floating profession bubbles (right side of phone, connected by dots) ── -->
+
+  <!-- Doctor bubble (top right) -->
+  <g transform="translate(168 56)">
+    <circle cx="0" cy="0" r="15" fill="#FFFFFF" stroke="#7A3F22" stroke-width="1.4"/>
+    <circle cx="0" cy="0" r="13" fill="#FFE2E2"/>
+    <path d="M0 -6 L0 6 M-6 0 L6 0" stroke="#C2440A" stroke-width="2.4" stroke-linecap="round"/>
+  </g>
+  <line x1="146" y1="78" x2="156" y2="60" stroke="#C2440A" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="1.5 3" opacity="0.6"/>
+
+  <!-- Plumber bubble (middle right) -->
+  <g transform="translate(186 100)">
+    <circle cx="0" cy="0" r="15" fill="#FFFFFF" stroke="#7A3F22" stroke-width="1.4"/>
+    <circle cx="0" cy="0" r="13" fill="#DCE6F5"/>
+    <path d="M-5 -4 L-3 -2 L-1 -4 L1 -2 L-1 0 L5 6" stroke="#1E3A8A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <circle cx="-4" cy="-3" r="1.2" fill="#1E3A8A"/>
+  </g>
+  <line x1="146" y1="104" x2="174" y2="102" stroke="#1E3A8A" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="1.5 3" opacity="0.6"/>
+
+  <!-- Electrician bubble (bottom right) -->
+  <g transform="translate(168 144)">
+    <circle cx="0" cy="0" r="15" fill="#FFFFFF" stroke="#7A3F22" stroke-width="1.4"/>
+    <circle cx="0" cy="0" r="13" fill="#FCEFD2"/>
+    <ellipse cx="0" cy="-2" rx="3.5" ry="4.5" fill="#F5C36B" stroke="#7A3F22" stroke-width="1"/>
+    <rect x="-2" y="2.5" width="4" height="2" fill="#7A3F22"/>
+    <rect x="-1.5" y="4" width="3" height="1.2" fill="#7A3F22"/>
+    <line x1="0" y1="-9" x2="0" y2="-7.5" stroke="#E6A53D" stroke-width="1.2" stroke-linecap="round"/>
+    <line x1="-5" y1="-6" x2="-4" y2="-5" stroke="#E6A53D" stroke-width="1.2" stroke-linecap="round"/>
+    <line x1="5" y1="-6" x2="4" y2="-5" stroke="#E6A53D" stroke-width="1.2" stroke-linecap="round"/>
+  </g>
+  <line x1="146" y1="124" x2="156" y2="140" stroke="#E6A53D" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="1.5 3" opacity="0.6"/>
+
+</svg>

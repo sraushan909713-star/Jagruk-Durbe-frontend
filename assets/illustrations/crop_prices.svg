@@ -1,0 +1,133 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 170" width="100%" preserveAspectRatio="xMidYMid meet" role="img" aria-label="A farmer at home checks crop prices on a phone, with a dashed data line flowing from a rice mill (industrial building with silo) labeled Mahalaxmi Rice Mill, where labeled jute sacks of dhan and gehun sit outside.">
+
+  <!-- Ground shadow -->
+  <ellipse cx="140" cy="158" rx="116" ry="9" fill="#5A4632" opacity="0.10"/>
+
+  <!-- ── Sun (top right) ────────────────────────────────────────────────── -->
+  <circle cx="252" cy="22" r="9" fill="#F5C36B"/>
+  <line x1="252" y1="10" x2="252" y2="6" stroke="#E6A53D" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="260" y1="14" x2="263" y2="11" stroke="#E6A53D" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="263" y1="22" x2="267" y2="22" stroke="#E6A53D" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="260" y1="30" x2="263" y2="33" stroke="#E6A53D" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="252" y1="34" x2="252" y2="38" stroke="#E6A53D" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="244" y1="30" x2="241" y2="33" stroke="#E6A53D" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="241" y1="22" x2="237" y2="22" stroke="#E6A53D" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="244" y1="14" x2="241" y2="11" stroke="#E6A53D" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- ══ RICE MILL (industrial, flat-roof, with silo) ══════════════════════ -->
+
+  <!-- Silo (tall cylinder on the right side of the mill — instant "industrial" signal) -->
+  <rect x="240" y="60" width="14" height="62" rx="1" fill="#B8B0A2" stroke="#5C3920" stroke-width="1.2"/>
+  <!-- Silo cone top -->
+  <polygon points="240,60 254,60 247,52" fill="#7A6E5E" stroke="#5C3920" stroke-width="1.2"/>
+  <!-- Silo bands (horizontal rings — corrugated metal look) -->
+  <line x1="240" y1="75" x2="254" y2="75" stroke="#5C5346" stroke-width="0.8"/>
+  <line x1="240" y1="90" x2="254" y2="90" stroke="#5C5346" stroke-width="0.8"/>
+  <line x1="240" y1="105" x2="254" y2="105" stroke="#5C5346" stroke-width="0.8"/>
+  <!-- Chute from silo into mill -->
+  <path d="M240 78 L232 88" stroke="#5C5346" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Main mill body (TALL, FLAT roof, rectangular — not a house) -->
+  <rect x="160" y="72" width="80" height="50" fill="#E0D4BC" stroke="#5C3920" stroke-width="1.4"/>
+  <!-- Flat parapet on top of roof — strong "industrial" cue -->
+  <rect x="158" y="68" width="84" height="6" fill="#9C8A6A" stroke="#5C3920" stroke-width="1.2"/>
+
+  <!-- Smokestack rising from the roof -->
+  <rect x="172" y="48" width="6" height="22" fill="#7A6E5E" stroke="#5C3920" stroke-width="1"/>
+  <rect x="170" y="46" width="10" height="3" fill="#5C5346"/>
+  <!-- Wisp of smoke -->
+  <path d="M175 46 Q172 40 178 36 Q174 32 180 28" stroke="#9C8A6A" stroke-width="1.4" fill="none" stroke-linecap="round" opacity="0.55"/>
+
+  <!-- Big signboard across the mill front -->
+  <rect x="162" y="76" width="76" height="11" fill="#1A8870" stroke="#114F44" stroke-width="0.8"/>
+  <text x="200" y="84" font-family="Inter, sans-serif" font-size="7" font-weight="bold" text-anchor="middle" fill="#FFFFFF">Mahalaxmi Rice Mill</text>
+
+  <!-- Two large industrial shutter doors (vertical-line garage-door look) -->
+  <rect x="166" y="92" width="22" height="30" fill="#9C8A6A" stroke="#5C3920" stroke-width="1.2"/>
+  <line x1="170" y1="92" x2="170" y2="122" stroke="#7A6E5E" stroke-width="0.7"/>
+  <line x1="174" y1="92" x2="174" y2="122" stroke="#7A6E5E" stroke-width="0.7"/>
+  <line x1="178" y1="92" x2="178" y2="122" stroke="#7A6E5E" stroke-width="0.7"/>
+  <line x1="182" y1="92" x2="182" y2="122" stroke="#7A6E5E" stroke-width="0.7"/>
+  <line x1="186" y1="92" x2="186" y2="122" stroke="#7A6E5E" stroke-width="0.7"/>
+
+  <rect x="212" y="92" width="22" height="30" fill="#9C8A6A" stroke="#5C3920" stroke-width="1.2"/>
+  <line x1="216" y1="92" x2="216" y2="122" stroke="#7A6E5E" stroke-width="0.7"/>
+  <line x1="220" y1="92" x2="220" y2="122" stroke="#7A6E5E" stroke-width="0.7"/>
+  <line x1="224" y1="92" x2="224" y2="122" stroke="#7A6E5E" stroke-width="0.7"/>
+  <line x1="228" y1="92" x2="228" y2="122" stroke="#7A6E5E" stroke-width="0.7"/>
+  <line x1="232" y1="92" x2="232" y2="122" stroke="#7A6E5E" stroke-width="0.7"/>
+
+  <!-- Small window between the shutters -->
+  <rect x="194" y="96" width="12" height="12" fill="#9FE1CB" stroke="#5C3920" stroke-width="1"/>
+  <line x1="200" y1="96" x2="200" y2="108" stroke="#5C3920" stroke-width="0.6"/>
+  <line x1="194" y1="102" x2="206" y2="102" stroke="#5C3920" stroke-width="0.6"/>
+
+  <!-- ── JUTE SACKS (proper sacks: tall, gathered tops, sitting upright NOT rolling) ── -->
+
+  <!-- Sack 1: धान (Paddy) — sits LEFT of mill on the ground -->
+  <g transform="translate(146 132)">
+    <!-- Sack body: tall, slightly narrower at top, flat bottom -->
+    <path d="M-9 0 L-8 -18 Q-7 -20 -4 -21 L4 -21 Q7 -20 8 -18 L9 0 Z"
+          fill="#D4B888" stroke="#5C3920" stroke-width="1.2"/>
+    <!-- Gathered/tied top (cinched) -->
+    <path d="M-4 -21 Q0 -23 4 -21" stroke="#5C3920" stroke-width="1" fill="none" stroke-linecap="round"/>
+    <!-- Crease lines for jute texture -->
+    <path d="M-5 -15 Q-3 -10 -4 -3" stroke="#9C8A6A" stroke-width="0.5" fill="none" opacity="0.6"/>
+    <path d="M5 -15 Q3 -10 4 -3" stroke="#9C8A6A" stroke-width="0.5" fill="none" opacity="0.6"/>
+    <!-- Label -->
+    <text x="0" y="-7" font-family="Noto Sans Devanagari, sans-serif" font-size="5.5" font-weight="bold" text-anchor="middle" fill="#3D2817">धान</text>
+  </g>
+
+  <!-- Sack 2: गेहूं (Wheat) — sits next to it, slightly behind -->
+  <g transform="translate(162 132)">
+    <path d="M-9 0 L-8 -18 Q-7 -20 -4 -21 L4 -21 Q7 -20 8 -18 L9 0 Z"
+          fill="#C5A878" stroke="#5C3920" stroke-width="1.2"/>
+    <path d="M-4 -21 Q0 -23 4 -21" stroke="#5C3920" stroke-width="1" fill="none" stroke-linecap="round"/>
+    <path d="M-5 -15 Q-3 -10 -4 -3" stroke="#9C8A6A" stroke-width="0.5" fill="none" opacity="0.6"/>
+    <path d="M5 -15 Q3 -10 4 -3" stroke="#9C8A6A" stroke-width="0.5" fill="none" opacity="0.6"/>
+    <text x="0" y="-7" font-family="Noto Sans Devanagari, sans-serif" font-size="5.5" font-weight="bold" text-anchor="middle" fill="#3D2817">गेहूं</text>
+  </g>
+
+  <!-- ── DATA FLOW dashed line: mill → phone ──────────────────────────── -->
+  <path d="M168 72 Q132 50 100 102" stroke="#1A8870" stroke-width="2" fill="none" stroke-linecap="round" stroke-dasharray="3 3"/>
+  <!-- ₹ token mid-air on the line -->
+  <circle cx="132" cy="56" r="5" fill="#1A8870"/>
+  <text x="132" y="59.5" font-family="Inter, sans-serif" font-size="6.5" font-weight="bold" text-anchor="middle" fill="#FFFFFF">₹</text>
+  <!-- Arrow tip pointing into the phone -->
+  <path d="M100 102 L104 100 L102 105 Z" fill="#1A8870"/>
+
+  <!-- ══ FARMER AT HOME (left) ═════════════════════════════════════════════ -->
+  <!-- Small house behind him (faded) -->
+  <g opacity="0.65">
+    <polygon points="22,108 84,108 78,94 28,94" fill="#9C4E2E" stroke="#5C3920" stroke-width="0.9"/>
+    <rect x="26" y="108" width="54" height="30" fill="#F0E2BE" stroke="#5C3920" stroke-width="0.9"/>
+    <rect x="46" y="118" width="14" height="20" fill="#5C3920"/>
+    <rect x="30" y="114" width="8" height="8" fill="#9FE1CB" stroke="#5C3920" stroke-width="0.6"/>
+    <rect x="66" y="114" width="8" height="8" fill="#9FE1CB" stroke="#5C3920" stroke-width="0.6"/>
+  </g>
+
+  <!-- Farmer figure -->
+  <circle cx="84" cy="74" r="11" fill="#7A3F22"/>
+  <path d="M73 74 Q84 62 95 74" fill="#C2440A" stroke="#7A3F22" stroke-width="1.2"/>
+  <line x1="84" y1="85" x2="84" y2="118" stroke="#7A3F22" stroke-width="3.2" stroke-linecap="round"/>
+  <path d="M84 94 L74 106" stroke="#7A3F22" stroke-width="2.8" stroke-linecap="round"/>
+  <path d="M84 94 L94 106" stroke="#7A3F22" stroke-width="2.8" stroke-linecap="round"/>
+  <line x1="84" y1="118" x2="78" y2="138" stroke="#7A3F22" stroke-width="3.2" stroke-linecap="round"/>
+  <line x1="84" y1="118" x2="90" y2="138" stroke="#7A3F22" stroke-width="3.2" stroke-linecap="round"/>
+
+  <!-- Phone in farmer's hands -->
+  <rect x="68" y="100" width="32" height="44" rx="3.5" fill="#2C2C2A" stroke="#5C3920" stroke-width="1.4"/>
+  <rect x="70" y="104" width="28" height="36" fill="#FFFFFF"/>
+  <rect x="70" y="104" width="28" height="7" fill="#1A8870"/>
+  <text x="84" y="109.5" font-family="Noto Sans Devanagari, sans-serif" font-size="4.5" font-weight="bold" text-anchor="middle" fill="#FFFFFF">फसल भाव</text>
+  <text x="72" y="117" font-family="Inter, sans-serif" font-size="3.5" fill="#1F2937">Paddy</text>
+  <text x="96" y="117" font-family="Inter, sans-serif" font-size="3.5" font-weight="bold" text-anchor="end" fill="#C2440A">₹22</text>
+  <line x1="71" y1="119" x2="97" y2="119" stroke="#E5E7EB" stroke-width="0.4"/>
+  <text x="72" y="124" font-family="Inter, sans-serif" font-size="3.5" fill="#1F2937">Wheat</text>
+  <text x="96" y="124" font-family="Inter, sans-serif" font-size="3.5" font-weight="bold" text-anchor="end" fill="#C2440A">₹18</text>
+  <line x1="71" y1="126" x2="97" y2="126" stroke="#E5E7EB" stroke-width="0.4"/>
+  <text x="72" y="131" font-family="Inter, sans-serif" font-size="3.5" fill="#1F2937">Mustard</text>
+  <text x="96" y="131" font-family="Inter, sans-serif" font-size="3.5" font-weight="bold" text-anchor="end" fill="#C2440A">₹30</text>
+  <text x="84" y="138" font-family="Inter, sans-serif" font-size="2.8" text-anchor="middle" fill="#9C8A6A">updated 2 hrs ago</text>
+
+</svg>

@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 170" width="100%" preserveAspectRatio="xMidYMid meet" role="img" aria-label="A volunteer holds up a scheme paper reading Vriddha Pension Yojana, surrounded by a farmer, student, woman and elder.">
+
+  <!-- Ground shadow -->
+  <ellipse cx="140" cy="156" rx="112" ry="9" fill="#7A3F22" opacity="0.10"/>
+
+  <!-- Scheme paper held up in centre -->
+  <rect x="111" y="30" width="58" height="70" rx="3" fill="#FFFFFF" stroke="#7A3F22" stroke-width="1.6"/>
+  <text x="140" y="45" font-family="Noto Sans Devanagari, sans-serif" font-size="8" font-weight="bold" text-anchor="middle" fill="#1A8870">वृद्धा पेंशन</text>
+  <text x="140" y="55" font-family="Noto Sans Devanagari, sans-serif" font-size="8" font-weight="bold" text-anchor="middle" fill="#1A8870">योजना</text>
+  <line x1="120" y1="66" x2="160" y2="66" stroke="#9C4E2E" stroke-width="1.3" stroke-linecap="round"/>
+  <line x1="120" y1="72" x2="160" y2="72" stroke="#9C4E2E" stroke-width="1.3" stroke-linecap="round"/>
+  <line x1="120" y1="78" x2="150" y2="78" stroke="#9C4E2E" stroke-width="1.3" stroke-linecap="round"/>
+  <circle cx="140" cy="90" r="6.5" fill="#1A8870"/>
+  <path d="M136.5 90 L139 92.5 L143.5 87" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+  <!-- Sun top-right (8 rays) -->
+  <circle cx="240" cy="32" r="13" fill="#F5C36B"/>
+  <line x1="240" y1="16" x2="240" y2="10" stroke="#E6A53D" stroke-width="1.7" stroke-linecap="round"/>
+  <line x1="251" y1="21" x2="256" y2="16" stroke="#E6A53D" stroke-width="1.7" stroke-linecap="round"/>
+  <line x1="256" y1="32" x2="262" y2="32" stroke="#E6A53D" stroke-width="1.7" stroke-linecap="round"/>
+  <line x1="251" y1="43" x2="256" y2="48" stroke="#E6A53D" stroke-width="1.7" stroke-linecap="round"/>
+  <line x1="240" y1="48" x2="240" y2="54" stroke="#E6A53D" stroke-width="1.7" stroke-linecap="round"/>
+  <line x1="229" y1="43" x2="224" y2="48" stroke="#E6A53D" stroke-width="1.7" stroke-linecap="round"/>
+  <line x1="224" y1="32" x2="218" y2="32" stroke="#E6A53D" stroke-width="1.7" stroke-linecap="round"/>
+  <line x1="229" y1="21" x2="224" y2="16" stroke="#E6A53D" stroke-width="1.7" stroke-linecap="round"/>
+
+  <!-- Farmer (left, with hoe) -->
+  <circle cx="44" cy="92" r="9" fill="#7A3F22"/>
+  <path d="M35 92 Q44 84 53 92" fill="#9C4E2E" stroke="#7A3F22" stroke-width="1.1"/>
+  <line x1="44" y1="101" x2="44" y2="126" stroke="#7A3F22" stroke-width="3" stroke-linecap="round"/>
+  <path d="M44 108 L33 118" stroke="#7A3F22" stroke-width="2.6" stroke-linecap="round"/>
+  <path d="M44 110 L56 102" stroke="#7A3F22" stroke-width="2.6" stroke-linecap="round"/>
+  <line x1="44" y1="126" x2="38" y2="146" stroke="#7A3F22" stroke-width="3" stroke-linecap="round"/>
+  <line x1="44" y1="126" x2="50" y2="146" stroke="#7A3F22" stroke-width="3" stroke-linecap="round"/>
+  <line x1="30" y1="103" x2="30" y2="132" stroke="#5C3920" stroke-width="2" stroke-linecap="round"/>
+  <path d="M30 103 Q36 101 36 106" stroke="#5C3920" stroke-width="2" fill="none" stroke-linecap="round"/>
+
+  <!-- Student (left-center, with book) -->
+  <circle cx="88" cy="100" r="8.5" fill="#7A3F22"/>
+  <path d="M80 100 Q88 92 96 100" fill="#5C7A3F" stroke="#7A3F22" stroke-width="1.1"/>
+  <line x1="88" y1="108" x2="88" y2="130" stroke="#7A3F22" stroke-width="2.8" stroke-linecap="round"/>
+  <path d="M88 114 L78 122" stroke="#7A3F22" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M88 114 L98 122" stroke="#7A3F22" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="88" y1="130" x2="83" y2="148" stroke="#7A3F22" stroke-width="2.8" stroke-linecap="round"/>
+  <line x1="88" y1="130" x2="93" y2="148" stroke="#7A3F22" stroke-width="2.8" stroke-linecap="round"/>
+  <rect x="74" y="120" width="11" height="8" rx="1" fill="#C2440A" stroke="#7A3F22" stroke-width="1"/>
+
+  <!-- Woman (right-center) -->
+  <circle cx="192" cy="100" r="8.5" fill="#7A3F22"/>
+  <path d="M183 101 Q192 91 201 101 Q199 110 192 109 Q185 110 183 101" fill="#9C4E2E" stroke="#7A3F22" stroke-width="1.1"/>
+  <path d="M192 108 L188 132 L196 132 Z" fill="#C2440A" stroke="#7A3F22" stroke-width="1.4"/>
+  <path d="M192 114 L182 121" stroke="#7A3F22" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M192 114 L202 121" stroke="#7A3F22" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="190" y1="132" x2="187" y2="147" stroke="#7A3F22" stroke-width="2.8" stroke-linecap="round"/>
+  <line x1="194" y1="132" x2="197" y2="147" stroke="#7A3F22" stroke-width="2.8" stroke-linecap="round"/>
+
+  <!-- Elder (right, with walking stick) -->
+  <circle cx="236" cy="98" r="8.5" fill="#7A3F22"/>
+  <path d="M227 98 Q236 90 245 98" fill="#E8DCC4" stroke="#7A3F22" stroke-width="1.1"/>
+  <line x1="236" y1="106" x2="234" y2="130" stroke="#7A3F22" stroke-width="2.8" stroke-linecap="round"/>
+  <path d="M235 113 L226 120" stroke="#7A3F22" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M235 113 L245 119" stroke="#7A3F22" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="234" y1="130" x2="229" y2="147" stroke="#7A3F22" stroke-width="2.8" stroke-linecap="round"/>
+  <line x1="234" y1="130" x2="240" y2="147" stroke="#7A3F22" stroke-width="2.8" stroke-linecap="round"/>
+  <line x1="247" y1="108" x2="249" y2="146" stroke="#5C3920" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Volunteer (centre, holding paper up) -->
+  <circle cx="140" cy="116" r="9" fill="#7A3F22"/>
+  <path d="M131 116 Q140 107 149 116" fill="#1A8870" stroke="#7A3F22" stroke-width="1.1"/>
+  <line x1="140" y1="125" x2="140" y2="135" stroke="#7A3F22" stroke-width="3" stroke-linecap="round"/>
+  <path d="M140 127 L130 100" stroke="#7A3F22" stroke-width="2.6" stroke-linecap="round"/>
+  <path d="M140 127 L150 100" stroke="#7A3F22" stroke-width="2.6" stroke-linecap="round"/>
+  <line x1="140" y1="135" x2="134" y2="150" stroke="#7A3F22" stroke-width="3" stroke-linecap="round"/>
+  <line x1="140" y1="135" x2="146" y2="150" stroke="#7A3F22" stroke-width="3" stroke-linecap="round"/>
+</svg>
