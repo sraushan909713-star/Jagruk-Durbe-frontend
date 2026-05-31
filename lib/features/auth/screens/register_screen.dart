@@ -18,7 +18,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/network/api_service.dart';
-import '../../home/screens/home_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../about/screens/cinematic_welcome_screen.dart';
 
