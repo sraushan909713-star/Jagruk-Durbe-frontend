@@ -22,6 +22,7 @@ import '../../../core/theme/app_theme.dart';
 import '../../../core/network/api_service.dart';
 import '../../../core/network/cloudinary_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../core/utils/cloudinary_url.dart';
 
 // ── Category enum — must match backend ProposalCategory exactly ───
 const List<Map<String, String>> _categories = [
@@ -397,7 +398,7 @@ class _ProposalCard extends StatelessWidget {
           ClipRRect(
             borderRadius: const BorderRadius.vertical(top: Radius.circular(14)),
             child: photoUrl.isNotEmpty
-                ? Image.network(photoUrl,
+                ? Image.network(CloudinaryUrl.thumb(photoUrl),
                     height: 170, width: double.infinity, fit: BoxFit.cover,
                     errorBuilder: (_, __, ___) => _placeholder(cat))
                 : _placeholder(cat),
@@ -802,7 +803,7 @@ class _ProposalDetailSheetState extends State<_ProposalDetailSheet> {
         radius: 16,
         backgroundColor: AppColors.primaryLight,
         backgroundImage: (photo != null && photo.isNotEmpty)
-            ? NetworkImage(photo) : null,
+            ? NetworkImage(CloudinaryUrl.avatar(photo)) : null,
         child: (photo == null || photo.isEmpty)
             ? Text(name[0].toUpperCase(),
                 style: GoogleFonts.inter(
@@ -888,7 +889,7 @@ class _VPPhotoGalleryState extends State<_VPPhotoGallery> {
             itemCount: widget.photos.length,
             onPageChanged: (i) => setState(() => _currentIndex = i),
             itemBuilder: (_, i) => Image.network(
-              widget.photos[i],
+              CloudinaryUrl.full(widget.photos[i]),
               fit: BoxFit.cover, width: double.infinity,
               errorBuilder: (_, __, ___) => Container(
                 color: const Color(0xFFEEEEEE),

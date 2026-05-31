@@ -19,6 +19,8 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/network/api_service.dart';
 import '../../home/screens/home_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../about/screens/cinematic_welcome_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -108,12 +110,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
       setState(() => _isLoading = false);
 
       if (result['statusCode'] == 200 && result['access_token'] != null) {
-        // ✅ Registered successfully — save token and go to Home
+        // ✅ Registered successfully — save token + session fields, then
+        // route through the welcome flow (new users always see welcome).
         await ApiService.saveToken(result['access_token']);
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('user_role',   result['role'] ?? '');
+        await prefs.setBool  ('is_verified', result['is_verified'] ?? false);
+        await prefs.setString('full_name',   result['full_name'] ?? '');
+        await prefs.setString('badge',       result['badge'] ?? 'none');
+        await prefs.setString('user_id',     result['id']?.toString() ?? '');
+
         if (mounted) {
+          // New registration always shows welcome — they've never seen it.
           Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (_) => const HomeScreen()),
-            (route) => false,   // Clear entire back stack
+            MaterialPageRoute(builder: (_) => const CinematicWelcomeScreen()),
+            (route) => false,
           );
         }
       } else {

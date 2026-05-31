@@ -123,17 +123,41 @@ class ApiService {
     return jsonDecode(response.body);
   }
 
+  // ── MANDI: VENDOR LISTINGS ────────────────────────────────
+
   // GET /vendor-listings/
-static Future<List<dynamic>> getVendorListings({String? category}) async {
-  final uri = Uri.parse('${AppConstants.baseUrl}/vendor-listings/').replace(
-    queryParameters: {
-      'village_id': AppConstants.villageId,
-      if (category != null) 'category': category,
-    },
-  );
-  final response = await http.get(uri, headers: _headers());
-  return jsonDecode(response.body);
-}
+  // Optional filters: mode (buy/sell), vendorId, itemId, maxAgeDays (default 14)
+  static Future<List<dynamic>> getVendorListings({                      // ✅ CHANGE
+    String? mode,
+    String? vendorId,
+    String? itemId,
+    int maxAgeDays = 14,
+  }) async {
+    final uri = Uri.parse('${AppConstants.baseUrl}/vendor-listings/').replace(
+      queryParameters: {
+        'village_id': AppConstants.villageId,
+        'max_age_days': maxAgeDays.toString(),
+        if (mode != null)     'mode': mode,
+        if (vendorId != null) 'vendor_id': vendorId,
+        if (itemId != null)   'item_id': itemId,
+      },
+    );
+    final response = await http.get(uri, headers: _headers());
+    return jsonDecode(response.body);
+  }
+
+  // GET /vendor-listings/my/ — vendor's own listings (used by Manage My Listings screen in B2)
+  static Future<List<dynamic>> getMyListings() async {                  // ✅ ADD
+    final token = await _getToken();
+    final response = await http.get(
+      Uri.parse('${AppConstants.baseUrl}/vendor-listings/my/'),
+      headers: _headers(token: token),
+    );
+    if (response.statusCode != 200) {
+      throw Exception('Failed to load your listings');
+    }
+    return jsonDecode(response.body);
+  }
 
   // ── SCHEMES ENDPOINTS ─────────────────────────────────────
 
@@ -785,7 +809,8 @@ static Future<List<dynamic>> getVendorListings({String? category}) async {
     }
   }
 
-  static Future<void> createVendorListing(Map<String, dynamic> data) async {
+  // POST /vendor-listings/
+  static Future<void> createVendorListing(Map<String, dynamic> data) async {  // ✅ CHANGE (body shape only — schema differs now)
     final token = await _getToken();
     final response = await http.post(
       Uri.parse('${AppConstants.baseUrl}/vendor-listings/'),
@@ -798,7 +823,10 @@ static Future<List<dynamic>> getVendorListings({String? category}) async {
     }
   }
 
-  static Future<void> updateVendorListing(String id, Map<String, dynamic> data) async {
+  // PUT /vendor-listings/{id}
+  // Only price / unit_id / stock_status / notes are updatable.
+  // item_id and mode are LOCKED after create.
+  static Future<void> updateVendorListing(String id, Map<String, dynamic> data) async {  // ✅ CHANGE
     final token = await _getToken();
     final response = await http.put(
       Uri.parse('${AppConstants.baseUrl}/vendor-listings/$id'),
@@ -1010,5 +1038,80 @@ static Future<List<dynamic>> getVendorListings({String? category}) async {
       throw Exception(detail);
     }
   }
+
+  // ── MANDI: ITEMS CATALOG ──────────────────────────────────
+
+  // GET /items/
+  static Future<List<dynamic>> getItems() async {                       // ✅ ADD
+    final response = await http.get(
+      Uri.parse('${AppConstants.baseUrl}/items/'),
+      headers: _headers(),
+    );
+    if (response.statusCode != 200) throw Exception('Failed to load items');
+    return jsonDecode(response.body);
+  }
+
+  // POST /items/ — vendor adds custom item (used by Item Picker in B2)
+  static Future<Map<String, dynamic>> createItem({                      // ✅ ADD
+    required String name,
+    String? nameHindi,
+    String? defaultUnitId,
+    String? category,
+    int displayOrder = 999,
+  }) async {
+    final token = await _getToken();
+    final response = await http.post(
+      Uri.parse('${AppConstants.baseUrl}/items/'),
+      headers: _headers(token: token),
+      body: jsonEncode({
+        'name': name,
+        if (nameHindi != null)     'name_hindi': nameHindi,
+        if (defaultUnitId != null) 'default_unit_id': defaultUnitId,
+        if (category != null)      'category': category,
+        'display_order': displayOrder,
+      }),
+    );
+    if (response.statusCode != 200) {
+      final body = jsonDecode(response.body);
+      throw Exception(body['detail'] ?? 'Failed to add item');
+    }
+    return jsonDecode(response.body);
+  }
+
+  // ── MANDI: UNITS CATALOG ──────────────────────────────────
+
+  // GET /units/
+  static Future<List<dynamic>> getUnits() async {                       // ✅ ADD
+    final response = await http.get(
+      Uri.parse('${AppConstants.baseUrl}/units/'),
+      headers: _headers(),
+    );
+    if (response.statusCode != 200) throw Exception('Failed to load units');
+    return jsonDecode(response.body);
+  }
+
+  // POST /units/ — vendor adds custom unit (used by Unit Picker in B2)
+  static Future<Map<String, dynamic>> createUnit({                      // ✅ ADD
+    required String name,
+    String? nameHindi,
+  }) async {
+    final token = await _getToken();
+    final response = await http.post(
+      Uri.parse('${AppConstants.baseUrl}/units/'),
+      headers: _headers(token: token),
+      body: jsonEncode({
+        'name': name,
+        if (nameHindi != null) 'name_hindi': nameHindi,
+      }),
+    );
+    if (response.statusCode != 200) {
+      final body = jsonDecode(response.body);
+      throw Exception(body['detail'] ?? 'Failed to add unit');
+    }
+    return jsonDecode(response.body);
+  }
+
+  /// Public accessor for the stored JWT — used by CloudinaryService.
+  static Future<String?> getToken() => _getToken();                              // ✅ NEW
 
 }

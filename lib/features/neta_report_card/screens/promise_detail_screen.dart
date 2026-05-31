@@ -11,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/theme/app_theme.dart';
 import '../../../core/network/api_service.dart';
+import '../../../core/utils/cloudinary_url.dart';
 
 // ─── Promise Detail Screen ────────────────────────────────────────────────────
 class PromiseDetailScreen extends StatefulWidget {
@@ -367,7 +368,7 @@ class _PromiseDetailScreenState extends State<PromiseDetailScreen> {
             radius: 18,
             backgroundColor: const Color(0xFFBBF7D0),
             backgroundImage: (photoUrl != null && photoUrl.isNotEmpty)
-                ? NetworkImage(photoUrl)
+                ? NetworkImage(CloudinaryUrl.avatar(photoUrl))
                 : null,
             child: (photoUrl == null || photoUrl.isEmpty)
                 ? Text(name[0].toUpperCase(),

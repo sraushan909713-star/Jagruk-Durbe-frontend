@@ -22,6 +22,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/theme/banner_themes.dart';
+import '../../../core/utils/cloudinary_url.dart';
 
 class BannerDetailScreen extends StatefulWidget {
   final Map<String, dynamic> banner;
@@ -526,7 +527,7 @@ class _BannerDetailScreenState extends State<BannerDetailScreen> {
                 child: CircleAvatar(
                   radius: 24,
                   backgroundColor: theme.start.withOpacity(0.15),
-                  backgroundImage: hasPhoto ? NetworkImage(photo!) : null,
+                  backgroundImage: hasPhoto ? NetworkImage(CloudinaryUrl.avatar(photo!)) : null,
                   child: !hasPhoto
                       ? Text(
                           name.isNotEmpty ? name[0].toUpperCase() : '?',
@@ -636,7 +637,7 @@ class _BannerPhotoViewer extends StatelessWidget {
                   minScale: 0.8,
                   maxScale: 5,
                   child: Image.network(
-                    url,
+                    CloudinaryUrl.full(url),
                     fit: BoxFit.contain,
                     loadingBuilder: (ctx, child, progress) {
                       if (progress == null) return child;

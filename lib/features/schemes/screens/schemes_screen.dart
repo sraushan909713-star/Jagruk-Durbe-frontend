@@ -22,8 +22,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'my_scheme_screen.dart';
 import 'my_scheme_screen.dart' show MySchemeScreen;
-
-
+import '../../../core/utils/cloudinary_url.dart';
 
 // ── Category enum — must match backend SchemeCategory exactly ─────
 const List<Map<String, String>> _categories = [
@@ -1002,7 +1001,7 @@ class _MemberTile extends StatelessWidget {
               ? const Color(0xFFFCE4EC)
               : const Color(0xFFE3F2FD),
           backgroundImage: member['photo_url'] != null
-              ? NetworkImage(member['photo_url']) : null,
+              ? NetworkImage(CloudinaryUrl.avatar(member['photo_url'])) : null,
           child: member['photo_url'] == null
               ? Text(isFemale ? '👩' : '👨',
                   style: const TextStyle(fontSize: 18))

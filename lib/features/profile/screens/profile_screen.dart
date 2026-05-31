@@ -23,6 +23,7 @@ import '../../../core/network/cloudinary_service.dart';
 import '../../auth/screens/login_screen.dart';
 import '../../profile/screens/admin_panel_screen.dart';
 import '../../about/screens/about_screen.dart';
+import '../../../core/utils/cloudinary_url.dart';
 
 // ─── Profile Screen ───────────────────────────────────────────────────────────
 class ProfileScreen extends StatefulWidget {
@@ -334,12 +335,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
     if (confirm != true) return;
 
     final prefs = await SharedPreferences.getInstance();
+
+    // ✅ CHANGE (D4.5 simplified) — preserve the device-global welcome
+    // flag across logout. Same intent as before, simpler key.
+    final hasSeenWelcome = prefs.getBool('has_seen_welcome') ?? false;
     await prefs.clear();
+    if (hasSeenWelcome) {
+      await prefs.setBool('has_seen_welcome', true);
+    }
+
+    // ✅ ADD (fix) — navigate back to login after clearing session.
+    // This was accidentally dropped during Edit D.
     if (mounted) {
-      Navigator.pushAndRemoveUntil(
-        context,
+      Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (_) => const LoginScreen()),
-        (_) => false,
+        (route) => false,
       );
     }
   }
@@ -701,7 +711,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     border: Border.all(color: AppColors.primary, width: 2.5),
                     image: (photoUrl != null && photoUrl.isNotEmpty)
                         ? DecorationImage(
-                            image: NetworkImage(photoUrl),
+                            image: NetworkImage(CloudinaryUrl.avatar(photoUrl)),
                             fit: BoxFit.cover,
                           )
                         : null,

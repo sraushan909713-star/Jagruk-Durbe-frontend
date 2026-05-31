@@ -8,7 +8,7 @@ class AppConstants {
   // — API ───────────────────────────────────────────────────
   // Development: your local FastAPI server
   // Production: will be changed to Railway URL when we deploy
-  static const String baseUrl = 'http://192.168.0.189:8000';
+  static const String baseUrl = 'http://192.168.0.121:8000';
   // Note: 10.0.2.2 is how Android emulator reaches your Mac's localhost
   // For real device on same WiFi, use your Mac's local IP e.g. 192.168.0.189
 
@@ -18,7 +18,7 @@ class AppConstants {
   static const String villageDistrict = 'Gaya, Bihar';
 
   // — App info ──────────────────────────────────────────────
-  static const String appName = 'Gram Seva';
+  static const String appName = 'Jagruk Durbe';
   static const String appTagline = 'Jagruk Durbe';
   static const String appTaglineHindi = 'जागरूक दुर्बे';
 

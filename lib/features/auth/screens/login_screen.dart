@@ -10,18 +10,18 @@
 //   - "Forgot password?" link
 //   - Green "Log In" button
 //   - Divider + "Register with OTP" outline button
-//   - "New to Gram Seva? Create account" footer
+//   - "New to Jagruk Durbe? Create account" footer
 // ─────────────────────────────────────────────────────────────
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../core/theme/app_theme.dart';
-import '../../../core/constants/app_constants.dart';
 import 'register_screen.dart';
 import '../../../core/network/api_service.dart';
 import '../../home/screens/home_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'forgot_password_screen.dart';
+import '../../about/screens/cinematic_welcome_screen.dart';                   // ✅ ADD (D4.5)
 
 
 class LoginScreen extends StatefulWidget {
@@ -74,10 +74,18 @@ void _handleLogin() async {
       await prefs.setString('badge', result['badge'] ?? 'none');
       await prefs.setString('user_id', result['id']?.toString() ?? '');
 
-      // ✅ Navigate to Home (placeholder for now)
+      // ✅ CHANGE (D4.5 simplified) — device-global welcome flag.
+      // We dropped per-user keying because user_id wasn't reliably
+      // available across all auth flows. Restore per-user in V2.
+      final hasSeenWelcome = prefs.getBool('has_seen_welcome') ?? false;
+
       if (mounted) {
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const HomeScreen()),
+          MaterialPageRoute(
+            builder: (_) => hasSeenWelcome
+                ? const HomeScreen()
+                : const CinematicWelcomeScreen(),
+          ),
         );
       }
     } else {
@@ -136,7 +144,7 @@ void _handleLogin() async {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'Log in to your Gram Seva account',
+                  'Log in to your Jagruk Durbe account',
                   style: GoogleFonts.inter(
                     fontSize: 13,
                     color: AppColors.textSecondary,
@@ -330,7 +338,7 @@ void _handleLogin() async {
                         fontSize: 13, color: AppColors.textHint,
                       ),
                       children: [
-                        const TextSpan(text: 'New to Gram Seva? '),
+                        const TextSpan(text: 'New to Jagruk Durbe? '),
                         WidgetSpan(
                           child: GestureDetector(
                             onTap: () {

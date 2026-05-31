@@ -7,7 +7,7 @@
         android:maxSdkVersion="32"/>
 
     <application
-        android:label="gram_seva"
+        android:label="Jagruk Durbe"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

@@ -13,6 +13,7 @@ import '../../../core/network/api_service.dart';
 import 'neta_detail_screen.dart';
 import 'promises_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../core/utils/cloudinary_url.dart';
 
 class NetaReportCardScreen extends StatefulWidget {
   const NetaReportCardScreen({super.key});
@@ -394,7 +395,7 @@ class _NetaReportCardScreenState extends State<NetaReportCardScreen> {
               clipBehavior: Clip.antiAlias,
               child: neta['photo_url'] != null
                   ? Image.network(
-                      neta['photo_url'],
+                      CloudinaryUrl.avatar(neta['photo_url']),
                       fit: BoxFit.cover,
                       errorBuilder: (_, __, ___) => const Center(
                         child: Text('🏛️', style: TextStyle(fontSize: 22)),

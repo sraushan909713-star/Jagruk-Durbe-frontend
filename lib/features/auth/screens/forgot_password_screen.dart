@@ -17,6 +17,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/network/api_service.dart';
 import '../../home/screens/home_screen.dart';
+import '../../about/screens/cinematic_welcome_screen.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
@@ -115,9 +116,17 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         await prefs.setString('user_id', result['id']?.toString() ?? '');
 
         _snack('Password reset successful.', error: false);
+
+        // ✅ CHANGE (D4.5 simplified) — check device-global welcome flag
+        final hasSeenWelcome = prefs.getBool('has_seen_welcome') ?? false;
+
         if (mounted) {
           Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (_) => const HomeScreen()),
+            MaterialPageRoute(
+              builder: (_) => hasSeenWelcome
+                  ? const HomeScreen()
+                  : const CinematicWelcomeScreen(),
+            ),
             (route) => false,
           );
         }

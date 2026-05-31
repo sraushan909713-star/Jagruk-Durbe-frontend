@@ -14,6 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/network/api_service.dart';
 import '../../../core/theme/banner_themes.dart';
+import '../../../core/utils/cloudinary_url.dart';
 
 // ─── Admin Panel Screen ───────────────────────────────────────────────────────
 class AdminPanelScreen extends StatefulWidget {
@@ -1072,7 +1073,7 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
             radius: 15,
             backgroundColor: const Color(0xFFBBF7D0),
             backgroundImage: (photoUrl != null && photoUrl.isNotEmpty)
-                ? NetworkImage(photoUrl)
+                ? NetworkImage(CloudinaryUrl.avatar(photoUrl))
                 : null,
             child: (photoUrl == null || photoUrl.isEmpty)
                 ? Text(name[0].toUpperCase(),
@@ -1217,7 +1218,7 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
                     radius: 26,
                     backgroundColor: const Color(0xFFBBF7D0),
                     backgroundImage: (photoUrl != null && photoUrl.isNotEmpty)
-                        ? NetworkImage(photoUrl)
+                        ? NetworkImage(CloudinaryUrl.avatar(photoUrl))
                         : null,
                     child: (photoUrl == null || photoUrl.isEmpty)
                         ? Text(name[0].toUpperCase(),
@@ -1342,7 +1343,7 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
               radius: 20,
               backgroundColor: const Color(0xFFBBF7D0),
               backgroundImage: (photoUrl != null && photoUrl.isNotEmpty)
-                  ? NetworkImage(photoUrl)
+                  ? NetworkImage(CloudinaryUrl.avatar(photoUrl))
                   : null,
               child: (photoUrl == null || photoUrl.isEmpty)
                   ? Text(name[0].toUpperCase(),
@@ -1966,7 +1967,7 @@ class _MemberDetailScreenState extends State<_MemberDetailScreen> {
                     child: CircleAvatar(
                       radius: 56,
                       backgroundColor: const Color(0xFFBBF7D0),
-                      backgroundImage: hasDp ? NetworkImage(dpUrl) : null,
+                      backgroundImage: hasDp ? NetworkImage(CloudinaryUrl.avatar(dpUrl)) : null,
                       child: !hasDp
                           ? Text(name.isNotEmpty ? name[0].toUpperCase() : '?',
                               style: GoogleFonts.playfairDisplay(
@@ -2037,7 +2038,7 @@ class _MemberDetailScreenState extends State<_MemberDetailScreen> {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(12),
                               child: Image.network(
-                                verifUrl,
+                                CloudinaryUrl.avatar(verifUrl, size: 280),
                                 width: 140, height: 140, fit: BoxFit.cover,
                                 errorBuilder: (_, __, ___) => Container(
                                   width: 140, height: 140,
@@ -2183,7 +2184,7 @@ class _PhotoViewerScreen extends StatelessWidget {                              
                   minScale: 0.8,                                                // ✅ ADD
                   maxScale: 5,                                                  // ✅ ADD
                   child: Image.network(                                         // ✅ ADD
-                    url,                                                        // ✅ ADD
+                    CloudinaryUrl.full(url),                                    // ✅ ADD
                     fit: BoxFit.contain,                                        // ✅ ADD
                     loadingBuilder: (ctx, child, progress) {                    // ✅ ADD
                       if (progress == null) return child;                       // ✅ ADD

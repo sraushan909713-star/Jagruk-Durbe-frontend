@@ -13,6 +13,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/network/api_service.dart';
+import '../../../core/utils/cloudinary_url.dart';
 
 class NetaDetailScreen extends StatefulWidget {
   final String netaId;
@@ -307,7 +308,7 @@ class _NetaDetailScreenState extends State<NetaDetailScreen> {
                     clipBehavior: Clip.antiAlias,
                     child: _neta!['photo_url'] != null
                         ? Image.network(
-                            _neta!['photo_url'],
+                            CloudinaryUrl.thumb(_neta!['photo_url']),
                             fit: BoxFit.cover,
                             errorBuilder: (_, __, ___) => const Center(
                               child: Text('🏛️',

@@ -43,3 +43,17 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Catch macOS-duplicated plugin files
+.flutter-plugins-dependencies*
+.flutter-plugins
+
+# Old IntelliJ module file (project was renamed)
+*.iml
+
+# Stray DB file (real DB lives on the backend)
+gramseva.db
+gramseva.db.*
+
+# Local environment
+.env

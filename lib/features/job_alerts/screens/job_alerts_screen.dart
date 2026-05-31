@@ -24,6 +24,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/network/api_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../core/utils/cloudinary_url.dart';
 
 // ─── Category config ─────────────────────────────────────────────
 const List<Map<String, String>> _categories = [
@@ -848,7 +849,7 @@ class _JobDetailScreenState extends State<_JobDetailScreen> {
           if (_job?['total_posts'] != null)
             _infoPill('👥 ${_job!['total_posts']} posts', AppColors.primary),
           if (_job?['salary_range'] != null)
-            _infoPill('💰 ${_job!['salary_range']}', const Color(0xFF166534)),
+            _infoPill('₹ ${_job!['salary_range']}', const Color(0xFF166534)),
           _infoPill(
             isUrgent
                 ? '⚠️ $days days left'
@@ -914,7 +915,7 @@ class _JobDetailScreenState extends State<_JobDetailScreen> {
         Row(children: [
           Icon(Icons.people_alt_outlined, size: 16, color: AppColors.primary),
           const SizedBox(width: 6),
-          Text('Durbe Villagers Who Applied',
+          Text('जो आवेदान कर चुके हैं (Applicants)',
             style: GoogleFonts.inter(
               fontSize: 13, fontWeight: FontWeight.w600,
               color: AppColors.primary)),
@@ -952,13 +953,6 @@ class _JobDetailScreenState extends State<_JobDetailScreen> {
             ),
           ],
         ]),
-
-        const SizedBox(height: 4),
-        Text(
-          'Applied and shared proof with Admin via WhatsApp',
-          style: GoogleFonts.inter(
-            fontSize: 11, color: AppColors.textHint),
-        ),
 
         const SizedBox(height: 12),
 
@@ -1007,7 +1001,7 @@ class _ApplicantTile extends StatelessWidget {
               ? const Color(0xFFFCE4EC)
               : const Color(0xFFE3F2FD),
           backgroundImage: applicant['photo_url'] != null
-              ? NetworkImage(applicant['photo_url']) : null,
+              ? NetworkImage(CloudinaryUrl.avatar(applicant['photo_url'])) : null,
           child: applicant['photo_url'] == null
               ? Text(isFemale ? '👩' : '👨',
                   style: const TextStyle(fontSize: 18))

@@ -25,7 +25,7 @@ import '../../../core/theme/app_theme.dart';
 import '../../../core/constants/app_constants.dart';
 import '../../../core/network/api_service.dart';
 import '../../contacts/screens/contacts_screen.dart';
-import '../../vendor/screens/mandi_prices_screen.dart';
+import '../../mandi_prices/screens/mandi_home_screen.dart';                   // ✅ CHANGE
 import '../../schemes/screens/schemes_screen.dart';
 import '../../gram_awaaz/screens/gram_awaaz_screen.dart';
 import '../../vikas_prastav/screens/vikas_prastav_screen.dart';
@@ -38,6 +38,7 @@ import '../../schemes/screens/my_scheme_screen.dart';
 import '../../../core/theme/banner_themes.dart';                              // ✅ ADD
 import '../../banners/screens/banner_detail_screen.dart';                     // ✅ ADD
 import '../../about/screens/about_screen.dart';                               // ✅ ADD
+import '../../../core/utils/cloudinary_url.dart';
 
 class HomeTab extends StatefulWidget {
   const HomeTab({super.key});
@@ -425,7 +426,7 @@ class _HomeTabState extends State<HomeTab> {
             // ── Image or color background ──────────────────
             if (hasImage)
               Image.network(
-                banner['image_url'],
+                CloudinaryUrl.full(banner['image_url']),
                 fit: BoxFit.cover,
                 errorBuilder: (_, __, ___) => Container(
                   decoration: BoxDecoration(
@@ -531,7 +532,7 @@ class _HomeTabState extends State<HomeTab> {
     final features = [
       _Feature('📢', 'Gram Awaaz',       'File complaint',       const GramAwaazScreen()),
       _Feature('📋', 'Schemes',          'Govt benefits',         const SchemesScreen()),
-      _Feature('🌾', 'Crop Prices',      'Today\'s rates',       const MandiPricesScreen()),
+      _Feature('🌾', 'Crop Prices',      'Today\'s rates',       const MandiHomeScreen()),
       _Feature('🏗️', 'Vikas Prastav',   'Proposals',            const VikasPrastavScreen()),
       _Feature('📖', 'Guides',           'How to apply docs',    const GuidesScreen()),
       _Feature('📞', 'Contacts',         'Local office numbers', const ContactsScreen()),
