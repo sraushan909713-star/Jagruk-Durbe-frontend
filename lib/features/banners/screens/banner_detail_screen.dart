@@ -97,9 +97,9 @@ class _BannerDetailScreenState extends State<BannerDetailScreen> {
   void _openPhotoFullscreen(String url, String heroTag) {
     Navigator.of(context).push(PageRouteBuilder(
       opaque: false,
-      barrierColor: Colors.black.withOpacity(0.92),
+      barrierColor: Colors.black.withValues(alpha: 0.92),
       transitionDuration: const Duration(milliseconds: 250),
-      pageBuilder: (_, __, ___) =>
+      pageBuilder: (_, _, _) =>
           _BannerPhotoViewer(url: url, heroTag: heroTag),
     ));
   }
@@ -154,7 +154,7 @@ class _BannerDetailScreenState extends State<BannerDetailScreen> {
                             begin: Alignment.bottomCenter,
                             end:   Alignment.topCenter,
                             colors: [
-                              Colors.black.withOpacity(0.45),
+                              Colors.black.withValues(alpha: 0.45),
                               Colors.transparent,
                             ],
                           ),
@@ -175,11 +175,11 @@ class _BannerDetailScreenState extends State<BannerDetailScreen> {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 12, vertical: 5),
                                 decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.22),
+                                  color: Colors.white.withValues(alpha: 0.22),
                                   borderRadius: BorderRadius.circular(20),
                                   border: Border.all(
                                       color:
-                                          Colors.white.withOpacity(0.35)),
+                                          Colors.white.withValues(alpha: 0.35)),
                                 ),
                                 child: Text(
                                   tag!,
@@ -221,7 +221,7 @@ class _BannerDetailScreenState extends State<BannerDetailScreen> {
                                 subtitle!,
                                 style: GoogleFonts.inter(
                                   fontSize: 14,
-                                  color: Colors.white.withOpacity(0.92),
+                                  color: Colors.white.withValues(alpha: 0.92),
                                   height: 1.35,
                                 ),
                               ),
@@ -298,10 +298,10 @@ class _BannerDetailScreenState extends State<BannerDetailScreen> {
     // Soft wash of the banner's theme colour. Kept very light (~6%)
     // so text stays fully readable. Falls back to plain white card.
     final Color bg = theme != null
-        ? Color.alphaBlend(theme.start.withOpacity(0.06), AppColors.cardBg)   // ✅ ADD
+        ? Color.alphaBlend(theme.start.withValues(alpha: 0.06), AppColors.cardBg)   // ✅ ADD
         : AppColors.cardBg;
     final Color borderCol = theme != null
-        ? theme.start.withOpacity(0.30)                          // ✅ ADD
+        ? theme.start.withValues(alpha: 0.30)                          // ✅ ADD
         : AppColors.border;
 
     return Container(
@@ -369,7 +369,7 @@ class _BannerDetailScreenState extends State<BannerDetailScreen> {
                     Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: theme.start.withOpacity(0.10),
+                        color: theme.start.withValues(alpha: 0.10),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Icon(e.value.icon, size: 18, color: theme.end),
@@ -526,7 +526,7 @@ class _BannerDetailScreenState extends State<BannerDetailScreen> {
                 tag: 'banner_contact_$userId',
                 child: CircleAvatar(
                   radius: 24,
-                  backgroundColor: theme.start.withOpacity(0.15),
+                  backgroundColor: theme.start.withValues(alpha: 0.15),
                   backgroundImage: hasPhoto ? NetworkImage(CloudinaryUrl.avatar(photo!)) : null,
                   child: !hasPhoto
                       ? Text(
@@ -646,7 +646,7 @@ class _BannerPhotoViewer extends StatelessWidget {
                             color: Colors.white),
                       );
                     },
-                    errorBuilder: (_, __, ___) => const Center(
+                    errorBuilder: (_, _, _) => const Center(
                       child: Icon(Icons.broken_image_rounded,
                           color: Colors.white54, size: 64),
                     ),

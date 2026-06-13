@@ -7,6 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';   // ✅ ADD
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/theme/app_theme.dart';
@@ -32,6 +33,8 @@ class _PromiseDetailScreenState extends State<PromiseDetailScreen> {
   String? _userRole;
   String? _userId;
 
+  YoutubePlayerController? _ytController;   // ✅ ADD
+
   @override
   void initState() {
     super.initState();
@@ -39,12 +42,37 @@ class _PromiseDetailScreenState extends State<PromiseDetailScreen> {
     _loadAll();
   }
 
+  // ✅ ADD: build the YouTube controller once the promise has loaded
+  void _setupYouTube() {
+    if (_ytController != null) return;                       // already set up
+    final raw = _promise?['youtube_link'] as String?;
+    if (raw == null || raw.trim().isEmpty) return;
+    final videoId = YoutubePlayer.convertUrlToId(raw.trim());
+    if (videoId == null || videoId.isEmpty) return;
+    _ytController = YoutubePlayerController(
+      initialVideoId: videoId,
+      flags: const YoutubePlayerFlags(
+        autoPlay: false,
+        mute: false,
+        enableCaption: true,
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _ytController?.dispose();   // ✅ ADD
+    super.dispose();
+  }
+
   Future<void> _loadUserInfo() async {
     final prefs = await SharedPreferences.getInstance();
-    if (mounted) setState(() {
-      _userRole = prefs.getString('user_role');
-      _userId   = prefs.getString('user_id');
-    });
+    if (mounted) {
+      setState(() {
+        _userRole = prefs.getString('user_role');
+        _userId   = prefs.getString('user_id');
+      });
+    }
   }
 
   Future<void> _loadAll() async {
@@ -57,6 +85,7 @@ class _PromiseDetailScreenState extends State<PromiseDetailScreen> {
     try {
       final data = await ApiService.getPromise(widget.promiseId);
       if (mounted) setState(() { _promise = data; _loadingPromise = false; });
+      _setupYouTube();   // ✅ ADD: build player once youtube_link is known
     } catch (e) {
       if (mounted) setState(() => _loadingPromise = false);
     }
@@ -88,15 +117,17 @@ class _PromiseDetailScreenState extends State<PromiseDetailScreen> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: Text('Update Status',
             style: GoogleFonts.playfairDisplay(fontWeight: FontWeight.w700)),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: statuses.map((s) => RadioListTile<String>(
-            value: s,
-            groupValue: currentStatus,
-            title: Text(labels[s]!, style: GoogleFonts.inter(fontSize: 13)),
-            activeColor: AppColors.primary,
-            onChanged: (v) => Navigator.pop(context, v),
-          )).toList(),
+        content: RadioGroup<String>(
+          groupValue: currentStatus,
+          onChanged: (v) => Navigator.pop(context, v),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: statuses.map((s) => RadioListTile<String>(
+              value: s,
+              title: Text(labels[s]!, style: GoogleFonts.inter(fontSize: 13)),
+              activeColor: AppColors.primary,
+            )).toList(),
+          ),
         ),
       ),
     );
@@ -289,6 +320,38 @@ class _PromiseDetailScreenState extends State<PromiseDetailScreen> {
                 ),
               ),
 
+              // ── Video proof (if youtube_link present) ───────────────────  // ✅ ADD
+              if (_ytController != null) ...[
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    const Text('🎥', style: TextStyle(fontSize: 16)),
+                    const SizedBox(width: 6),
+                    Text('Video Proof',
+                        style: GoogleFonts.inter(
+                            fontSize: 14, fontWeight: FontWeight.w700,
+                            color: AppColors.textPrimary)),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  clipBehavior: Clip.antiAlias,
+                  child: YoutubePlayer(
+                    controller: _ytController!,
+                    showVideoProgressIndicator: true,
+                    progressIndicatorColor: AppColors.primary,
+                    progressColors: const ProgressBarColors(
+                      playedColor: AppColors.primary,
+                      handleColor: AppColors.primaryDark,
+                    ),
+                  ),
+                ),
+              ],
+
               const SizedBox(height: 16),
 
               // ── Witnesses section ───────────────────────────────────────
@@ -305,7 +368,7 @@ class _PromiseDetailScreenState extends State<PromiseDetailScreen> {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 8, vertical: 2),
                     decoration: BoxDecoration(
-                      color: AppColors.primary.withOpacity(0.1),
+                      color: AppColors.primary.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text('${_witnesses.length}',

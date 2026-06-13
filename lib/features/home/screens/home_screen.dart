@@ -11,8 +11,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../core/theme/app_theme.dart';
-import '../../../core/constants/app_constants.dart';
-import '../../../core/network/api_service.dart';
 import 'home_tab.dart';
 import '../../schemes/screens/schemes_screen.dart';
 import '../../gram_awaaz/screens/gram_awaaz_screen.dart';

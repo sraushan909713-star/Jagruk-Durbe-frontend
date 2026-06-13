@@ -207,7 +207,7 @@ class _WelcomeCardsScreenState extends State<WelcomeCardsScreen>
                       : TextButton(
                           onPressed: _skipToEnd,
                           style: TextButton.styleFrom(
-                            foregroundColor: _ink.withOpacity(0.55),
+                            foregroundColor: _ink.withValues(alpha: 0.55),
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 12, vertical: 6),
                           ),
@@ -480,7 +480,7 @@ class _WelcomeCardsScreenState extends State<WelcomeCardsScreen>
                     onPressed: _openAbout,
                     style: OutlinedButton.styleFrom(
                       foregroundColor: _green,
-                      side: BorderSide(color: _green.withOpacity(0.5), width: 1.4),
+                      side: BorderSide(color: _green.withValues(alpha: 0.5), width: 1.4),
                       padding: const EdgeInsets.symmetric(vertical: 13),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(14),
@@ -519,8 +519,8 @@ class _WelcomeCardsScreenState extends State<WelcomeCardsScreen>
         duration: const Duration(milliseconds: 220),
         padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
         decoration: BoxDecoration(
-          color: _green.withOpacity(0.10),
-          border: Border.all(color: _green.withOpacity(0.35)),
+          color: _green.withValues(alpha: 0.10),
+          border: Border.all(color: _green.withValues(alpha: 0.35)),
           borderRadius: BorderRadius.circular(20),
         ),
         child: Row(

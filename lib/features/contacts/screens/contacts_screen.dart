@@ -54,10 +54,12 @@ class _ContactsScreenState extends State<ContactsScreen> {
       final data = await ApiService.getContacts(
         category: _selectedFilter == 'all' ? null : _selectedFilter,
       );
-      if (mounted) setState(() {
-        _contacts = data;
-        _loading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _contacts = data;
+          _loading = false;
+        });
+      }
     } catch (e) {
       if (mounted) setState(() => _loading = false);
     }
@@ -163,7 +165,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
               child: ListView.separated(
                 scrollDirection: Axis.horizontal,
                 itemCount: _filters.length,
-                separatorBuilder: (_, __) => const SizedBox(width: 6),
+                separatorBuilder: (_, _) => const SizedBox(width: 6),
                 itemBuilder: (context, i) {
                   final f = _filters[i];
                   final isActive = _selectedFilter == f['key'];
@@ -339,7 +341,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
 }
 
 class _AddContactScreen extends StatefulWidget {
-  const _AddContactScreen({super.key});
+  const _AddContactScreen();
   @override
   State<_AddContactScreen> createState() => _AddContactScreenState();
 }

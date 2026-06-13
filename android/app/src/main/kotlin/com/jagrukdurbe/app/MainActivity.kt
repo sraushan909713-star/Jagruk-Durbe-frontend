@@ -1,4 +1,4 @@
-package com.jagrukdurbe.gram_seva
+package com.jagrukdurbe.app
 
 import io.flutter.embedding.android.FlutterActivity
 

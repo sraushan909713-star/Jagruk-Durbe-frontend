@@ -20,7 +20,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/constants/app_constants.dart';
 import '../../../core/network/api_service.dart';
@@ -33,8 +32,6 @@ import '../../neta_report_card/screens/neta_report_card_screen.dart';
 import '../../job_alerts/screens/job_alerts_screen.dart';
 import '../../guides/screens/guides_screen.dart';
 import '../../weather/screens/rain_alerts_screen.dart';
-import '../../schemes/screens/schemes_screen.dart';
-import '../../schemes/screens/my_scheme_screen.dart';
 import '../../../core/theme/banner_themes.dart';                              // ✅ ADD
 import '../../banners/screens/banner_detail_screen.dart';                     // ✅ ADD
 import '../../about/screens/about_screen.dart';                               // ✅ ADD
@@ -79,10 +76,12 @@ class _HomeTabState extends State<HomeTab> {
   Future<void> _loadWeather() async {
     try {
       final data = await ApiService.getRainAlerts();
-      if (mounted) setState(() {
-        _weatherData = data;
-        _weatherLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _weatherData = data;
+          _weatherLoading = false;
+        });
+      }
     } catch (e) {
       if (mounted) setState(() => _weatherLoading = false);
     }
@@ -105,18 +104,20 @@ class _HomeTabState extends State<HomeTab> {
     try {
       final complaints = await ApiService.getGramAwaazPosts();
       final proposals  = await ApiService.getVikasPrastavPosts();
-      if (mounted) setState(() {
-        _complaintsCount    = (complaints as List).length;
-        _proposalsCount     = (proposals  as List).length;
-        // "new" = posted in last 7 days
-        final cutoff = DateTime.now().subtract(const Duration(days: 7));
-        _newComplaintsCount = (complaints as List).where((c) {
-          try {
-            return DateTime.parse(c['created_at']).isAfter(cutoff);
-          } catch (_) { return false; }
-        }).length;
-        _pulseLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _complaintsCount    = complaints.length;
+          _proposalsCount     = proposals.length;
+          // "new" = posted in last 7 days
+          final cutoff = DateTime.now().subtract(const Duration(days: 7));
+          _newComplaintsCount = complaints.where((c) {
+            try {
+              return DateTime.parse(c['created_at']).isAfter(cutoff);
+            } catch (_) { return false; }
+          }).length;
+          _pulseLoading = false;
+        });
+      }
     } catch (_) {
       if (mounted) setState(() => _pulseLoading = false);
     }
@@ -160,13 +161,6 @@ class _HomeTabState extends State<HomeTab> {
       ),                                                                      // ✅ CHANGE
     );                                                                        // ✅ CHANGE
   }                                                                           // ✅ CHANGE
-
-  Future<void> _launchUrl(String url) async {
-    try {
-      final uri = Uri.parse(url);
-      await launchUrl(uri, mode: LaunchMode.externalApplication);
-    } catch (_) {}
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -428,7 +422,7 @@ class _HomeTabState extends State<HomeTab> {
               Image.network(
                 CloudinaryUrl.full(banner['image_url']),
                 fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => Container(
+                errorBuilder: (_, _, _) => Container(
                   decoration: BoxDecoration(
                     gradient: hasImage ? null : theme.gradient,                          // ✅ CHANGE
                   ),
@@ -445,7 +439,7 @@ class _HomeTabState extends State<HomeTab> {
                     begin: Alignment.bottomCenter,
                     end: Alignment.topCenter,
                     colors: [
-                      Colors.black.withOpacity(0.65),
+                      Colors.black.withValues(alpha: 0.65),
                       Colors.transparent,
                     ],
                   ),
@@ -473,13 +467,13 @@ class _HomeTabState extends State<HomeTab> {
                       Text(subtitle,
                         style: GoogleFonts.inter(
                           fontSize: 10,
-                          color: Colors.white.withOpacity(0.8))),
+                          color: Colors.white.withValues(alpha: 0.8))),
                     ],
                     const SizedBox(height: 4),
                     Text('Tap to view →',
                       style: GoogleFonts.inter(
                         fontSize: 10,
-                        color: Colors.white.withOpacity(0.6))),
+                        color: Colors.white.withValues(alpha: 0.6))),
                   ],
                 ),
               ),
@@ -499,7 +493,7 @@ class _HomeTabState extends State<HomeTab> {
                       Text(subtitle,
                         style: GoogleFonts.inter(
                           fontSize: 10,
-                          color: Colors.white.withOpacity(0.8))),
+                          color: Colors.white.withValues(alpha: 0.8))),
                   ],
                 ),
               ),
@@ -512,7 +506,7 @@ class _HomeTabState extends State<HomeTab> {
                   padding: const EdgeInsets.symmetric(
                       horizontal: 8, vertical: 3),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.2),
+                    color: Colors.white.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(tag,

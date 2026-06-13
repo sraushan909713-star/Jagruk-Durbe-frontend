@@ -1,0 +1,166 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 360" fill="none">
+  
+  <!-- ══ SECTION 1: ADMIN ══════════════════════════════════════════ -->
+  
+  <text x="140" y="18" text-anchor="middle"
+        font-family="Georgia, 'Times New Roman', serif" font-size="13" font-weight="700"
+        fill="#166534" letter-spacing="2.5">ADMIN</text>
+  
+  <!-- Admin 1 (male): reviewing clipboard with checkmark -->
+  <g transform="translate(105 70)">
+    <path d="M -8 -20 Q -8 -27 0 -27 Q 8 -27 8 -20 L 7 -14 L -7 -14 Z" fill="#3D2914"/>
+    <circle cx="0" cy="-15" r="7" fill="#D4A574"/>
+    <path d="M -10 -8 L 10 -8 L 12 18 L -12 18 Z" fill="#166534"/>
+    <path d="M -10 -5 L -6 5 L -6 13" stroke="#D4A574" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+    <path d="M 10 -5 L 6 5 L 6 13" stroke="#D4A574" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+    <rect x="-9" y="3" width="18" height="15" fill="#FAFAF7" stroke="#166534" stroke-width="1.2"/>
+    <rect x="-3" y="1" width="6" height="3" fill="#7A2D08"/>
+    <line x1="-6" y1="8" x2="6" y2="8" stroke="#A7C4A0" stroke-width="0.8"/>
+    <line x1="-6" y1="11" x2="6" y2="11" stroke="#A7C4A0" stroke-width="0.8"/>
+    <path d="M -3 14 L 0 16 L 4 12" stroke="#166534" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <rect x="-8" y="18" width="6" height="14" fill="#2D3748"/>
+    <rect x="2" y="18" width="6" height="14" fill="#2D3748"/>
+  </g>
+  
+  <!-- Admin 2 (female): tablet -->
+  <g transform="translate(180 70)">
+    <path d="M -10 -19 Q -9 -28 0 -28 Q 9 -28 10 -19 L 9 -2 L -9 -2 Z" fill="#3D2914"/>
+    <circle cx="0" cy="-17" r="7" fill="#D4A574"/>
+    <path d="M -11 -8 L 11 -8 L 13 18 L -13 18 Z" fill="#C2440A"/>
+    <line x1="-11" y1="-8" x2="11" y2="-8" stroke="#FFC107" stroke-width="1.2"/>
+    <path d="M -11 -5 L -5 5 L -3 11" stroke="#D4A574" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+    <path d="M 11 -5 L 5 5 L 3 11" stroke="#D4A574" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+    <rect x="-7" y="3" width="14" height="12" rx="1" fill="#2D3748"/>
+    <rect x="-6" y="4" width="12" height="10" fill="#5A8A52"/>
+    <line x1="-4" y1="7" x2="4" y2="7" stroke="#FAFAF7" stroke-width="0.6"/>
+    <line x1="-4" y1="9" x2="2" y2="9" stroke="#FAFAF7" stroke-width="0.6"/>
+    <line x1="-4" y1="11" x2="4" y2="11" stroke="#FAFAF7" stroke-width="0.6"/>
+    <rect x="-7" y="18" width="5" height="14" fill="#2D3748"/>
+    <rect x="2" y="18" width="5" height="14" fill="#2D3748"/>
+  </g>
+  
+  <text x="140" y="118" text-anchor="middle"
+        font-family="Georgia, 'Times New Roman', serif" font-size="11"
+        fill="#64748B" font-style="italic">Reviews and moderates content</text>
+  
+  <line x1="40" y1="131" x2="240" y2="131"
+        stroke="#E5E7EB" stroke-width="1" stroke-dasharray="3 3"/>
+  
+  
+  <!-- ══ SECTION 2: VERIFIED VILLAGER ════════════════════════════════ -->
+  
+  <text x="140" y="151" text-anchor="middle"
+        font-family="Georgia, 'Times New Roman', serif" font-size="13" font-weight="700"
+        fill="#166534" letter-spacing="1.5">VERIFIED VILLAGER</text>
+  
+  <!-- Villager 1 (male): megaphone -->
+  <g transform="translate(60 205)">
+    <path d="M -8 -19 Q -8 -26 0 -26 Q 8 -26 8 -19 L 7 -13 L -7 -13 Z" fill="#3D2914"/>
+    <circle cx="0" cy="-14" r="7" fill="#D4A574"/>
+    <path d="M -10 -7 L 10 -7 L 12 18 L -12 18 Z" fill="#5A8A52"/>
+    <path d="M 10 -3 L 14 -12 L 16 -18" stroke="#D4A574" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+    <path d="M 16 -23 L 28 -28 L 28 -13 L 16 -18 Z" fill="#C2440A" stroke="#7A2D08" stroke-width="1"/>
+    <rect x="12" y="-20" width="5" height="4" fill="#7A2D08"/>
+    <path d="M 31 -22 Q 34 -20 31 -18" stroke="#C2440A" stroke-width="1.3" stroke-linecap="round" fill="none"/>
+    <path d="M 34 -24 Q 39 -20 34 -16" stroke="#C2440A" stroke-width="1.3" stroke-linecap="round" fill="none"/>
+    <path d="M -10 -3 L -12 8" stroke="#D4A574" stroke-width="4.5" stroke-linecap="round"/>
+    <rect x="-8" y="18" width="6" height="14" fill="#2D3748"/>
+    <rect x="2" y="18" width="6" height="14" fill="#2D3748"/>
+  </g>
+  
+  <!-- Villager 2 (female): signing petition -->
+  <g transform="translate(140 205)">
+    <path d="M -10 -19 Q -9 -28 0 -28 Q 9 -28 10 -19 L 9 -2 L -9 -2 Z" fill="#3D2914"/>
+    <circle cx="0" cy="-17" r="7" fill="#D4A574"/>
+    <path d="M -11 -8 L 11 -8 L 13 18 L -13 18 Z" fill="#C2440A"/>
+    <line x1="-11" y1="-8" x2="11" y2="-8" stroke="#FFC107" stroke-width="1.2"/>
+    <path d="M -11 -5 L -5 5 L -3 12" stroke="#D4A574" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+    <path d="M 11 -5 L 5 5 L 3 12" stroke="#D4A574" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+    <rect x="-9" y="3" width="18" height="14" fill="#FAFAF7" stroke="#5A8A52" stroke-width="1.2"/>
+    <line x1="-5" y1="7" x2="6" y2="7" stroke="#A7C4A0" stroke-width="0.5"/>
+    <line x1="-5" y1="10" x2="6" y2="10" stroke="#A7C4A0" stroke-width="0.5"/>
+    <path d="M -3 14 Q -1 15 1 14 Q 3 15 5 13" stroke="#166534" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+    <rect x="-7" y="18" width="5" height="14" fill="#2D3748"/>
+    <rect x="2" y="18" width="5" height="14" fill="#2D3748"/>
+  </g>
+  
+  <!-- Villager 3 (male): rating with stars - arms by SIDE pointing up at stars -->
+  <g transform="translate(220 205)">
+    <path d="M -8 -19 Q -8 -26 0 -26 Q 8 -26 8 -19 L 7 -13 L -7 -13 Z" fill="#3D2914"/>
+    <circle cx="0" cy="-14" r="7" fill="#D4A574"/>
+    <path d="M -10 -7 L 10 -7 L 12 18 L -12 18 Z" fill="#5A8A52"/>
+    <!-- Right arm pointing UP at stars (single arm, gesture) -->
+    <path d="M 10 -3 L 13 -15 L 12 -26" stroke="#D4A574" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+    <!-- Left arm down at side -->
+    <path d="M -10 -3 L -12 8" stroke="#D4A574" stroke-width="4.5" stroke-linecap="round"/>
+    <!-- Stars floating above head, offset to right so arm gesture connects -->
+    <g transform="translate(8 -38)">
+      <path d="M -10 0 L -8.5 -1.7 L -6.3 -2 L -8 -3.2 L -7.2 -5.3 L -10 -4 L -12.8 -5.3 L -12 -3.2 L -13.7 -2 L -11.5 -1.7 Z" fill="#FFC107" stroke="#B8860B" stroke-width="0.4"/>
+      <path d="M 0 0 L 1.5 -1.7 L 3.7 -2 L 2 -3.2 L 2.8 -5.3 L 0 -4 L -2.8 -5.3 L -2 -3.2 L -3.7 -2 L -1.5 -1.7 Z" fill="#FFC107" stroke="#B8860B" stroke-width="0.4"/>
+      <path d="M 10 0 L 11.5 -1.7 L 13.7 -2 L 12 -3.2 L 12.8 -5.3 L 10 -4 L 7.2 -5.3 L 8 -3.2 L 6.3 -2 L 8.5 -1.7 Z" fill="#D4D4D4" stroke="#9CA3AF" stroke-width="0.4"/>
+    </g>
+    <rect x="-8" y="18" width="6" height="14" fill="#2D3748"/>
+    <rect x="2" y="18" width="6" height="14" fill="#2D3748"/>
+  </g>
+  
+  <text x="140" y="253" text-anchor="middle"
+        font-family="Georgia, 'Times New Roman', serif" font-size="11"
+        fill="#64748B" font-style="italic">Files complaints · signs petitions · rates netas</text>
+  
+  <line x1="40" y1="266" x2="240" y2="266"
+        stroke="#E5E7EB" stroke-width="1" stroke-dasharray="3 3"/>
+  
+  
+  <!-- ══ SECTION 3: USER (UNVERIFIED) ════════════════════════════════ -->
+  
+  <text x="140" y="286" text-anchor="middle"
+        font-family="Georgia, 'Times New Roman', serif" font-size="13" font-weight="700"
+        fill="#475569" letter-spacing="2.5">USER</text>
+  
+  <!-- User 1 (male): standing with phone, looking down -->
+  <g transform="translate(70 320)">
+    <path d="M -8 -19 Q -8 -26 0 -26 Q 8 -26 8 -19 L 7 -13 L -7 -13 Z" fill="#3D2914"/>
+    <circle cx="0" cy="-14" r="7" fill="#D4A574"/>
+    <path d="M -10 -7 L 10 -7 L 11 8 L -11 8 Z" fill="#A87F5D"/>
+    <path d="M -10 -3 L -5 1 L -3 6" stroke="#D4A574" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+    <path d="M 10 -3 L 5 1 L 3 6" stroke="#D4A574" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+    <rect x="-4" y="0" width="8" height="11" rx="1" fill="#2D3748"/>
+    <rect x="-3" y="1" width="6" height="8" fill="#5A8A52"/>
+    <line x1="-2" y1="3" x2="2" y2="3" stroke="#FAFAF7" stroke-width="0.5"/>
+    <line x1="-2" y1="5" x2="1" y2="5" stroke="#FAFAF7" stroke-width="0.5"/>
+    <line x1="-2" y1="7" x2="2" y2="7" stroke="#FAFAF7" stroke-width="0.5"/>
+    <rect x="-7" y="8" width="5" height="10" fill="#2D3748"/>
+    <rect x="2" y="8" width="5" height="10" fill="#2D3748"/>
+  </g>
+  
+  <!-- User 2 (female): reading phone -->
+  <g transform="translate(140 320)">
+    <path d="M -10 -19 Q -9 -28 0 -28 Q 9 -28 10 -19 L 9 -2 L -9 -2 Z" fill="#3D2914"/>
+    <circle cx="0" cy="-17" r="7" fill="#D4A574"/>
+    <path d="M -11 -8 L 11 -8 L 12 8 L -12 8 Z" fill="#5A6B9E"/>
+    <path d="M -11 -5 L -5 1 L -3 6" stroke="#D4A574" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+    <path d="M 11 -5 L 5 1 L 3 6" stroke="#D4A574" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+    <rect x="-4" y="0" width="8" height="11" rx="1" fill="#2D3748"/>
+    <rect x="-3" y="1" width="6" height="8" fill="#C2440A"/>
+    <rect x="-7" y="8" width="5" height="10" fill="#2D3748"/>
+    <rect x="2" y="8" width="5" height="10" fill="#2D3748"/>
+  </g>
+  
+  <!-- User 3 (male): phone held up at face level -->
+  <g transform="translate(210 320)">
+    <path d="M -8 -19 Q -8 -26 0 -26 Q 8 -26 8 -19 L 7 -13 L -7 -13 Z" fill="#3D2914"/>
+    <circle cx="0" cy="-14" r="7" fill="#D4A574"/>
+    <path d="M -10 -7 L 10 -7 L 11 8 L -11 8 Z" fill="#9CA3AF"/>
+    <path d="M -10 -3 L -5 -8 L -3 -12" stroke="#D4A574" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+    <path d="M 10 -3 L 5 -8 L 3 -12" stroke="#D4A574" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+    <rect x="-4" y="-15" width="8" height="11" rx="1" fill="#2D3748"/>
+    <rect x="-3" y="-14" width="6" height="8" fill="#FFC107"/>
+    <rect x="-7" y="8" width="5" height="10" fill="#2D3748"/>
+    <rect x="2" y="8" width="5" height="10" fill="#2D3748"/>
+  </g>
+  
+  <text x="140" y="352" text-anchor="middle"
+        font-family="Georgia, 'Times New Roman', serif" font-size="11"
+        fill="#64748B" font-style="italic">Reads everything · cannot post</text>
+  
+</svg>

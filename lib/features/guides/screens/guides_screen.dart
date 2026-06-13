@@ -307,7 +307,7 @@ class _GuideCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(14),
           border: Border.all(color: AppColors.border),
           boxShadow: [BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black.withValues(alpha: 0.04),
             blurRadius: 8, offset: const Offset(0, 2))],
         ),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -319,7 +319,7 @@ class _GuideCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                 decoration: BoxDecoration(
-                  color: catColor.withOpacity(0.1),
+                  color: catColor.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(20)),
                 child: Text(
                   '${_catEmoji(cat)} ${_catLabel(cat)}',
@@ -532,9 +532,9 @@ class _GuideDetailScreenState extends State<_GuideDetailScreen> {
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: catColor.withOpacity(0.07),
+        color: catColor.withValues(alpha: 0.07),
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: catColor.withOpacity(0.2))),
+        border: Border.all(color: catColor.withValues(alpha: 0.2))),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(children: [
           Text(_catEmoji(cat), style: const TextStyle(fontSize: 28)),
@@ -724,7 +724,7 @@ class _GuideDetailScreenState extends State<_GuideDetailScreen> {
 }
 
 class _AddGuideScreen extends StatefulWidget {
-  const _AddGuideScreen({super.key});
+  const _AddGuideScreen();
   @override
   State<_AddGuideScreen> createState() => _AddGuideScreenState();
 }

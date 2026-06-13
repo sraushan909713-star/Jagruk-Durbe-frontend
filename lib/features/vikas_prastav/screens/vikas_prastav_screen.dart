@@ -94,10 +94,12 @@ class _VikasPrastavScreenState extends State<VikasPrastavScreen> {
 
   Future<void> _loadUserRole() async {
     final prefs = await SharedPreferences.getInstance();
-    if (mounted) setState(() {
-      _userRole  = prefs.getString('user_role');
-      _userBadge = prefs.getString('badge');
-    });
+    if (mounted) {
+      setState(() {
+        _userRole  = prefs.getString('user_role');
+        _userBadge = prefs.getString('badge');
+      });
+    }
   }
 
   // ── GET /vikas-prastav ────────────────────────────────────────
@@ -389,7 +391,7 @@ class _ProposalCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(14),
           border: Border.all(color: AppColors.border),
           boxShadow: [BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 8, offset: const Offset(0, 3))],
         ),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -400,7 +402,7 @@ class _ProposalCard extends StatelessWidget {
             child: photoUrl.isNotEmpty
                 ? Image.network(CloudinaryUrl.thumb(photoUrl),
                     height: 170, width: double.infinity, fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => _placeholder(cat))
+                    errorBuilder: (_, _, _) => _placeholder(cat))
                 : _placeholder(cat),
           ),
 
@@ -413,7 +415,7 @@ class _ProposalCard extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 3),
                   decoration: BoxDecoration(
-                    color: catColor.withOpacity(0.12),
+                    color: catColor.withValues(alpha: 0.12),
                     borderRadius: BorderRadius.circular(20)),
                   child: Text(
                     '${_catEmoji(cat)} ${_catLabel(cat)}',
@@ -524,10 +526,12 @@ class _ProposalDetailSheetState extends State<_ProposalDetailSheet> {
       final data = await ApiService.getVikasPrastavDetail(widget.proposalId);
       if (mounted) setState(() { _fullProposal = data; _loading = false; });
     } catch (_) {
-      if (mounted) setState(() {
-        _fullProposal = Map.from(widget.proposalSnap);
-        _loading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _fullProposal = Map.from(widget.proposalSnap);
+          _loading = false;
+        });
+      }
     }
   }
 
@@ -658,7 +662,7 @@ class _ProposalDetailSheetState extends State<_ProposalDetailSheet> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                   decoration: BoxDecoration(
-                    color: catColor.withOpacity(0.12),
+                    color: catColor.withValues(alpha: 0.12),
                     borderRadius: BorderRadius.circular(20)),
                   child: Text('${_catEmoji(cat)} ${_catLabel(cat)}',
                     style: GoogleFonts.inter(
@@ -827,7 +831,7 @@ class _ProposalDetailSheetState extends State<_ProposalDetailSheet> {
 
   String _formatDate(String iso) {
     try {
-      final dt = DateTime.parse(iso + 'Z').toLocal();
+      final dt = DateTime.parse('${iso}Z').toLocal();
       const m = ['','Jan','Feb','Mar','Apr','May','Jun',
                   'Jul','Aug','Sep','Oct','Nov','Dec'];
       return '${dt.day} ${m[dt.month]} ${dt.year}';
@@ -848,7 +852,7 @@ class _ProposalDetailSheetState extends State<_ProposalDetailSheet> {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.06),
+        color: color.withValues(alpha: 0.06),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: AppColors.border)),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -891,7 +895,7 @@ class _VPPhotoGalleryState extends State<_VPPhotoGallery> {
             itemBuilder: (_, i) => Image.network(
               CloudinaryUrl.full(widget.photos[i]),
               fit: BoxFit.cover, width: double.infinity,
-              errorBuilder: (_, __, ___) => Container(
+              errorBuilder: (_, _, _) => Container(
                 color: const Color(0xFFEEEEEE),
                 child: const Icon(Icons.image_not_supported,
                   size: 48, color: Colors.grey)),
@@ -1162,7 +1166,7 @@ class _CreateProposalSheetState extends State<_CreateProposalSheet> {
                   color: AppColors.textPrimary)),
               const SizedBox(height: 6),
               DropdownButtonFormField<String>(
-                value: _selectedCat,
+                initialValue: _selectedCat,
                 hint: Text('श्रेणी चुनें',
                   style: GoogleFonts.notoSansDevanagari(
                     fontSize: 13, color: AppColors.textHint)),
@@ -1284,7 +1288,7 @@ class _VPPhotoSlot extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
             color: isMandatory && file == null
-                ? AppColors.cta.withOpacity(0.5)
+                ? AppColors.cta.withValues(alpha: 0.5)
                 : AppColors.border,
             width: isMandatory && file == null ? 1.5 : 1,
           ),

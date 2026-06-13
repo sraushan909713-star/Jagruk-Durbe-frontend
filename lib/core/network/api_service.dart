@@ -4,6 +4,17 @@
 // All endpoints go through here — one place to manage headers,
 // base URL, and error handling.
 // ─────────────────────────────────────────────────────────────
+//
+// ── Lint suppression ──
+// `use_null_aware_elements`: ignored file-wide. The lint suggests
+// rewriting `if (X != null) 'key': X` to `?'key': X`, but its auto-rewrite
+// puts the `?` on the KEY (which is a literal string and can't be null),
+// not the VALUE. The result is that the entry is always included with a
+// null value at runtime — broke /contacts, /schemes, /guides "All" tabs
+// in June 2026, and silently sent `{"name_hindi": null, ...}` in POST
+// bodies. The `if (X != null)` form is proven-working and we keep it.
+// See the inline comment block above getContacts for the full story.
+// ignore_for_file: use_null_aware_elements
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -110,6 +121,22 @@ class ApiService {
   }
 
   // ── CONTACTS ENDPOINTS ────────────────────────────────────
+
+  // ──────────────────────────────────────────────────────────────────────
+  // ⚠️  NOTE on `if (X != null) 'key': X` blocks below (info hints to ignore):
+  // The Dart analyzer's `use_null_aware_elements` lint suggests rewriting
+  // these to `?'key': X`. DO NOT APPLY THAT FIX. The lint's auto-rewrite
+  // places `?` on the KEY position, which is meaningless for a literal
+  // string key — the entry ends up always included with a null value
+  // instead of being omitted. This:
+  //   * broke /contacts/, /schemes/, /guides/ "All" tabs (June 2026)
+  //     — null `category` was sent as `category=` to the backend
+  //   * silently sent `{"name_hindi": null, ...}` in JSON bodies even
+  //     where `if (X != null)` would have omitted the field entirely
+  // The lint's correct rewrite would be `'key': ?X` (null-aware on VALUE,
+  // not key), but the `if (X != null)` form is proven-working and we keep
+  // it everywhere for consistency. The info-level lint hints stay.
+  // ──────────────────────────────────────────────────────────────────────
 
   // GET /contacts/?category=...
   static Future<List<dynamic>> getContacts({String? category}) async {
@@ -305,11 +332,11 @@ class ApiService {
         'location':        location,
         'category':        category,
         'photo_url_1':     photoUrl1,          // ✅ CHANGED
-        if (photoUrl2 != null) 'photo_url_2': photoUrl2,
-        if (photoUrl3 != null) 'photo_url_3': photoUrl3,
-        if (photoUrl4 != null) 'photo_url_4': photoUrl4,
+        if (photoUrl2 != null)     'photo_url_2': photoUrl2,
+        if (photoUrl3 != null)     'photo_url_3': photoUrl3,
+        if (photoUrl4 != null)     'photo_url_4': photoUrl4,
         if (estimatedCost != null) 'estimated_cost': estimatedCost,
-        if (fundingSource != null)  'funding_source': fundingSource,
+        if (fundingSource != null) 'funding_source': fundingSource,
       }),
     );
     return {'statusCode': response.statusCode, ...jsonDecode(response.body)};
@@ -869,11 +896,39 @@ class ApiService {
   static Future<List<dynamic>> getVendors() async {
     final token = await _getToken();
     final response = await http.get(
-      Uri.parse('${AppConstants.baseUrl}/auth/users?role=vendor'),
+      Uri.parse('${AppConstants.baseUrl}/vendor-listings/vendors/?village_id=${AppConstants.villageId}'),
       headers: _headers(token: token),
     );
     if (response.statusCode == 200) return jsonDecode(response.body);
     throw Exception('Failed to load vendors');
+  }
+
+  // POST /auth/users/{id}/deactivate
+  // Admin suspends a user; their JWTs immediately stop working on all routes.
+  static Future<void> deactivateUser(String userId) async {
+    final token = await _getToken();
+    final response = await http.post(
+      Uri.parse('${AppConstants.baseUrl}/auth/users/$userId/deactivate'),
+      headers: _headers(token: token),
+    );
+    if (response.statusCode != 200) {
+      final body = jsonDecode(response.body);
+      throw Exception(body['detail'] ?? 'Failed to suspend user');
+    }
+  }
+
+  // POST /auth/users/{id}/reactivate
+  // Admin lifts a prior suspension; the user can log in again.
+  static Future<void> reactivateUser(String userId) async {
+    final token = await _getToken();
+    final response = await http.post(
+      Uri.parse('${AppConstants.baseUrl}/auth/users/$userId/reactivate'),
+      headers: _headers(token: token),
+    );
+    if (response.statusCode != 200) {
+      final body = jsonDecode(response.body);
+      throw Exception(body['detail'] ?? 'Failed to reactivate user');
+    }
   }
 
   // PATCH /auth/users/{id}/role

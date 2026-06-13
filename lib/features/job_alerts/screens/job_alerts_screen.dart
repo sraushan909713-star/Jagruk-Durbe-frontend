@@ -124,11 +124,13 @@ class _JobAlertsScreenState extends State<JobAlertsScreen> {
     setState(() { _isLoading = true; _error = null; });
     try {
       final jobs = await ApiService.getJobAlerts(category: _selectedCat);
-      if (mounted) setState(() {
-        _activeJobs  = jobs.where((j) => _daysLeft(j['last_date'] ?? '') >= 0).toList();
-        _expiredJobs = jobs.where((j) => _daysLeft(j['last_date'] ?? '') < 0).toList();
-        _isLoading   = false;
-      });
+      if (mounted) {
+        setState(() {
+          _activeJobs  = jobs.where((j) => _daysLeft(j['last_date'] ?? '') >= 0).toList();
+          _expiredJobs = jobs.where((j) => _daysLeft(j['last_date'] ?? '') < 0).toList();
+          _isLoading   = false;
+        });
+      }
     } catch (e) {
       if (mounted) setState(() { _error = e.toString(); _isLoading = false; });
     }
@@ -383,10 +385,10 @@ class _JobCard extends StatelessWidget {
           border: Border.all(
             color: isUrgent && !isExpired
                 ? const Color(0xFFFCA5A5)
-                : catColor.withOpacity(0.25),
+                : catColor.withValues(alpha: 0.25),
           ),
           boxShadow: [BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black.withValues(alpha: 0.04),
             blurRadius: 8, offset: const Offset(0, 2))],
         ),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -399,7 +401,7 @@ class _JobCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                 decoration: BoxDecoration(
-                  color: catColor.withOpacity(0.1),
+                  color: catColor.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(20)),
                 child: Text(
                   '${_catEmoji(cat)} ${_catLabel(cat)}',
@@ -529,10 +531,12 @@ class _JobDetailScreenState extends State<_JobDetailScreen> {
   Future<void> _fetchApplicants() async {
     try {
       final applicants = await ApiService.getJobApplicants(widget.jobId);
-      if (mounted) setState(() {
-        _applicants        = applicants;
-        _applicantsLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _applicants        = applicants;
+          _applicantsLoading = false;
+        });
+      }
     } catch (_) {
       if (mounted) setState(() => _applicantsLoading = false);
     }
@@ -820,9 +824,9 @@ class _JobDetailScreenState extends State<_JobDetailScreen> {
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: catColor.withOpacity(0.07),
+        color: catColor.withValues(alpha: 0.07),
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: catColor.withOpacity(0.2))),
+        border: Border.all(color: catColor.withValues(alpha: 0.2))),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
 
         // Category + emoji
@@ -865,7 +869,7 @@ class _JobDetailScreenState extends State<_JobDetailScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(20)),
       child: Text(text,
         style: GoogleFonts.inter(
@@ -885,9 +889,9 @@ class _JobDetailScreenState extends State<_JobDetailScreen> {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.06),
+        color: color.withValues(alpha: 0.06),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: color.withOpacity(0.2))),
+        border: Border.all(color: color.withValues(alpha: 0.2))),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(children: [
           Icon(icon, size: 16, color: color),
@@ -1039,7 +1043,7 @@ class _ApplicantTile extends StatelessWidget {
 // CREATE JOB SCREEN — admin/super_admin only
 // ══════════════════════════════════════════════════════════════════
 class _CreateJobScreen extends StatefulWidget {
-  const _CreateJobScreen({super.key});
+  const _CreateJobScreen();
 
   @override
   State<_CreateJobScreen> createState() => _CreateJobScreenState();

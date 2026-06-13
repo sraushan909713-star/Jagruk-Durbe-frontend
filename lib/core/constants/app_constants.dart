@@ -6,9 +6,11 @@
 
 class AppConstants {
   // — API ───────────────────────────────────────────────────
-  // Development: your local FastAPI server
-  // Production: will be changed to Railway URL when we deploy
-  static const String baseUrl = 'http://192.168.0.121:8000';
+  // Production (Railway):
+  static const String baseUrl = 'https://web-production-38822.up.railway.app';
+  // Development (local FastAPI on Mac): uncomment to use, then run
+  //   `ipconfig getifaddr en0` on Mac and update the IP if it changed.
+  // static const String baseUrl = 'http://192.168.0.121:8000';
   // Note: 10.0.2.2 is how Android emulator reaches your Mac's localhost
   // For real device on same WiFi, use your Mac's local IP e.g. 192.168.0.189
 

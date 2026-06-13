@@ -142,16 +142,16 @@ class _MySchemeScreenState extends State<MySchemeScreen> {
                 size: 22, color: AppColors.textSecondary),
               onPressed: () async {
                 final url = await _controller.currentUrl();
-                if (url != null && mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text(url,
-                      style: GoogleFonts.inter(fontSize: 12)),
-                    action: SnackBarAction(
-                      label: 'OK',
-                      onPressed: () {},
-                    ),
-                  ));
-                }
+                if (!context.mounted) return;
+                if (url == null) return;
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text(url,
+                    style: GoogleFonts.inter(fontSize: 12)),
+                  action: SnackBarAction(
+                    label: 'OK',
+                    onPressed: () {},
+                  ),
+                ));
               },
             ),
           ],

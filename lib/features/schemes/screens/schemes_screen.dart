@@ -14,7 +14,6 @@
 // ──────────────────────────────────────────────────────────────────
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/network/api_service.dart';
@@ -394,11 +393,11 @@ class _SchemeCard extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 12),
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: catColor.withOpacity(0.08),
+          color: catColor.withValues(alpha: 0.08),
           borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: catColor.withOpacity(0.25)),
+          border: Border.all(color: catColor.withValues(alpha: 0.25)),
           boxShadow: [BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black.withValues(alpha: 0.04),
             blurRadius: 8, offset: const Offset(0, 2))],
         ),
         child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -407,7 +406,7 @@ class _SchemeCard extends StatelessWidget {
           Container(
             width: 48, height: 48,
             decoration: BoxDecoration(
-              color: catColor.withOpacity(0.12),
+              color: catColor.withValues(alpha: 0.12),
               shape: BoxShape.circle,
             ),
             child: Center(
@@ -426,7 +425,7 @@ class _SchemeCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 decoration: BoxDecoration(
-                  color: catColor.withOpacity(0.12),
+                  color: catColor.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(20)),
                 child: Text(
                   _catLabel(cat),
@@ -764,9 +763,9 @@ class _SchemeDetailScreenState extends State<_SchemeDetailScreen> {
                       width: double.infinity,
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: catColor.withOpacity(0.08),
+                        color: catColor.withValues(alpha: 0.08),
                         borderRadius: BorderRadius.circular(14),
-                        border: Border.all(color: catColor.withOpacity(0.2))),
+                        border: Border.all(color: catColor.withValues(alpha: 0.2))),
                       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                         Row(children: [
                           Text(_catEmoji(cat), style: const TextStyle(fontSize: 28)),
@@ -780,7 +779,7 @@ class _SchemeDetailScreenState extends State<_SchemeDetailScreen> {
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 3),
                           decoration: BoxDecoration(
-                            color: catColor.withOpacity(0.15),
+                            color: catColor.withValues(alpha: 0.15),
                             borderRadius: BorderRadius.circular(20)),
                           child: Text(_catLabel(cat),
                             style: GoogleFonts.inter(
@@ -959,9 +958,9 @@ class _SchemeDetailScreenState extends State<_SchemeDetailScreen> {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.07),        // ✅ CHANGE — was AppColors.cardBg
+        color: color.withValues(alpha: 0.07),        // ✅ CHANGE — was AppColors.cardBg
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: color.withOpacity(0.25))),  // ✅ CHANGE — was AppColors.border
+        border: Border.all(color: color.withValues(alpha: 0.25))),  // ✅ CHANGE — was AppColors.border
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(children: [
           Icon(icon, size: 16, color: color),
@@ -1030,7 +1029,7 @@ class _MemberTile extends StatelessWidget {
 }
 
 class _AddSchemeScreen extends StatefulWidget {
-  const _AddSchemeScreen({super.key});
+  const _AddSchemeScreen();
   @override
   State<_AddSchemeScreen> createState() => _AddSchemeScreenState();
 }

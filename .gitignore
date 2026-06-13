@@ -57,3 +57,9 @@ gramseva.db.*
 
 # Local environment
 .env
+
+# Android signing — never commit secrets
+android/key.properties
+android/app/jagrukdurbe-release.keystore
+*.keystore
+*.jks

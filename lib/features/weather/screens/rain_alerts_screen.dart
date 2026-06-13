@@ -211,7 +211,6 @@ class _RainAlertsScreenState extends State<RainAlertsScreen> {
     final tempMin   = _data?['today_temp_min_c'];
     final rainfall  = _data?['today_rainfall_mm'] ?? 0.0;
     final location  = _data?['location'] ?? 'Durbe, Bihar';
-    final forecast  = _data?['forecast'] as List<dynamic>? ?? [];
     final todayTemp = (_data?['current_temp_c'] as num?)?.toDouble();
 
     return Container(
@@ -320,7 +319,7 @@ class _RainAlertsScreenState extends State<RainAlertsScreen> {
                   ? 'Avoid travel · Keep cattle indoors · Check drainage'
                   : 'Carry an umbrella · Good for crops',
               style: GoogleFonts.inter(
-                color: Colors.white.withOpacity(0.9), fontSize: 11),
+                color: Colors.white.withValues(alpha: 0.9), fontSize: 11),
             ),
           ],
         )),

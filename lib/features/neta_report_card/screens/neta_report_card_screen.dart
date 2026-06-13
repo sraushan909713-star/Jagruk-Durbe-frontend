@@ -52,11 +52,13 @@ class _NetaReportCardScreenState extends State<NetaReportCardScreen> {
         ApiService.getNetaList(),
         ApiService.getNetaWindowStatus(),
       ]);
-      if (mounted) setState(() {
-        _netas   = results[0] as List<dynamic>;
-        _window  = results[1] as Map<String, dynamic>;
-        _loading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _netas   = results[0] as List<dynamic>;
+          _window  = results[1] as Map<String, dynamic>;
+          _loading = false;
+        });
+      }
     } catch (e) {
       if (mounted) setState(() => _loading = false);
     }
@@ -162,9 +164,9 @@ class _NetaReportCardScreenState extends State<NetaReportCardScreen> {
               margin: const EdgeInsets.only(right: 14),
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.2),
+                color: Colors.white.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: Colors.white.withOpacity(0.4)),
+                border: Border.all(color: Colors.white.withValues(alpha: 0.4)),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -281,7 +283,7 @@ class _NetaReportCardScreenState extends State<NetaReportCardScreen> {
                 scrollDirection: Axis.horizontal,
                 padding: const EdgeInsets.symmetric(horizontal: 14),
                 itemCount: _filters.length,
-                separatorBuilder: (_, __) => const SizedBox(width: 6),
+                separatorBuilder: (_, _) => const SizedBox(width: 6),
                 itemBuilder: (context, i) {
                   final f = _filters[i];
                   final isActive = _selectedFilter == f;
@@ -397,7 +399,7 @@ class _NetaReportCardScreenState extends State<NetaReportCardScreen> {
                   ? Image.network(
                       CloudinaryUrl.avatar(neta['photo_url']),
                       fit: BoxFit.cover,
-                      errorBuilder: (_, __, ___) => const Center(
+                      errorBuilder: (_, _, _) => const Center(
                         child: Text('🏛️', style: TextStyle(fontSize: 22)),
                       ),
                     )
@@ -475,7 +477,7 @@ class _NetaReportCardScreenState extends State<NetaReportCardScreen> {
 // ADD NETA SCREEN — admin/super_admin only
 // ══════════════════════════════════════════════════════════════
 class _AddNetaScreen extends StatefulWidget {
-  const _AddNetaScreen({super.key});
+  const _AddNetaScreen();
 
   @override
   State<_AddNetaScreen> createState() => _AddNetaScreenState();

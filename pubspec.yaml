@@ -37,6 +37,7 @@ dependencies:
   flutter_svg: ^2.0.10         # ✅ ADD — SVG illustrations for About page
 
   youtube_player_flutter: ^9.0.4   # ✅ ADD — in-app YouTube playback for banner detail page
+  http_parser: ^4.1.2
 
 dev_dependencies:
   flutter_test:

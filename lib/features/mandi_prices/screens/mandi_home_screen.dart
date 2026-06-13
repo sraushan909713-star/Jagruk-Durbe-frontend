@@ -68,15 +68,15 @@ class _MandiHomeScreenState extends State<MandiHomeScreen> {
       ]);
       if (!mounted) return;
 
-      final rawUsers = results[2] as List;
+      final rawUsers = results[2];
       final onlyVendors = rawUsers.where((u) {
         final role = u['role']?.toString().toLowerCase() ?? '';
         return role == 'vendor';
       }).toList();
 
       setState(() {
-        _items    = (results[0] as List).map((j) => Item.fromJson(j)).toList();
-        _listings = (results[1] as List).map((j) => VendorListing.fromJson(j)).toList();
+        _items    = results[0].map((j) => Item.fromJson(j)).toList();
+        _listings = results[1].map((j) => VendorListing.fromJson(j)).toList();
         _vendors  = onlyVendors;
         _loading  = false;
       });
@@ -243,7 +243,7 @@ class _MandiHomeScreenState extends State<MandiHomeScreen> {
                         child: ListView.separated(
                           padding: const EdgeInsets.fromLTRB(12, 4, 12, 24),
                           itemCount: aggregates.length,
-                          separatorBuilder: (_, __) => const SizedBox(height: 10),
+                          separatorBuilder: (_, _) => const SizedBox(height: 10),
                           itemBuilder: (_, i) => _buildItemCard(aggregates[i]),
                         ),
                       ),
@@ -471,7 +471,7 @@ class _MandiHomeScreenState extends State<MandiHomeScreen> {
           borderRadius: BorderRadius.circular(14),                                             // ✅ matched Gram Awaaz radius
           border: Border.all(color: AppColors.border),
           boxShadow: [BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 8, offset: const Offset(0, 3),
           )],
         ),

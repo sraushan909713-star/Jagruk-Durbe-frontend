@@ -394,6 +394,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
     if (step1 != true) return;
+    if (!mounted) return;
 
     // ─── Step 2 — enter password, send OTP ───
     final passwordController = TextEditingController();
@@ -454,6 +455,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           sentOtp = res['otp']?.toString();
                           if (dialogCtx.mounted) Navigator.pop(dialogCtx, pw);
                         } catch (e) {
+                          if (!ctx.mounted) return;
                           setLocal(() => sending = false);
                           ScaffoldMessenger.of(ctx).showSnackBar(
                             SnackBar(content: Text(e.toString(), style: GoogleFonts.inter()),
@@ -472,6 +474,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       },
     );
     if (password == null) return;
+    if (!mounted) return;
 
     // ─── Step 3 — enter OTP, finalize delete ───
     final otpController = TextEditingController();
@@ -532,6 +535,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           await prefs.clear();
                           if (dialogCtx.mounted) Navigator.pop(dialogCtx, true);
                         } catch (e) {
+                          if (!ctx.mounted) return;
                           setState(() => _isDeleting = false);
                           ScaffoldMessenger.of(ctx).showSnackBar(
                             SnackBar(content: Text(e.toString(), style: GoogleFonts.inter()),
@@ -736,7 +740,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: Container(
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Colors.black.withOpacity(0.4),
+                        color: Colors.black.withValues(alpha: 0.4),
                       ),
                       child: const Center(
                         child: SizedBox(

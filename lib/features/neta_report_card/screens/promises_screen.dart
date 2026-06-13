@@ -45,10 +45,12 @@ class _PromisesScreenState extends State<PromisesScreen> {
   // ─── Load user badge/role from SharedPreferences ─────────────────────────────
   Future<void> _loadUserInfo() async {
     final prefs = await SharedPreferences.getInstance();
-    if (mounted) setState(() {
-      _userBadge = prefs.getString('badge');
-      _userRole  = prefs.getString('user_role');
-    });
+    if (mounted) {
+      setState(() {
+        _userBadge = prefs.getString('badge');
+        _userRole  = prefs.getString('user_role');
+      });
+    }
   }
 
   // ─── Load Promises ───────────────────────────────────────────────────────────
@@ -212,7 +214,7 @@ class _PromisesScreenState extends State<PromisesScreen> {
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: 14),
               itemCount: _filters.length,
-              separatorBuilder: (_, __) => const SizedBox(width: 6),
+              separatorBuilder: (_, _) => const SizedBox(width: 6),
               itemBuilder: (_, i) {
                 final f       = _filters[i];
                 final isActive = _filter == f;
@@ -539,6 +541,7 @@ class _AddPromiseScreenState extends State<AddPromiseScreen> {
   final _promiseCtrl      = TextEditingController();
   final _whereDetailCtrl  = TextEditingController();
   final _crowdCtrl        = TextEditingController();
+  final _youtubeCtrl      = TextEditingController();   // ✅ ADD
 
   String  _leaderRole  = 'mukhiya';
   String  _madeWhere   = 'rally';
@@ -564,8 +567,11 @@ class _AddPromiseScreenState extends State<AddPromiseScreen> {
     );
     if (picked == null) return;
     setState(() {
-      if (isDeadline) _deadline = picked;
-      else _madeOn = picked;
+      if (isDeadline) {
+        _deadline = picked;
+      } else {
+        _madeOn = picked;
+      }
     });
   }
 
@@ -594,6 +600,9 @@ class _AddPromiseScreenState extends State<AddPromiseScreen> {
         'crowd_count':       _crowdCtrl.text.isEmpty
             ? null
             : int.tryParse(_crowdCtrl.text),
+        'youtube_link':      _youtubeCtrl.text.trim().isEmpty   // ✅ ADD
+            ? null
+            : _youtubeCtrl.text.trim(),
       });
       if (mounted) {
         Navigator.pop(context);
@@ -701,6 +710,12 @@ class _AddPromiseScreenState extends State<AddPromiseScreen> {
               _label('People present (optional)'),
               _field(_crowdCtrl, 'e.g. 500',
                   keyboardType: TextInputType.number, required: false),
+
+              const SizedBox(height: 14),                              // ✅ ADD
+              _label('Video proof — YouTube link (optional)'),         // ✅ ADD
+              _field(_youtubeCtrl,                                     // ✅ ADD
+                  'Paste YouTube link of the speech/rally',            // ✅ ADD
+                  keyboardType: TextInputType.url, required: false),   // ✅ ADD
 
               const SizedBox(height: 28),
               SizedBox(

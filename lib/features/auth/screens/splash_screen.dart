@@ -1,7 +1,14 @@
 // lib/features/auth/screens/splash_screen.dart
 // ─────────────────────────────────────────────────────────────
 // Splash screen — first thing villagers see when opening the app.
-// Shows for 3 seconds then navigates to Login screen.
+// Shows for ~2.5s while it silently checks for a saved login, then
+// routes the user to the right place (auto-login).
+//
+// Routing logic (✅ V1.1 auto-login):
+//   1. Saved JWT present?  → validate it via ApiService.getProfile()
+//        • valid   → has_seen_welcome ? HomeScreen : CinematicWelcomeScreen
+//        • invalid → clear stale token, go to LoginScreen
+//   2. No token            → LoginScreen
 //
 // Design (from locked design sprint — Screen 1):
 //   Background: #14532D (primaryDark — deep forest green)
@@ -14,8 +21,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';          // ✅ ADD
 import '../../../core/theme/app_theme.dart';
 import '../../../core/constants/app_constants.dart';
+import '../../../core/network/api_service.dart';                       // ✅ ADD
+import '../../home/screens/home_screen.dart';                         // ✅ ADD
+import '../../about/screens/cinematic_welcome_screen.dart';           // ✅ ADD
 import 'login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -43,14 +54,52 @@ class _SplashScreenState extends State<SplashScreen>
     _fadeIn = CurvedAnimation(parent: _controller, curve: Curves.easeIn);
     _controller.forward();
 
-    // — Navigate to Login after 3 seconds ─────────────────
-    Future.delayed(const Duration(seconds: 3), () {
-      if (mounted) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const LoginScreen()),
-        );
+    // — Decide where to go (auto-login) ───────────────────  // ✅ CHANGE
+    _decideNextScreen();
+  }
+
+  // ── Auto-login routing ──────────────────────────────────  // ✅ ADD
+  // Runs the saved-token check and the splash delay in parallel so the
+  // splash always shows for at least ~2.5s (no jarring instant skip),
+  // while the /auth/me validation happens behind it.
+  Future<void> _decideNextScreen() async {
+    // Minimum splash time, so the brand moment isn't skipped.
+    final minDelay = Future.delayed(const Duration(milliseconds: 2500));
+
+    Widget destination = const LoginScreen();
+
+    try {
+      final token = await ApiService.getToken();
+
+      if (token != null && token.isNotEmpty) {
+        // We have a saved token — confirm it's still valid.
+        try {
+          await ApiService.getProfile();          // GET /auth/me, throws if invalid
+
+          // Token is good → returning logged-in user.
+          final prefs = await SharedPreferences.getInstance();
+          final hasSeenWelcome = prefs.getBool('has_seen_welcome') ?? false;
+
+          destination = hasSeenWelcome
+              ? const HomeScreen()
+              : const CinematicWelcomeScreen();
+        } catch (_) {
+          // Token expired / rejected → clear it and send to login.
+          await ApiService.clearToken();
+          destination = const LoginScreen();
+        }
       }
-    });
+    } catch (_) {
+      // Any unexpected error (e.g. network) → safe fallback to login.
+      destination = const LoginScreen();
+    }
+
+    // Wait out the rest of the minimum splash time, then navigate.
+    await minDelay;
+    if (!mounted) return;
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder: (_) => destination),
+    );
   }
 
   @override
@@ -75,7 +124,7 @@ class _SplashScreenState extends State<SplashScreen>
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: Colors.white.withOpacity(0.07), width: 1,
+                    color: Colors.white.withValues(alpha: 0.07), width: 1,
                   ),
                 ),
               ),
@@ -86,7 +135,7 @@ class _SplashScreenState extends State<SplashScreen>
                 width: 140, height: 140,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.white.withOpacity(0.04),
+                  color: Colors.white.withValues(alpha: 0.04),
                 ),
               ),
             ),
@@ -102,9 +151,9 @@ class _SplashScreenState extends State<SplashScreen>
                     width: 80, height: 80,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: Colors.white.withOpacity(0.12),
+                      color: Colors.white.withValues(alpha: 0.12),
                       border: Border.all(
-                        color: Colors.white.withOpacity(0.22), width: 1.5,
+                        color: Colors.white.withValues(alpha: 0.22), width: 1.5,
                       ),
                     ),
                     child: const Center(
@@ -132,7 +181,7 @@ class _SplashScreenState extends State<SplashScreen>
                     style: GoogleFonts.inter(
                       fontSize: 11,
                       fontWeight: FontWeight.w500,
-                      color: Colors.white.withOpacity(0.55),
+                      color: Colors.white.withValues(alpha: 0.55),
                       letterSpacing: 2.0,
                     ),
                   ),
@@ -144,7 +193,7 @@ class _SplashScreenState extends State<SplashScreen>
                     AppConstants.appTaglineHindi,
                     style: GoogleFonts.notoSansDevanagari(
                       fontSize: 14,
-                      color: Colors.white.withOpacity(0.8),
+                      color: Colors.white.withValues(alpha: 0.8),
                     ),
                   ),
 
@@ -155,7 +204,7 @@ class _SplashScreenState extends State<SplashScreen>
                     'DURBE · ${AppConstants.villageDistrict.toUpperCase()}',
                     style: GoogleFonts.inter(
                       fontSize: 10,
-                      color: Colors.white.withOpacity(0.38),
+                      color: Colors.white.withValues(alpha: 0.38),
                       letterSpacing: 1.5,
                     ),
                   ),
@@ -189,7 +238,7 @@ class _SplashScreenState extends State<SplashScreen>
       decoration: BoxDecoration(
         color: active
             ? Colors.white
-            : Colors.white.withOpacity(0.3),
+            : Colors.white.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(3),
       ),
     );

@@ -120,10 +120,12 @@ class _GramAwaazScreenState extends State<GramAwaazScreen> {
 
   Future<void> _loadUserRole() async {
     final prefs = await SharedPreferences.getInstance();
-    if (mounted) setState(() {
-      _userRole  = prefs.getString('user_role');
-      _userBadge = prefs.getString('badge');
-    });
+    if (mounted) {
+      setState(() {
+        _userRole  = prefs.getString('user_role');
+        _userBadge = prefs.getString('badge');
+      });
+    }
   }
 
   Future<void> _fetchPosts() async {
@@ -441,7 +443,7 @@ class _PostCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(14),
           border: Border.all(color: AppColors.border),
           boxShadow: [BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 8, offset: const Offset(0, 3))],
         ),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -451,7 +453,7 @@ class _PostCard extends StatelessWidget {
             child: photoUrl.isNotEmpty
                 ? Image.network(CloudinaryUrl.thumb(photoUrl),
                     height: 170, width: double.infinity, fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => _photoPlaceholder())
+                    errorBuilder: (_, _, _) => _photoPlaceholder())
                 : _photoPlaceholder(),
           ),
           Padding(
@@ -461,7 +463,7 @@ class _PostCard extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 3),
                   decoration: BoxDecoration(
-                    color: deptColor.withOpacity(0.12),
+                    color: deptColor.withValues(alpha: 0.12),
                     borderRadius: BorderRadius.circular(20)),
                   child: Text(_deptLabel(dept),
                     style: GoogleFonts.inter(
@@ -703,7 +705,7 @@ class _PostDetailSheetState extends State<_PostDetailSheet> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                   decoration: BoxDecoration(
-                    color: deptColor.withOpacity(0.12),
+                    color: deptColor.withValues(alpha: 0.12),
                     borderRadius: BorderRadius.circular(20)),
                   child: Text(_deptLabel(dept),
                     style: GoogleFonts.inter(
@@ -861,43 +863,13 @@ class _PostDetailSheetState extends State<_PostDetailSheet> {
 
   String _formatDate(String iso) {
     try {
-      final dt = DateTime.parse(iso + 'Z').toLocal();
+      final dt = DateTime.parse('${iso}Z').toLocal();
       const m = ['','Jan','Feb','Mar','Apr','May','Jun',
                   'Jul','Aug','Sep','Oct','Nov','Dec'];
       return '${dt.day} ${m[dt.month]} ${dt.year}';
     } catch (_) { return ''; }
   }
 
-  // ══════════════════════════════════════════════════════════════════
-  // SECTION CARD — styled info box (same style as Schemes page)
-  // ══════════════════════════════════════════════════════════════════
-  Widget _buildSection({
-    required IconData icon,
-    required String title,
-    required String content,
-    required Color color,
-  }) {
-    return Container(
-      width: double.infinity,
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: AppColors.cardBg,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.border)),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Row(children: [
-          Icon(icon, size: 16, color: color),
-          const SizedBox(width: 6),
-          Text(title, style: GoogleFonts.notoSansDevanagari(
-            fontSize: 13, fontWeight: FontWeight.bold, color: color)),
-        ]),
-        const SizedBox(height: 8),
-        Text(content, style: GoogleFonts.notoSansDevanagari(
-          fontSize: 14, color: AppColors.textPrimary, height: 1.65)),
-      ]),
-    );
-  }
 }
 class _PhotoGallery extends StatefulWidget {
   final List<String> photos;
@@ -927,7 +899,7 @@ class _PhotoGalleryState extends State<_PhotoGallery> {
               CloudinaryUrl.full(widget.photos[i]),
               fit: BoxFit.cover,
               width: double.infinity,
-              errorBuilder: (_, __, ___) => Container(
+              errorBuilder: (_, _, _) => Container(
                 color: const Color(0xFFEEEEEE),
                 child: const Icon(Icons.image_not_supported,
                   size: 48, color: Colors.grey)),
@@ -1220,7 +1192,7 @@ class _CreatePostSheetState extends State<_CreatePostSheet> {
                   color: AppColors.textPrimary)),
               const SizedBox(height: 6),
               DropdownButtonFormField<String>(
-                value: _selectedDept,
+                initialValue: _selectedDept,
                 hint: Text('विभाग चुनें',
                   style: GoogleFonts.notoSansDevanagari(
                     fontSize: 13, color: AppColors.textHint)),
@@ -1335,7 +1307,7 @@ class _PhotoSlot extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
             color: isMandatory && file == null
-                ? AppColors.cta.withOpacity(0.5)
+                ? AppColors.cta.withValues(alpha: 0.5)
                 : AppColors.border,
             width: isMandatory && file == null ? 1.5 : 1,
           ),
@@ -1386,35 +1358,5 @@ class _PhotoSlot extends StatelessWidget {
     );
   }
 
-  // ══════════════════════════════════════════════════════════════════
-  // SECTION CARD — styled info box (same style as Schemes page)
-  // ══════════════════════════════════════════════════════════════════
-  Widget _buildSection({
-    required IconData icon,
-    required String title,
-    required String content,
-    required Color color,
-  }) {
-    return Container(
-      width: double.infinity,
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.06),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.border)),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Row(children: [
-          Icon(icon, size: 16, color: color),
-          const SizedBox(width: 6),
-          Text(title, style: GoogleFonts.notoSansDevanagari(
-            fontSize: 13, fontWeight: FontWeight.bold, color: color)),
-        ]),
-        const SizedBox(height: 8),
-        Text(content, style: GoogleFonts.notoSansDevanagari(
-          fontSize: 14, color: AppColors.textPrimary, height: 1.65)),
-      ]),
-    );
-  }
 
 }

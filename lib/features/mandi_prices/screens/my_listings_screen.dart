@@ -138,7 +138,7 @@ class _MyListingsScreenState extends State<MyListingsScreen> {
                     child: ListView.separated(
                       padding: const EdgeInsets.fromLTRB(12, 4, 12, 100),
                       itemCount: _listings.length,
-                      separatorBuilder: (_, __) => const SizedBox(height: 10),
+                      separatorBuilder: (_, _) => const SizedBox(height: 10),
                       itemBuilder: (_, i) => _buildCard(_listings[i]),
                     ),
                   ),
@@ -161,7 +161,7 @@ class _MyListingsScreenState extends State<MyListingsScreen> {
           borderRadius: BorderRadius.circular(14),
           border: Border.all(color: AppColors.border),
           boxShadow: [BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 8, offset: const Offset(0, 3))],
         ),
         child: Column(

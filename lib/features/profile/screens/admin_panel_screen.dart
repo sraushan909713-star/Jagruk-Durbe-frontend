@@ -37,7 +37,6 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
   // ─── Window management state (super_admin only) ──────────────────────────────
   Map<String, dynamic>? _window;
   bool    _loadingWindow = true;
-  String? _windowError;
   String? _userRole;
   String? _userId;                                                              // ✅ ADD
 
@@ -107,22 +106,26 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
   // ─── Load current user info from prefs ───────────────────────────────────────
   Future<void> _loadUserRole() async {
     final prefs = await SharedPreferences.getInstance();
-    if (mounted) setState(() {
-      _userRole = prefs.getString('user_role');
-      _userId   = prefs.getString('user_id');                                    // ✅ ADD
-    });
+    if (mounted) {
+      setState(() {
+        _userRole = prefs.getString('user_role');
+        _userId   = prefs.getString('user_id');                                    // ✅ ADD
+      });
+    }
   }
 
   // ─── Load current rating window ──────────────────────────────────────────────
   Future<void> _loadWindow() async {
-    setState(() { _loadingWindow = true; _windowError = null; });
+    setState(() => _loadingWindow = true);
     try {
       final data = await ApiService.getNetaWindowStatus();
       // ✅ If hidden, treat as no active window
-      if (mounted) setState(() {
-        _window = (data['is_hidden'] == true) ? null : data;
-        _loadingWindow = false;
-      });
+      if (mounted) {
+        setState(() {
+          _window = (data['is_hidden'] == true) ? null : data;
+          _loadingWindow = false;
+        });
+      }
     } catch (e) {
       if (mounted) setState(() { _window = null; _loadingWindow = false; });
     }
@@ -342,58 +345,6 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
     }
   }
 
-  // ─── Change user role — super_admin only ─────────────────────────────────────
-  Future<void> _changeRole(String userId, String name, String currentRole) async {
-    final roles = ['user', 'admin', 'vendor'];
-    final labels = {'user': 'User', 'admin': 'Admin', 'vendor': 'Vendor'};
-
-    final selected = await showDialog<String>(
-      context: context,
-      builder: (_) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: Text('Change Role — $name',
-            style: GoogleFonts.playfairDisplay(fontWeight: FontWeight.w700)),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: roles.map((r) => RadioListTile<String>(
-            value: r,
-            groupValue: currentRole,
-            title: Text(labels[r]!, style: GoogleFonts.inter(fontSize: 13)),
-            activeColor: AppColors.primary,
-            onChanged: (v) => Navigator.pop(context, v),
-          )).toList(),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('Cancel', style: GoogleFonts.inter(color: Colors.grey)),
-          ),
-        ],
-      ),
-    );
-
-    if (selected == null || selected == currentRole) return;
-
-    try {
-      await ApiService.changeUserRole(userId, selected);
-      await _loadMembers();
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('$name is now ${labels[selected]}.',
-              style: GoogleFonts.inter()),
-          backgroundColor: AppColors.primary,
-        ));
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(e.toString(), style: GoogleFonts.inter()),
-          backgroundColor: Colors.red,
-        ));
-      }
-    }
-  }
-
   // ─── Load banners ─────────────────────────────────────────────────────────────
   Future<void> _loadBanners() async {
     setState(() => _loadingBanners = true);
@@ -424,7 +375,7 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
     setState(() => _creatingBanner = true);
  
     // helper: empty text field → null (so backend stores null, not "")
-    String? _orNull(TextEditingController c) =>
+    String? orNull(TextEditingController c) =>
         c.text.trim().isEmpty ? null : c.text.trim();
  
     try {
@@ -432,15 +383,15 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
         'title':       _bannerTitleCtrl.text.trim(),
         'description': _bannerDescriptionCtrl.text.trim(),
         'color_theme': _bannerColorTheme,                       // ✅ V2 — theme key
-        'subtitle':    _orNull(_bannerSubtitleCtrl),
-        'icon':        _orNull(_bannerIconCtrl),
-        'tag':         _orNull(_bannerTagCtrl),
-        'event_location': _orNull(_bannerEventLocationCtrl),
-        'event_date':     _orNull(_bannerEventDateCtrl),
-        'event_time':     _orNull(_bannerEventTimeCtrl),
-        'entry_fee':      _orNull(_bannerEntryFeeCtrl),
-        'youtube_link':   _orNull(_bannerYoutubeCtrl),
-        'external_link':  _orNull(_bannerExternalCtrl),
+        'subtitle':    orNull(_bannerSubtitleCtrl),
+        'icon':        orNull(_bannerIconCtrl),
+        'tag':         orNull(_bannerTagCtrl),
+        'event_location': orNull(_bannerEventLocationCtrl),
+        'event_date':     orNull(_bannerEventDateCtrl),
+        'event_time':     orNull(_bannerEventTimeCtrl),
+        'entry_fee':      orNull(_bannerEntryFeeCtrl),
+        'youtube_link':   orNull(_bannerYoutubeCtrl),
+        'external_link':  orNull(_bannerExternalCtrl),
         'display_order':  0,
         'valid_until':    _bannerValidUntil?.toIso8601String(),
         'village_id':     '1',
@@ -777,7 +728,7 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
                               maxLines: 1, overflow: TextOverflow.ellipsis,
                               style: GoogleFonts.inter(
                                   fontSize: 8,
-                                  color: Colors.white.withOpacity(0.85))),
+                                  color: Colors.white.withValues(alpha: 0.85))),
                         ],
                       ),
                     ],
@@ -1160,9 +1111,9 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
           decoration: BoxDecoration(
-            color: countColor.withOpacity(0.1),
+            color: countColor.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: countColor.withOpacity(0.3)),
+            border: Border.all(color: countColor.withValues(alpha: 0.3)),
           ),
           child: Text('$count',
               style: GoogleFonts.inter(
@@ -1328,7 +1279,6 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
     final name     = user['full_name'] ?? 'Unknown';
     final role     = user['role']  ?? 'user';
     final badge    = user['badge'] ?? 'none';
-    final userId   = user['id']?.toString() ?? '';
     final photoUrl = user['profile_photo_url'] as String?;
     final isAdmin  = _userRole == 'admin' || _userRole == 'super_admin';        // ✅ ADD
 
@@ -1516,7 +1466,7 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 8, vertical: 3),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.5),
+                        color: Colors.white.withValues(alpha: 0.5),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(_window!['label'] ?? '',
@@ -1706,9 +1656,9 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
   void _openPhotoViewer(String url, String heroTag) {                            // ✅ ADD
     Navigator.of(context).push(PageRouteBuilder(                                 // ✅ ADD
       opaque: false,                                                             // ✅ ADD
-      barrierColor: Colors.black.withOpacity(0.92),                              // ✅ ADD
+      barrierColor: Colors.black.withValues(alpha: 0.92),                              // ✅ ADD
       transitionDuration: const Duration(milliseconds: 250),                     // ✅ ADD
-      pageBuilder: (_, __, ___) =>                                               // ✅ ADD
+      pageBuilder: (_, _, _) =>                                               // ✅ ADD
           _PhotoViewerScreen(url: url, heroTag: heroTag),                        // ✅ ADD
     ));                                                                          // ✅ ADD
   }                                                                              // ✅ ADD
@@ -1788,6 +1738,12 @@ class _MemberDetailScreenState extends State<_MemberDetailScreen> {
   bool get _isSelf              => _user['id']?.toString() == widget.currentUserId;
   bool get _isSuperAdminTarget  => (_user['role'] ?? '') == 'super_admin';
   bool get _isSuperAdminCaller  => widget.currentUserRole == 'super_admin';
+  bool get _isAdminCaller       =>
+      widget.currentUserRole == 'admin' || _isSuperAdminCaller;
+
+  // is_active=true for active users; false for suspended ones. Some endpoints
+  // (older snapshots in admin list pre-v5.1) may omit the field — default true.
+  bool get _isSuspended         => _user['is_active'] == false;
 
   bool get _canChangeRole       =>
       _isSuperAdminCaller && !_isSuperAdminTarget && !_isSelf;
@@ -1799,13 +1755,21 @@ class _MemberDetailScreenState extends State<_MemberDetailScreen> {
         && !_isSelf;
   }
 
+  // Suspend: admin/super_admin can suspend any active non-self non-super-admin.
+  bool get _canSuspend          =>
+      _isAdminCaller && !_isSuperAdminTarget && !_isSelf && !_isSuspended;
+
+  // Reactivate: admin/super_admin can reactivate any currently-suspended user.
+  bool get _canReactivate       =>
+      _isAdminCaller && !_isSelf && _isSuspended;
+
   // ─── Open photo in fullscreen viewer (reuses _PhotoViewerScreen) ───
   void _openPhoto(String url, String tag) {
     Navigator.of(context).push(PageRouteBuilder(
       opaque: false,
-      barrierColor: Colors.black.withOpacity(0.92),
+      barrierColor: Colors.black.withValues(alpha: 0.92),
       transitionDuration: const Duration(milliseconds: 250),
-      pageBuilder: (_, __, ___) => _PhotoViewerScreen(url: url, heroTag: tag),
+      pageBuilder: (_, _, _) => _PhotoViewerScreen(url: url, heroTag: tag),
     ));
   }
 
@@ -1878,15 +1842,17 @@ class _MemberDetailScreenState extends State<_MemberDetailScreen> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: Text('Change Role',
             style: GoogleFonts.playfairDisplay(fontWeight: FontWeight.w700)),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: roles.map((r) => RadioListTile<String>(
-            value: r,
-            groupValue: currentRole,
-            title: Text(labels[r]!, style: GoogleFonts.inter(fontSize: 13)),
-            activeColor: AppColors.primary,
-            onChanged: (v) => Navigator.pop(context, v),
-          )).toList(),
+        content: RadioGroup<String>(
+          groupValue: currentRole,
+          onChanged: (v) => Navigator.pop(context, v),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: roles.map((r) => RadioListTile<String>(
+              value: r,
+              title: Text(labels[r]!, style: GoogleFonts.inter(fontSize: 13)),
+              activeColor: AppColors.primary,
+            )).toList(),
+          ),
         ),
         actions: [
           TextButton(
@@ -1924,6 +1890,124 @@ class _MemberDetailScreenState extends State<_MemberDetailScreen> {
     }
   }
 
+  // ─── Suspend account action ───
+  // Soft-disables the user. Their JWT immediately stops working across all
+  // routes (via the centralized get_current_user check). Reversible.
+  Future<void> _suspendUser() async {
+    final name = _user['full_name'] ?? 'this user';
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (_) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: Text('Suspend Account',
+            style: GoogleFonts.playfairDisplay(
+                fontWeight: FontWeight.w700, color: Colors.red)),
+        content: Text(
+            'Suspend $name?\n\n'
+            'They will be logged out of all devices and unable to log back in '
+            'until reactivated. Their posts, ratings and other data are preserved.',
+            style: GoogleFonts.inter(fontSize: 13)),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text('Cancel', style: GoogleFonts.inter(color: Colors.grey)),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            ),
+            onPressed: () => Navigator.pop(context, true),
+            child: Text('Suspend', style: GoogleFonts.inter(color: Colors.white)),
+          ),
+        ],
+      ),
+    );
+    if (confirm != true) return;
+
+    setState(() => _busy = true);
+    try {
+      await ApiService.deactivateUser(_user['id'].toString());
+      setState(() {
+        _user['is_active'] = false;
+        _changed = true;
+        _busy    = false;
+      });
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('$name has been suspended.',
+              style: GoogleFonts.inter()),
+          backgroundColor: Colors.orange,
+        ));
+      }
+    } catch (e) {
+      setState(() => _busy = false);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(e.toString(), style: GoogleFonts.inter()),
+          backgroundColor: Colors.red,
+        ));
+      }
+    }
+  }
+
+  // ─── Reactivate account action ───
+  // Lifts a prior suspension. The user can log in immediately with existing
+  // credentials. Lighter confirmation than suspend since it's restorative.
+  Future<void> _reactivateUser() async {
+    final name = _user['full_name'] ?? 'this user';
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (_) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: Text('Reactivate Account',
+            style: GoogleFonts.playfairDisplay(fontWeight: FontWeight.w700)),
+        content: Text('Restore access for $name?',
+            style: GoogleFonts.inter(fontSize: 13)),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text('Cancel', style: GoogleFonts.inter(color: Colors.grey)),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.primary,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            ),
+            onPressed: () => Navigator.pop(context, true),
+            child: Text('Reactivate', style: GoogleFonts.inter(color: Colors.white)),
+          ),
+        ],
+      ),
+    );
+    if (confirm != true) return;
+
+    setState(() => _busy = true);
+    try {
+      await ApiService.reactivateUser(_user['id'].toString());
+      setState(() {
+        _user['is_active'] = true;
+        _changed = true;
+        _busy    = false;
+      });
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('$name has been reactivated.',
+              style: GoogleFonts.inter()),
+          backgroundColor: AppColors.primary,
+        ));
+      }
+    } catch (e) {
+      setState(() => _busy = false);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(e.toString(), style: GoogleFonts.inter()),
+          backgroundColor: Colors.red,
+        ));
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final name         = _user['full_name'] ?? 'Unknown';
@@ -1935,10 +2019,11 @@ class _MemberDetailScreenState extends State<_MemberDetailScreen> {
     final hasVerifPic  = verifUrl != null && verifUrl.isNotEmpty;
     final memberId     = _user['id']?.toString() ?? '';
 
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
         Navigator.pop(context, _changed);
-        return false;
       },
       child: Scaffold(
         backgroundColor: const Color(0xFFFAFAF7),
@@ -1958,6 +2043,36 @@ class _MemberDetailScreenState extends State<_MemberDetailScreen> {
           padding: const EdgeInsets.all(16),
           child: ListView(
             children: [
+              // ─── Suspended banner (only if user is currently suspended) ───
+              if (_isSuspended) ...[
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(14),
+                  decoration: BoxDecoration(
+                    color: Colors.red.shade50,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.red.shade300, width: 1),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.block_rounded,
+                          color: Colors.red.shade700, size: 22),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Text(
+                          'This account is currently suspended. The user cannot log in '
+                          'until an admin reactivates them.',
+                          style: GoogleFonts.inter(
+                              fontSize: 12.5,
+                              color: Colors.red.shade900,
+                              fontWeight: FontWeight.w500),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16),
+              ],
               // ─── Current DP ───
               Center(
                 child: GestureDetector(
@@ -2040,7 +2155,7 @@ class _MemberDetailScreenState extends State<_MemberDetailScreen> {
                               child: Image.network(
                                 CloudinaryUrl.avatar(verifUrl, size: 280),
                                 width: 140, height: 140, fit: BoxFit.cover,
-                                errorBuilder: (_, __, ___) => Container(
+                                errorBuilder: (_, _, _) => Container(
                                   width: 140, height: 140,
                                   color: const Color(0xFFF3F4F6),
                                   child: const Icon(Icons.broken_image_rounded,
@@ -2099,8 +2214,45 @@ class _MemberDetailScreenState extends State<_MemberDetailScreen> {
                       ),
                     ),
                   ),
+                  const SizedBox(height: 12),
                 ],
-                if (!_canChangeRole && !_canRevokeBadge)
+                if (_canSuspend) ...[
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton.icon(
+                      onPressed: _busy ? null : _suspendUser,
+                      icon: const Icon(Icons.block_rounded, size: 18),
+                      label: Text('Suspend Account',
+                          style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red.shade700,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12)),
+                      ),
+                    ),
+                  ),
+                ],
+                if (_canReactivate) ...[
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton.icon(
+                      onPressed: _busy ? null : _reactivateUser,
+                      icon: const Icon(Icons.lock_open_rounded, size: 18),
+                      label: Text('Reactivate Account',
+                          style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primary,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12)),
+                      ),
+                    ),
+                  ),
+                ],
+                if (!_canChangeRole && !_canRevokeBadge && !_canSuspend && !_canReactivate)
                   _infoBox('No actions available for this user at your permission level.'),
               ],
               if (_busy) ...[
@@ -2193,7 +2345,7 @@ class _PhotoViewerScreen extends StatelessWidget {                              
                             color: Colors.white),                               // ✅ ADD
                       );                                                        // ✅ ADD
                     },                                                          // ✅ ADD
-                    errorBuilder: (_, __, ___) => const Center(                 // ✅ ADD
+                    errorBuilder: (_, _, _) => const Center(                 // ✅ ADD
                       child: Icon(Icons.broken_image_rounded,                   // ✅ ADD
                           color: Colors.white54, size: 64),                     // ✅ ADD
                     ),                                                          // ✅ ADD

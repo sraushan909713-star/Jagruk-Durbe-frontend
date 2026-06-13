@@ -13,6 +13,17 @@
 //   ✅ NEW — Hindi subtitles update with main titles
 //   Tribute STAYS English regardless of toggle (locked decision).
 //
+// DELIVERY 4 (this version adds):
+//   ✅ NEW — "Three Layers" foundation section between intro and features.
+//            Explains Admin / Verified Villager / User permission system.
+//            Uses three_layers.svg (figures only — captions are Flutter Text
+//            widgets so the EN|हिं toggle works on them naturally).
+//   ✅ NEW — "Banners" info card after the 8 features.
+//   ✅ NEW — "Today's Weather" info card after Banners.
+//            Both are slim text-only cards (no illustration zone) — the
+//            banner and weather are already visible on the home screen,
+//            so the About copy just names them and explains what they're for.
+//
 // All Hindi text is the locked, finalized version from the translation
 // rounds. No fresh translation — only the words Raushan approved.
 //
@@ -88,13 +99,17 @@ class _AboutScreenState extends State<AboutScreen>
   }
 
   // We pre-count the bilingual text blocks: 1 intro title + 1 intro body
-  // + (1 title + 1 subtitle + N paragraphs) per feature + 1 closing.
+  // + 4 three-layers blocks + (1 title + 1 subtitle + N paragraphs) per
+  // feature + 2 banner + 2 weather + 1 closing.
   void _countBlocks() {
     int n = 2; // intro title + intro body
+    n += 4;    // ✅ NEW (D4) — three layers (title + intro + roles + tagline)
     for (final f in _features) {
       n += 2 + f.paragraphsEn.length; // title, subtitle, then paragraphs
     }
-    n += 1;  // closing line
+    n += 2;    // ✅ NEW (D4) — banners (title + body)
+    n += 2;    // ✅ NEW (D4) — weather (title + body)
+    n += 1;    // closing line
     _blockCount = n;
   }
 
@@ -155,6 +170,32 @@ class _AboutScreenState extends State<AboutScreen>
             ),
             const SizedBox(height: 4),
 
+            // ✅ NEW (D4) — Three Layers foundation section.
+            // Sits between intro and features because this question
+            // ("why three roles?") comes BEFORE users care about features.
+            // IIFE for the same reason features below use IIFEs: closure
+            // capture-by-reference would share blockIdx across the children.
+            // ✅ FIX (D4.1) — wrapped in _RevealOnScroll so the card fades
+            // in and the SVG sweeps diagonally on first viewport entry,
+            // matching the 8 feature cards below.
+            (() {
+              final titleIdx   = blockIdx++;
+              final introIdx   = blockIdx++;
+              final rolesIdx   = blockIdx++;
+              final taglineIdx = blockIdx++;
+              return _RevealOnScroll(
+                scrollController: _scrollCtrl,
+                builder: (cardProgress, illoSweep) => _threeLayersSection(
+                  titleIdx:     titleIdx,
+                  introIdx:     introIdx,
+                  rolesIdx:     rolesIdx,
+                  taglineIdx:   taglineIdx,
+                  cardProgress: cardProgress,
+                  illoSweep:    illoSweep,
+                ),
+              );
+            })(),
+
             // 8 feature cards — each registers its own block indices
             // ✅ NEW (D3.5) — each card now wrapped in _RevealOnScroll so it
             // fades + slides up when scrolled into view, and its illustration
@@ -185,6 +226,40 @@ class _AboutScreenState extends State<AboutScreen>
                 );
               })(),
 
+            // ✅ NEW (D4) — Banners info card. No illustration — the banner
+            // is already visible on the home screen, so the About copy just
+            // names it and explains what it's for.
+            (() {
+              final titleIdx = blockIdx++;
+              final bodyIdx  = blockIdx++;
+              return _homeScreenInfoCard(
+                titleIdx:    titleIdx,
+                bodyIdx:     bodyIdx,
+                titleEn:     _bannersTitleEn,
+                titleHi:     _bannersTitleHi,
+                bodyEn:      _bannersBodyEn,
+                bodyHi:      _bannersBodyHi,
+                icon:        Icons.campaign_outlined,
+                accentColor: const Color(0xFF7A2D08),
+              );
+            })(),
+
+            // ✅ NEW (D4) — Today's Weather info card.
+            (() {
+              final titleIdx = blockIdx++;
+              final bodyIdx  = blockIdx++;
+              return _homeScreenInfoCard(
+                titleIdx:    titleIdx,
+                bodyIdx:     bodyIdx,
+                titleEn:     _weatherTitleEn,
+                titleHi:     _weatherTitleHi,
+                bodyEn:      _weatherBodyEn,
+                bodyHi:      _weatherBodyHi,
+                icon:        Icons.wb_cloudy_outlined,
+                accentColor: const Color(0xFF1F5F7A),
+              );
+            })(),
+
             // Closing line
             _closingLine(blockIdx: blockIdx++),
 
@@ -205,8 +280,8 @@ class _AboutScreenState extends State<AboutScreen>
         duration: const Duration(milliseconds: 220),
         padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
         decoration: BoxDecoration(
-          color: _green.withOpacity(0.10),
-          border: Border.all(color: _green.withOpacity(0.35)),
+          color: _green.withValues(alpha: 0.10),
+          border: Border.all(color: _green.withValues(alpha: 0.35)),
           borderRadius: BorderRadius.circular(20),
         ),
         child: Row(
@@ -291,7 +366,7 @@ class _AboutScreenState extends State<AboutScreen>
                       ? GoogleFonts.notoSansDevanagari
                       : GoogleFonts.inter)(
                 fontSize: 13, height: 1.65,
-                color: Colors.white.withOpacity(0.88),
+                color: Colors.white.withValues(alpha: 0.88),
               ),
             ),
           ),
@@ -330,7 +405,7 @@ class _AboutScreenState extends State<AboutScreen>
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.06),
+              color: Colors.black.withValues(alpha: 0.06),
               blurRadius: 14, offset: const Offset(0, 2),
             ),
           ],
@@ -485,12 +560,12 @@ class _AboutScreenState extends State<AboutScreen>
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(Icons.image_outlined,
-                size: 30, color: Colors.white.withOpacity(0.55)),
+                size: 30, color: Colors.white.withValues(alpha: 0.55)),
             const SizedBox(height: 4),
             Text(
               'illustration',
               style: GoogleFonts.inter(
-                fontSize: 10, color: Colors.white.withOpacity(0.55),
+                fontSize: 10, color: Colors.white.withValues(alpha: 0.55),
               ),
             ),
           ],
@@ -605,7 +680,7 @@ class _AboutScreenState extends State<AboutScreen>
                   child: Icon(
                     Icons.person_outline,
                     size: 16,
-                    color: Colors.black.withOpacity(0.25),
+                    color: Colors.black.withValues(alpha: 0.25),
                   ),
                 ),
               ),
@@ -615,7 +690,350 @@ class _AboutScreenState extends State<AboutScreen>
               'Thought and Built by the\ngrandson of Chandu Yadav',
               style: GoogleFonts.inter(
                 fontSize: 11, height: 1.5,
-                color: Colors.black.withOpacity(0.40),
+                color: Colors.black.withValues(alpha: 0.40),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // ══ Three Layers foundation section ════════════════════════════════════════
+  // Custom layout — looks like a feature card but with a "FOUNDATION" label
+  // instead of "FEATURE n OF 8", a slate-toned gradient zone (visually
+  // distinct from any feature), the three_layers.svg illustration, the
+  // three role descriptions as a tight list, and a bilingual tagline.
+  //
+  // All four text blocks (title, intro, roles, tagline) are wired into the
+  // _WipeText animation system so the Hindi/English toggle wipes them too.
+  //
+  // ✅ FIX (D4.1) — accepts the two reveal animations (cardProgress + illoSweep)
+  // from the parent _RevealOnScroll, so this section gets the same scroll-in
+  // behaviour as the 8 feature cards below.
+  Widget _threeLayersSection({
+    required int titleIdx,
+    required int introIdx,
+    required int rolesIdx,
+    required int taglineIdx,
+    required Animation<double> cardProgress,
+    required Animation<double> illoSweep,
+  }) {
+    final rolesEn = _threeLayersRolesEn;
+    final rolesHi = _threeLayersRolesHi;
+    final roles = _isHindi ? rolesHi : rolesEn;
+
+    // Outer AnimatedBuilder: card fade-in + slide-up over the first ~40%
+    // of the reveal duration. Same shape as _featureCard.
+    return AnimatedBuilder(
+      animation: cardProgress,
+      builder: (context, child) {
+        return Opacity(
+          opacity: cardProgress.value,
+          child: Transform.translate(
+            offset: Offset(0, (1 - cardProgress.value) * 16),
+            child: child,
+          ),
+        );
+      },
+      child: Padding(
+      padding: const EdgeInsets.fromLTRB(18, 14, 18, 0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(color: _border),
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.06),
+              blurRadius: 14, offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Slate-toned header zone — distinct from any feature card colour
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.fromLTRB(20, 18, 20, 18),
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Color(0xFFE6ECEF), Color(0xFFC8D3D8)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Label (small, not animated — same pattern as FEATURE n OF 8)
+                  Text(
+                    _isHindi ? 'बुनियाद' : 'FOUNDATION',
+                    style: (_isHindi
+                            ? GoogleFonts.notoSansDevanagari
+                            : GoogleFonts.inter)(
+                      fontSize: 11, fontWeight: FontWeight.w700,
+                      letterSpacing: 0.5, color: _greenDark,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  // Title (animated)
+                  _WipeText(
+                    blockIdx: titleIdx,
+                    controller: _wipeCtrl,
+                    isHindi: _isHindi,
+                    animating: _animating,
+                    blockCount: _blockCount,
+                    perBlock: _wipePerBlock,
+                    stagger: _wipeStagger,
+                    child: Text(
+                      _isHindi ? _threeLayersTitleHi : _threeLayersTitleEn,
+                      style: (_isHindi
+                              ? GoogleFonts.notoSansDevanagari
+                              : GoogleFonts.playfairDisplay)(
+                        fontSize: 20, fontWeight: FontWeight.w600, color: _ink,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            // Body
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 18, 20, 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Intro paragraph (animated)
+                  _WipeText(
+                    blockIdx: introIdx,
+                    controller: _wipeCtrl,
+                    isHindi: _isHindi,
+                    animating: _animating,
+                    blockCount: _blockCount,
+                    perBlock: _wipePerBlock,
+                    stagger: _wipeStagger,
+                    child: Text(
+                      _isHindi ? _threeLayersIntroHi : _threeLayersIntroEn,
+                      style: (_isHindi
+                              ? GoogleFonts.notoSansDevanagari
+                              : GoogleFonts.inter)(
+                        fontSize: 13.5, height: 1.72, color: _body,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 18),
+
+                  // The illustration (figures-only — captions are Flutter
+                  // Text widgets so the EN|हिं toggle works on them).
+                  // ✅ FIX (D4.1) — wrapped in AnimatedBuilder + ShaderMask
+                  // for the diagonal sweep reveal, matching _illustrationFor.
+                  Center(
+                    child: AnimatedBuilder(
+                      animation: illoSweep,
+                      builder: (context, _) {
+                        final t = illoSweep.value;
+                        return ShaderMask(
+                          shaderCallback: (Rect bounds) {
+                            final diag = bounds.width + bounds.height;
+                            final cut  = (diag * t).clamp(0.0, diag);
+                            const edge = 60.0;
+                            final stop1 = (cut / diag).clamp(0.0, 1.0);
+                            final stop2 = ((cut + edge) / diag).clamp(0.0, 1.0);
+                            return LinearGradient(
+                              begin: Alignment.topLeft,
+                              end:   Alignment.bottomRight,
+                              colors: const [Colors.white, Colors.white, Colors.transparent],
+                              stops: [0.0, stop1, stop2],
+                            ).createShader(bounds);
+                          },
+                          blendMode: BlendMode.dstIn,
+                          child: SvgPicture.asset(
+                            'assets/illustrations/three_layers.svg',
+                            width: 230,
+                            fit: BoxFit.contain,
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 18),
+
+                  // Role descriptions (animated as a single block — keeps the
+                  // wipe coherent across the list).
+                  _WipeText(
+                    blockIdx: rolesIdx,
+                    controller: _wipeCtrl,
+                    isHindi: _isHindi,
+                    animating: _animating,
+                    blockCount: _blockCount,
+                    perBlock: _wipePerBlock,
+                    stagger: _wipeStagger,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        for (int i = 0; i < roles.length; i++) ...[
+                          _roleLine(roles[i][0], roles[i][1]),
+                          if (i != roles.length - 1)
+                            const SizedBox(height: 9),
+                        ],
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 18),
+
+                  // Tagline (italic, centered, animated)
+                  _WipeText(
+                    blockIdx: taglineIdx,
+                    controller: _wipeCtrl,
+                    isHindi: _isHindi,
+                    animating: _animating,
+                    blockCount: _blockCount,
+                    perBlock: _wipePerBlock,
+                    stagger: _wipeStagger,
+                    child: Center(
+                      child: Text(
+                        _isHindi ? _threeLayersTaglineHi : _threeLayersTaglineEn,
+                        style: (_isHindi
+                                ? GoogleFonts.notoSansDevanagari
+                                : GoogleFonts.playfairDisplay)(
+                          fontSize: 14,
+                          fontStyle: FontStyle.italic,
+                          color: _terracotta,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+      ),  // closes AnimatedBuilder child Padding
+    );
+  }
+
+  // Single role row inside the Three Layers card — bold name, dash, body.
+  Widget _roleLine(String name, String desc) {
+    return RichText(
+      text: TextSpan(
+        children: [
+          TextSpan(
+            text: name,
+            style: (_isHindi
+                    ? GoogleFonts.notoSansDevanagari
+                    : GoogleFonts.inter)(
+              fontSize: 13.5, fontWeight: FontWeight.w700,
+              color: _greenDark, height: 1.55,
+            ),
+          ),
+          TextSpan(
+            text: '  —  ',
+            style: GoogleFonts.inter(
+              fontSize: 13.5, color: _border, height: 1.55,
+            ),
+          ),
+          TextSpan(
+            text: desc,
+            style: (_isHindi
+                    ? GoogleFonts.notoSansDevanagari
+                    : GoogleFonts.inter)(
+              fontSize: 13.5, color: _body, height: 1.55,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ══ Home-screen info card — used for Banners and Weather ═══════════════════
+  // Slim card with an icon + title row, then body paragraph. No illustration
+  // zone — these features are already visible on the home screen, so the About
+  // copy just names them and explains their purpose.
+  Widget _homeScreenInfoCard({
+    required int titleIdx,
+    required int bodyIdx,
+    required String titleEn,
+    required String titleHi,
+    required String bodyEn,
+    required String bodyHi,
+    required IconData icon,
+    required Color accentColor,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(18, 14, 18, 0),
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(18, 16, 18, 18),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(color: _border),
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.04),
+              blurRadius: 10, offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Icon + title row
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: accentColor.withValues(alpha: 0.10),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Icon(icon, size: 18, color: accentColor),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: _WipeText(
+                    blockIdx: titleIdx,
+                    controller: _wipeCtrl,
+                    isHindi: _isHindi,
+                    animating: _animating,
+                    blockCount: _blockCount,
+                    perBlock: _wipePerBlock,
+                    stagger: _wipeStagger,
+                    child: Text(
+                      _isHindi ? titleHi : titleEn,
+                      style: (_isHindi
+                              ? GoogleFonts.notoSansDevanagari
+                              : GoogleFonts.playfairDisplay)(
+                        fontSize: 16.5, fontWeight: FontWeight.w600, color: _ink,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+
+            // Body paragraph (animated)
+            _WipeText(
+              blockIdx: bodyIdx,
+              controller: _wipeCtrl,
+              isHindi: _isHindi,
+              animating: _animating,
+              blockCount: _blockCount,
+              perBlock: _wipePerBlock,
+              stagger: _wipeStagger,
+              child: Text(
+                _isHindi ? bodyHi : bodyEn,
+                style: (_isHindi
+                        ? GoogleFonts.notoSansDevanagari
+                        : GoogleFonts.inter)(
+                  fontSize: 13.5, height: 1.72, color: _body,
+                ),
               ),
             ),
           ],
@@ -646,6 +1064,60 @@ class _AboutScreenState extends State<AboutScreen>
   static const String _closingHi =
       'यहाँ तक पढ़ने के लिए धन्यवाद। दुर्बे के जितने ज़्यादा लोग साथ आएँगे, '
       'इनमें से हर सुविधा उतनी ही मज़बूत होगी।';
+
+  // ══ Three Layers section text — locked copy ════════════════════════════════
+  // Foundation section explaining the User / Verified Villager / Admin
+  // permission system. Sits between intro and the 8 features.
+
+  static const String _threeLayersTitleEn   = 'Three roles. One reason.';
+  static const String _threeLayersTitleHi   = 'तीन रोल. एक वजह.';
+
+  static const String _threeLayersIntroEn =
+      'Anyone in India can install this app. Verification keeps your '
+      'village\'s voice yours — not someone else\'s.';
+  static const String _threeLayersIntroHi =
+      'कोई भी इस ऐप को install कर सकता है। Verification सुनिश्चित करती है '
+      'कि गाँव की आवाज़ गाँव की रहे — बाहर वालों की नहीं।';
+
+  // Role lines render as a tight bilingual list inside the card.
+  // Each list item is "Role — action description".
+  static const List<List<String>> _threeLayersRolesEn = [
+    ['Admin',             'Moderates content. Chosen from Durbe itself, not appointed from outside.'],
+    ['Verified Villager', 'Files complaints, signs petitions, rates netas, lists crops.'],
+    ['User',              'Reads everything. Cannot post.'],
+  ];
+  static const List<List<String>> _threeLayersRolesHi = [
+    ['Admin',         'Moderate करते हैं। दुर्बे के अंदर से चुने गए, बाहर से नहीं।'],
+    ['Verified गाँववाला', 'शिकायत डालते हैं, याचिका पर हस्ताक्षर, नेता को rating, फसल listing।'],
+    ['User',          'सब पढ़ सकते हैं। post नहीं कर सकते।'],
+  ];
+
+  static const String _threeLayersTaglineEn = 'Apna gaon, apne log.';
+  static const String _threeLayersTaglineHi = 'अपना गाँव, अपने लोग।';
+
+  // ══ Banners section text — locked copy ═════════════════════════════════════
+  static const String _bannersTitleEn = 'What\'s on the banner?';
+  static const String _bannersTitleHi = 'यह banner क्या दिखाता है?';
+
+  static const String _bannersBodyEn =
+      'The card at the top of your home screen. When something matters right '
+      'now — a blood need, power outage, festival drive, tournament, weather '
+      'warning — it lives here until it\'s done. Then it\'s gone.';
+  static const String _bannersBodyHi =
+      'Home screen पर सबसे ऊपर वाला card। जब कुछ अभी ज़रूरी हो — blood की '
+      'ज़रूरत, बिजली कटौती, त्योहार चंदा, टूर्नामेंट, मौसम चेतावनी — तब तक यहाँ '
+      'रहता है जब तक ज़रूरत है। फिर हट जाता है।';
+
+  // ══ Weather section text — locked copy ═════════════════════════════════════
+  static const String _weatherTitleEn = 'Today\'s weather, right above.';
+  static const String _weatherTitleHi = 'आज का मौसम, सबसे ऊपर।';
+
+  static const String _weatherBodyEn =
+      'Temperature, rain probability, day\'s high and low. Plan your farming '
+      'and your day around it.';
+  static const String _weatherBodyHi =
+      'तापमान, बारिश की संभावना, अधिकतम-न्यूनतम। अपनी खेती और अपना दिन '
+      'इसी हिसाब से plan करें।';
 
   // ══ The 8 feature sections — locked copy in BOTH languages ═════════════════
   static final List<_Feature> _features = [

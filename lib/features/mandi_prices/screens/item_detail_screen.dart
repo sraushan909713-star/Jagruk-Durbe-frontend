@@ -228,7 +228,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                           child: ListView.separated(
                             padding: const EdgeInsets.all(14),
                             itemCount: _listings.length,
-                            separatorBuilder: (_, __) => const SizedBox(height: 10),
+                            separatorBuilder: (_, _) => const SizedBox(height: 10),
                             itemBuilder: (_, i) => _buildVendorCard(_listings[i]),
                           ),
                         ),
@@ -394,7 +394,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
           borderRadius: BorderRadius.circular(22),
           boxShadow: isOos ? null : [
             BoxShadow(
-              color: AppColors.primary.withOpacity(0.25),
+              color: AppColors.primary.withValues(alpha: 0.25),
               blurRadius: 6, offset: const Offset(0, 2),
             ),
           ],

@@ -55,11 +55,13 @@ class _NetaDetailScreenState extends State<NetaDetailScreen> {
         ApiService.getNetaDetail(widget.netaId),
         ApiService.getNetaHistory(widget.netaId),
       ]);
-      if (mounted) setState(() {
-        _neta    = results[0] as Map<String, dynamic>;
-        _history = (results[1] as Map<String, dynamic>)['history'] ?? [];
-        _loading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _neta    = results[0];
+          _history = results[1]['history'] ?? [];
+          _loading = false;
+        });
+      }
     } catch (e) {
       if (mounted) setState(() => _loading = false);
     }
@@ -262,9 +264,6 @@ class _NetaDetailScreenState extends State<NetaDetailScreen> {
     final hasRated    = _neta!['has_rated_this_window'] == true;
     final designation = _neta!['designation'] ?? '';
 
-    // ── Can user rate? ────────────────────────────────────
-    final canRate = widget.windowOpen && _isVerified && !hasRated;
-
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -310,7 +309,7 @@ class _NetaDetailScreenState extends State<NetaDetailScreen> {
                         ? Image.network(
                             CloudinaryUrl.thumb(_neta!['photo_url']),
                             fit: BoxFit.cover,
-                            errorBuilder: (_, __, ___) => const Center(
+                            errorBuilder: (_, _, _) => const Center(
                               child: Text('🏛️',
                                   style: TextStyle(fontSize: 28)),
                             ),

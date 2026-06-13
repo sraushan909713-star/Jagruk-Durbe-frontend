@@ -243,8 +243,8 @@ class _CinematicWelcomeScreenState extends State<CinematicWelcomeScreen>
                     return TextButton(
                       onPressed: _skipCinematic,
                       style: TextButton.styleFrom(
-                        foregroundColor: Colors.white.withOpacity(0.95),
-                        backgroundColor: Colors.black.withOpacity(0.20),
+                        foregroundColor: Colors.white.withValues(alpha: 0.95),
+                        backgroundColor: Colors.black.withValues(alpha: 0.20),
                         padding: const EdgeInsets.symmetric(
                             horizontal: 14, vertical: 7),
                         shape: RoundedRectangleBorder(
@@ -315,7 +315,7 @@ class _CinematicWelcomeScreenState extends State<CinematicWelcomeScreen>
                         Container(
                           width: 28, height: 28,
                           decoration: BoxDecoration(
-                            color: _green.withOpacity(0.12),
+                            color: _green.withValues(alpha: 0.12),
                             shape: BoxShape.circle,
                           ),
                           child: const Icon(
@@ -390,8 +390,8 @@ class _CinematicWelcomeScreenState extends State<CinematicWelcomeScreen>
               center: const Alignment(0, -0.5),
               radius: 1.4,
               colors: [
-                _gold.withOpacity(0.55),
-                _green.withOpacity(0.92),
+                _gold.withValues(alpha: 0.55),
+                _green.withValues(alpha: 0.92),
                 _greenDark,
               ],
               stops: const [0.0, 0.5, 1.0],
@@ -407,9 +407,9 @@ class _CinematicWelcomeScreenState extends State<CinematicWelcomeScreen>
                     width: 88, height: 88,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: Colors.white.withOpacity(0.18),
+                      color: Colors.white.withValues(alpha: 0.18),
                       border: Border.all(
-                          color: Colors.white.withOpacity(0.45), width: 1.5),
+                          color: Colors.white.withValues(alpha: 0.45), width: 1.5),
                     ),
                     child: const Center(
                       child: Text('🌿', style: TextStyle(fontSize: 44)),
@@ -437,7 +437,7 @@ class _CinematicWelcomeScreenState extends State<CinematicWelcomeScreen>
                     style: GoogleFonts.notoSansDevanagari(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
-                      color: Colors.white.withOpacity(0.92),
+                      color: Colors.white.withValues(alpha: 0.92),
                     ),
                   ),
                 ),
@@ -464,7 +464,7 @@ class _CinematicWelcomeScreenState extends State<CinematicWelcomeScreen>
                           textAlign: TextAlign.center,
                           style: GoogleFonts.notoSansDevanagari(
                             fontSize: 13,
-                            color: Colors.white.withOpacity(0.85),
+                            color: Colors.white.withValues(alpha: 0.85),
                             height: 1.6,
                           ),
                         ),
