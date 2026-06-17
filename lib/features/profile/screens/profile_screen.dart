@@ -41,6 +41,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool _isDeleting       = false;
   String? _error;
   int _pendingCount = 0;
+  Map<String, dynamic>? _kyvStats;   // ✅ ADD: answered_count + points
 
   @override
   void initState() {
@@ -62,6 +63,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       if (mounted) setState(() { _profile = data; _isLoading = false; });
       final role = data['role'] ?? '';
       if (role == 'admin' || role == 'super_admin') _loadPendingCount();
+      _loadKyvStats();   // ✅ ADD
     } catch (e) {
       if (mounted) setState(() { _error = e.toString(); _isLoading = false; });
     }
@@ -71,6 +73,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
     try {
       final list = await ApiService.getPendingVerifications();
       if (mounted) setState(() => _pendingCount = list.length);
+    } catch (_) {}
+  }
+
+  Future<void> _loadKyvStats() async {   // ✅ ADD
+    try {
+      final stats = await ApiService.getKyvMe();
+      if (mounted) setState(() => _kyvStats = stats);
     } catch (_) {}
   }
 
@@ -654,6 +663,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                 const SizedBox(height: 10),
 
+                // Know Your Village stats card
+                _buildKyvStatsCard(),   // ✅ ADD
+
                 // Account Info card
                 _buildAccountInfoCard(memberSince, verifiedOn),
 
@@ -935,6 +947,59 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  // ─── Know Your Village stats card ─────────────────────────────────────────────
+  Widget _buildKyvStatsCard() {
+    // Hide entirely until we have stats (keeps profile clean for new users)
+    final stats = _kyvStats;
+    if (stats == null) return const SizedBox.shrink();
+    final answered = stats['answered_count'] ?? 0;
+    final points   = stats['points'] ?? 0;
+
+    return Column(
+      children: [
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: AppColors.cardBg,
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(color: AppColors.border),
+          ),
+          child: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(9),
+                decoration: BoxDecoration(
+                  color: AppColors.primaryLight,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Icon(Icons.location_on, color: AppColors.primary, size: 20),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Know Your Village',
+                        style: GoogleFonts.inter(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.textPrimary)),
+                    const SizedBox(height: 2),
+                    Text('$answered सवालों के जवाब · $points अंक',
+                        style: GoogleFonts.notoSansDevanagari(
+                            fontSize: 12, color: AppColors.textSecondary)),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 10),
+      ],
     );
   }
 

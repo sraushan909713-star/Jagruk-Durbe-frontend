@@ -24,7 +24,6 @@ import '../../../core/theme/app_theme.dart';
 import '../../../core/constants/app_constants.dart';
 import '../../../core/network/api_service.dart';
 import '../../contacts/screens/contacts_screen.dart';
-import '../../mandi_prices/screens/mandi_home_screen.dart';                   // ✅ CHANGE
 import '../../schemes/screens/schemes_screen.dart';
 import '../../gram_awaaz/screens/gram_awaaz_screen.dart';
 import '../../vikas_prastav/screens/vikas_prastav_screen.dart';
@@ -35,6 +34,7 @@ import '../../weather/screens/rain_alerts_screen.dart';
 import '../../../core/theme/banner_themes.dart';                              // ✅ ADD
 import '../../banners/screens/banner_detail_screen.dart';                     // ✅ ADD
 import '../../about/screens/about_screen.dart';                               // ✅ ADD
+import '../../kyv/widgets/kyv_home_card.dart';                                // ✅ ADD
 import '../../../core/utils/cloudinary_url.dart';
 
 class HomeTab extends StatefulWidget {
@@ -181,7 +181,10 @@ class _HomeTabState extends State<HomeTab> {
               _buildCarousel(),
               const SizedBox(height: 14),
 
-              // ─── Features grid (8 boxes) ─────────────────────
+              // ─── Know Your Village invitation card ───────────  // ✅ ADD
+              const KyvHomeCard(),                                   // ✅ ADD
+
+              // ─── Features grid ───────────────────────────────
               Text('Features',
                 style: GoogleFonts.playfairDisplay(
                   fontSize: 16, fontWeight: FontWeight.w500,
@@ -526,12 +529,12 @@ class _HomeTabState extends State<HomeTab> {
     final features = [
       _Feature('📢', 'Gram Awaaz',       'File complaint',       const GramAwaazScreen()),
       _Feature('📋', 'Schemes',          'Govt benefits',         const SchemesScreen()),
-      _Feature('🌾', 'Crop Prices',      'Today\'s rates',       const MandiHomeScreen()),
       _Feature('🏗️', 'Vikas Prastav',   'Proposals',            const VikasPrastavScreen()),
       _Feature('📖', 'Guides',           'How to apply docs',    const GuidesScreen()),
       _Feature('📞', 'Contacts',         'Local office numbers', const ContactsScreen()),
       _Feature('⭐', 'Neta Report Card', 'Rate your neta',       const NetaReportCardScreen()),
       _Feature('💼', 'Job Alerts',       'Sarkari naukri',       const JobAlertsScreen()),
+      _Feature('ℹ️', 'About',            'Our mission',          const AboutScreen()),   // ✅ ADD
     ];
 
     return GridView.builder(

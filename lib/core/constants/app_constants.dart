@@ -7,7 +7,8 @@
 class AppConstants {
   // — API ───────────────────────────────────────────────────
   // Production (Railway):
-  static const String baseUrl = 'https://web-production-38822.up.railway.app';
+  // static const String baseUrl = 'http://127.0.0.1:8000';
+  static const String baseUrl = 'https://api.jagrukdurbe.in';
   // Development (local FastAPI on Mac): uncomment to use, then run
   //   `ipconfig getifaddr en0` on Mac and update the IP if it changed.
   // static const String baseUrl = 'http://192.168.0.121:8000';

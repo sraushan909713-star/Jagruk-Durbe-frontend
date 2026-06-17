@@ -1169,4 +1169,208 @@ class ApiService {
   /// Public accessor for the stored JWT — used by CloudinaryService.
   static Future<String?> getToken() => _getToken();                              // ✅ NEW
 
+  // ── KNOW YOUR VILLAGE (KYV) ───────────────────────────────
+
+  // GET /kyv/active — the live question (null if none).
+  // Token optional: if logged in, response includes whether you
+  // answered + results. Returns null when there's no active question.
+  static Future<Map<String, dynamic>?> getKyvActive() async {
+    final token = await _getToken();
+    final response = await http.get(
+      Uri.parse('${AppConstants.baseUrl}/kyv/active'),
+      headers: _headers(token: token),
+    );
+    if (response.statusCode == 200) {
+      if (response.body.isEmpty || response.body == 'null') return null;
+      final decoded = jsonDecode(response.body);
+      return decoded == null ? null : decoded as Map<String, dynamic>;
+    }
+    throw Exception('GET /kyv/active failed: ${response.statusCode}');
+  }
+
+  // GET /kyv/history — past questions with results, newest first.
+  static Future<List<dynamic>> getKyvHistory() async {
+    final token = await _getToken();
+    final response = await http.get(
+      Uri.parse('${AppConstants.baseUrl}/kyv/history'),
+      headers: _headers(token: token),
+    );
+    if (response.statusCode == 200) return jsonDecode(response.body);
+    throw Exception('GET /kyv/history failed: ${response.statusCode}');
+  }
+
+  // GET /kyv/me — logged-in user's answered_count + points.
+  static Future<Map<String, dynamic>> getKyvMe() async {
+    final token = await _getToken();
+    final response = await http.get(
+      Uri.parse('${AppConstants.baseUrl}/kyv/me'),
+      headers: _headers(token: token),
+    );
+    if (response.statusCode == 200) return jsonDecode(response.body);
+    throw Exception('GET /kyv/me failed: ${response.statusCode}');
+  }
+
+  // POST /kyv/{questionId}/answer — submit answer, get the reveal.
+  // Verified residents (+admins) only — backend enforces.
+  static Future<Map<String, dynamic>> answerKyvQuestion({
+    required String questionId,
+    required String optionId,
+  }) async {
+    final token = await _getToken();
+    final response = await http.post(
+      Uri.parse('${AppConstants.baseUrl}/kyv/$questionId/answer'),
+      headers: _headers(token: token),
+      body: jsonEncode({'option_id': optionId}),
+    );
+    if (response.statusCode == 200) return jsonDecode(response.body);
+    // surface backend detail (e.g. "already answered", 403 not verified)
+    final body = jsonDecode(response.body);
+    throw Exception(body['detail'] ?? 'Failed to submit answer');
+  }
+
+  // POST /kyv — admin creates a question with options.
+  static Future<Map<String, dynamic>> createKyvQuestion({
+    required String questionText,
+    String? questionTextEn,
+    required String type,                 // "quiz" or "poll"
+    String? explanation,
+    required List<Map<String, dynamic>> options,  // [{option_text, is_correct, display_order}]
+  }) async {
+    final token = await _getToken();
+    final response = await http.post(
+      Uri.parse('${AppConstants.baseUrl}/kyv'),
+      headers: _headers(token: token),
+      body: jsonEncode({
+        'question_text': questionText,
+        if (questionTextEn != null) 'question_text_en': questionTextEn,
+        'type': type,
+        if (explanation != null) 'explanation': explanation,
+        'options': options,
+      }),
+    );
+    if (response.statusCode == 201) return jsonDecode(response.body);
+    final body = jsonDecode(response.body);
+    throw Exception(body['detail'] ?? 'Failed to create question');
+  }
+
+  // DELETE /kyv/{questionId} — admin soft-delete (any admin, Golden Rule).
+  static Future<void> deleteKyvQuestion(String questionId) async {
+    final token = await _getToken();
+    final response = await http.delete(
+      Uri.parse('${AppConstants.baseUrl}/kyv/$questionId'),
+      headers: _headers(token: token),
+    );
+    if (response.statusCode != 200) {
+      throw Exception('Failed to delete question: ${response.statusCode}');
+    }
+  }
+
+  // ── KYV VILLAGE FACTS (demographics) ──────────────────────
+
+  // GET /kyv/village-facts — combined payload (villages, metrics, values).
+  // Public — no token needed. Load once; dropdown switches client-side.
+  static Future<Map<String, dynamic>> getKyvVillageFacts() async {
+    final response = await http.get(
+      Uri.parse('${AppConstants.baseUrl}/kyv/village-facts'),
+      headers: _headers(),
+    );
+    if (response.statusCode == 200) return jsonDecode(response.body);
+    throw Exception('GET /kyv/village-facts failed: ${response.statusCode}');
+  }
+
+  // POST /kyv/villages — super_admin adds a village.
+  static Future<Map<String, dynamic>> createKyvVillage({
+    required String name,
+    bool isHomeVillage = false,
+    int displayOrder = 0,
+  }) async {
+    final token = await _getToken();
+    final response = await http.post(
+      Uri.parse('${AppConstants.baseUrl}/kyv/villages'),
+      headers: _headers(token: token),
+      body: jsonEncode({
+        'name': name,
+        'is_home_village': isHomeVillage,
+        'display_order': displayOrder,
+      }),
+    );
+    if (response.statusCode == 201) return jsonDecode(response.body);
+    final body = jsonDecode(response.body);
+    throw Exception(body['detail'] ?? 'Failed to add village');
+  }
+
+  // DELETE /kyv/villages/{id} — super_admin removes a village (+ its values).
+  static Future<void> deleteKyvVillage(String villageId) async {
+    final token = await _getToken();
+    final response = await http.delete(
+      Uri.parse('${AppConstants.baseUrl}/kyv/villages/$villageId'),
+      headers: _headers(token: token),
+    );
+    if (response.statusCode != 200) {
+      final body = jsonDecode(response.body);
+      throw Exception(body['detail'] ?? 'Failed to delete village');
+    }
+  }
+
+  // POST /kyv/metrics — super_admin adds a metric (dropdown category).
+  static Future<Map<String, dynamic>> createKyvMetric({
+    required String name,
+    String? unit,
+    int displayOrder = 0,
+    bool isActive = true,
+  }) async {
+    final token = await _getToken();
+    final response = await http.post(
+      Uri.parse('${AppConstants.baseUrl}/kyv/metrics'),
+      headers: _headers(token: token),
+      body: jsonEncode({
+        'name': name,
+        if (unit != null) 'unit': unit,
+        'display_order': displayOrder,
+        'is_active': isActive,
+      }),
+    );
+    if (response.statusCode == 201) return jsonDecode(response.body);
+    final body = jsonDecode(response.body);
+    throw Exception(body['detail'] ?? 'Failed to add metric');
+  }
+
+  // DELETE /kyv/metrics/{id} — super_admin removes a metric (+ its values).
+  static Future<void> deleteKyvMetric(String metricId) async {
+    final token = await _getToken();
+    final response = await http.delete(
+      Uri.parse('${AppConstants.baseUrl}/kyv/metrics/$metricId'),
+      headers: _headers(token: token),
+    );
+    if (response.statusCode != 200) {
+      final body = jsonDecode(response.body);
+      throw Exception(body['detail'] ?? 'Failed to delete metric');
+    }
+  }
+
+  // PUT /kyv/village-values — super_admin upserts one (village × metric) cell.
+  static Future<Map<String, dynamic>> upsertKyvVillageValue({
+    required String villageId,
+    required String metricId,
+    int? value,
+    String? source,
+    String? asOfDate,
+  }) async {
+    final token = await _getToken();
+    final response = await http.put(
+      Uri.parse('${AppConstants.baseUrl}/kyv/village-values'),
+      headers: _headers(token: token),
+      body: jsonEncode({
+        'village_id': villageId,
+        'metric_id': metricId,
+        if (value != null) 'value': value,
+        if (source != null) 'source': source,
+        if (asOfDate != null) 'as_of_date': asOfDate,
+      }),
+    );
+    if (response.statusCode == 200) return jsonDecode(response.body);
+    final body = jsonDecode(response.body);
+    throw Exception(body['detail'] ?? 'Failed to save value');
+  }
+
 }

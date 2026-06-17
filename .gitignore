@@ -63,3 +63,5 @@ android/key.properties
 android/app/jagrukdurbe-release.keystore
 *.keystore
 *.jks
+android/build/
+*.bak
